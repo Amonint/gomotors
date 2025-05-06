@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Slider } from '@/components/ui/Slider';
 import { FaFilter, FaChevronDown, FaCheck } from 'react-icons/fa';
 
 // Lista de características disponibles para filtrar
@@ -19,16 +18,18 @@ const availableFeatures = [
   "Asistente de estacionamiento"
 ];
 
+// Interfaz para los filtros activos
+interface ActiveFilters {
+  brands: string[];
+  types: string[];
+  features: string[];
+}
+
 interface ShowroomFilterProps {
   brands: string[];
   types: string[];
-  activeFilters: {
-    brands: string[];
-    types: string[];
-    priceRange: number[];
-    features: string[];
-  };
-  updateFilters: (filterType: string, value: any) => void;
+  activeFilters: ActiveFilters;
+  updateFilters: (filterType: keyof ActiveFilters, value: string[]) => void;
 }
 
 const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
@@ -40,15 +41,10 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
   const [expandedSections, setExpandedSections] = useState({
     brands: true,
     types: true,
-    price: true,
     features: true
   });
 
-  const formatPrice = (price: number) => {
-    return `$${price.toLocaleString()}`;
-  };
-
-  const toggleSection = (section: string) => {
+  const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => ({
       ...prev,
       [section]: !prev[section]
@@ -76,14 +72,9 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
     updateFilters('features', newFeatures);
   };
 
-  const handlePriceChange = (value: number[]) => {
-    updateFilters('priceRange', value);
-  };
-
   const resetFilters = () => {
     updateFilters('brands', []);
     updateFilters('types', []);
-    updateFilters('priceRange', [0, 100000]);
     updateFilters('features', []);
   };
 
@@ -124,6 +115,7 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
               <label 
                 key={brand} 
                 className="flex items-center cursor-pointer hover:text-[#ffe600] transition-colors"
+                onClick={() => toggleBrand(brand)}
               >
                 <div className={`w-5 h-5 rounded border ${activeFilters.brands.includes(brand) ? 'bg-[#ffe600] border-[#ffe600]' : 'border-gray-600'} mr-3 flex items-center justify-center`}>
                   {activeFilters.brands.includes(brand) && (
@@ -155,6 +147,7 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
               <label 
                 key={type} 
                 className="flex items-center cursor-pointer hover:text-[#ffe600] transition-colors"
+                onClick={() => toggleType(type)}
               >
                 <div className={`w-5 h-5 rounded border ${activeFilters.types.includes(type) ? 'bg-[#ffe600] border-[#ffe600]' : 'border-gray-600'} mr-3 flex items-center justify-center`}>
                   {activeFilters.types.includes(type) && (
@@ -164,37 +157,6 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
                 <span className="text-sm">{type}</span>
               </label>
             ))}
-          </div>
-        )}
-      </div>
-
-      {/* Filtro por precio */}
-      <div className="mb-6 border-b border-gray-800 pb-5">
-        <button 
-          onClick={() => toggleSection('price')}
-          className="flex items-center justify-between w-full text-left mb-3"
-        >
-          <span className="font-medium">Rango de precio</span>
-          <FaChevronDown 
-            className={`transition-transform ${expandedSections.price ? 'rotate-180' : ''}`} 
-          />
-        </button>
-        
-        {expandedSections.price && (
-          <div className="mt-3">
-            <div className="flex justify-between mb-2">
-              <span className="text-sm text-gray-400">{formatPrice(activeFilters.priceRange[0])}</span>
-              <span className="text-sm text-gray-400">{formatPrice(activeFilters.priceRange[1])}</span>
-            </div>
-            
-            <Slider
-              min={0}
-              max={100000}
-              step={1000}
-              value={activeFilters.priceRange}
-              onChange={handlePriceChange}
-              className="mt-1"
-            />
           </div>
         )}
       </div>
@@ -217,6 +179,7 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
               <label 
                 key={feature} 
                 className="flex items-center cursor-pointer hover:text-[#ffe600] transition-colors"
+                onClick={() => toggleFeature(feature)}
               >
                 <div className={`w-5 h-5 rounded border ${activeFilters.features.includes(feature) ? 'bg-[#ffe600] border-[#ffe600]' : 'border-gray-600'} mr-3 flex items-center justify-center`}>
                   {activeFilters.features.includes(feature) && (

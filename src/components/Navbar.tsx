@@ -199,14 +199,13 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
-          isScrolled ? "bg-[#0A0A0A] shadow-lg" : "bg-[#0A0A0A]"
-        }`}
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-[#0A0A0A] shadow-lg" : "bg-[#0A0A0A]"
+          }`}
       >
         <div className="w-full">
           <div className="flex items-center h-[80px] relative">
             {/* Logo */}
-            <div className="flex-shrink-0" style={{position: 'absolute', left: '0', paddingLeft: '5px'}}>
+            <div className="flex-shrink-0" style={{ position: 'absolute', left: '0', paddingLeft: '5px' }}>
               <Link href="/" className="flex items-center">
                 <span className="text-white font-bold flex items-center">
                   <Image
@@ -216,7 +215,7 @@ const Navbar = () => {
                     height={40}
                     className="object-contain"
                     priority
-                    style={{marginLeft: 0, paddingLeft: 0}}
+                    style={{ marginLeft: 0, paddingLeft: 0 }}
                   />
                 </span>
               </Link>
@@ -233,9 +232,8 @@ const Navbar = () => {
                 >
                   SHOWROOM
                   <svg
-                    className={`w-[18px] h-[18px] ml-1 transform transition-transform ${
-                      activeDropdown === "showroom" ? "rotate-180" : ""
-                    }`}
+                    className={`w-[18px] h-[18px] ml-1 transform transition-transform ${activeDropdown === "showroom" ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -268,50 +266,27 @@ const Navbar = () => {
                           </h3>
                           <ul className="space-y-4">
                             <li>
-                              <Link
-                                href="/showroom/deportivos"
+                              <a
+                                href="https://hyundai.com.ec/"
                                 className={dropdownStyles.menuLink}
                                 onClick={() => setActiveDropdown("")}
+                                target="_blank"  // Opcional, para abrir en una nueva pestaña
+                                rel="noopener noreferrer"
                               >
                                 Hyundai
-                              </Link>
-                            </li>
+                              </a>
+                            </li> 
+
                             <li>
                               <Link
-                                href="/showroom/sedanes"
+                                href="/showroom"
                                 className={dropdownStyles.menuLink}
                                 onClick={() => setActiveDropdown("")}
                               >
-                                Great Wall
+                                Multimarca
                               </Link>
                             </li>
-                            <li>
-                              <Link
-                                href="/showroom/suv"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Haval
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href="/showroom/electricos"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Soueast
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href="/showroom/hibridos"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Shineray
-                              </Link>
-                            </li>
+                            
                             
                           </ul>
                         </div>
@@ -375,9 +350,8 @@ const Navbar = () => {
                 >
                   POSTVENTA
                   <svg
-                    className={`w-[18px] h-[18px] ml-1 transform transition-transform ${
-                      activeDropdown === "postventa" ? "rotate-180" : ""
-                    }`}
+                    className={`w-[18px] h-[18px] ml-1 transform transition-transform ${activeDropdown === "postventa" ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -527,7 +501,7 @@ const Navbar = () => {
             </nav>
 
             {/* Right Side Navigation */}
-            <div className="hidden lg:flex items-center pr-2 md:pr-4" style={{position: 'absolute', right: '0'}}>
+            <div className="hidden lg:flex items-center pr-2 md:pr-4" style={{ position: 'absolute', right: '0' }}>
               <Link
                 href="/politica-privacidad"
                 className="text-gray-300 hover:text-white transition-colors text-sm"
@@ -574,9 +548,8 @@ const Navbar = () => {
                   >
                     <span>SHOWROOM</span>
                     <svg
-                      className={`w-4 h-4 transform transition-transform ${
-                        activeDropdown === "mobile-showroom" ? "rotate-180" : ""
-                      }`}
+                      className={`w-4 h-4 transform transition-transform ${activeDropdown === "mobile-showroom" ? "rotate-180" : ""
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -664,11 +637,10 @@ const Navbar = () => {
                   >
                     <span>POSTVENTA</span>
                     <svg
-                      className={`w-4 h-4 transform transition-transform ${
-                        activeDropdown === "mobile-postventa"
+                      className={`w-4 h-4 transform transition-transform ${activeDropdown === "mobile-postventa"
                           ? "rotate-180"
                           : ""
-                      }`}
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

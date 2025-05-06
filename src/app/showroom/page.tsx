@@ -4,57 +4,93 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ShowroomFilter from '@/components/ShowroomFilter';
 import VehicleCard from '@/components/VehicleCard';
-import { vehicles } from '@/data/vehicles';
+import { Vehicle, getVehicles } from '@/services/vehicleService';
+
+// Definición de tipos para los filtros
+interface ActiveFilters {
+  brands: string[];
+  types: string[];
+  features: string[];
+}
 
 const ShowroomPage = () => {
-  const [filteredVehicles, setFilteredVehicles] = useState(vehicles);
-  const [activeFilters, setActiveFilters] = useState({
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     brands: [],
     types: [],
-    priceRange: [0, 100000],
     features: []
   });
   
-  const brands = [...new Set(vehicles.map(vehicle => vehicle.brand))];
-  const types = [...new Set(vehicles.map(vehicle => vehicle.type))];
-  
+  // Carga inicial de vehículos desde Firebase
   useEffect(() => {
-    // Filtrar vehículos cuando cambien los filtros
+    const loadVehicles = async () => {
+      setLoading(true);
+      try {
+        const data = await getVehicles();
+        setVehicles(data);
+        setFilteredVehicles(data);
+      } catch (error) {
+        console.error('Error al cargar vehículos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadVehicles();
+  }, []);
+  
+  // Obtener marcas y tipos únicos
+  const brands = vehicles.length > 0 
+    ? [...new Set(vehicles.map(vehicle => vehicle.marca))] 
+    : [];
+    
+  const types = vehicles.length > 0 
+    ? [...new Set(vehicles.map(vehicle => vehicle.tipoVehiculo))] 
+    : [];
+  
+  // Filtrar vehículos cuando cambien los filtros o la lista de vehículos
+  useEffect(() => {
+    if (vehicles.length === 0) return;
+    
     let result = [...vehicles];
     
     // Filtrar por marca
     if (activeFilters.brands.length > 0) {
       result = result.filter(vehicle => 
-        activeFilters.brands.includes(vehicle.brand)
+        activeFilters.brands.includes(vehicle.marca)
       );
     }
     
     // Filtrar por tipo
     if (activeFilters.types.length > 0) {
       result = result.filter(vehicle => 
-        activeFilters.types.includes(vehicle.type)
+        activeFilters.types.includes(vehicle.tipoVehiculo)
       );
     }
     
-    // Filtrar por rango de precio
-    result = result.filter(vehicle => 
-      vehicle.price >= activeFilters.priceRange[0] && 
-      vehicle.price <= activeFilters.priceRange[1]
-    );
-    
-    // Filtrar por características
+    // Filtrar por características (busca en las características de confort)
     if (activeFilters.features.length > 0) {
       result = result.filter(vehicle => 
-        activeFilters.features.every(feature => 
-          vehicle.features.includes(feature)
-        )
+        activeFilters.features.every(feature => {
+          // Buscar en principal y adicionales de confort
+          const hasInConfort = 
+            vehicle.caracteristicas.confort.principal.includes(feature) || 
+            vehicle.caracteristicas.confort.adicionales.some(item => item.includes(feature));
+          
+          // Si es necesario, extender la búsqueda a otras categorías
+          // const hasInSafety = vehicle.caracteristicas.seguridad...
+          
+          return hasInConfort;
+        })
       );
     }
     
     setFilteredVehicles(result);
-  }, [activeFilters]);
+  }, [activeFilters, vehicles]);
   
-  const updateFilters = (filterType, value) => {
+  const updateFilters = (filterType: keyof ActiveFilters, value: string[]) => {
     setActiveFilters(prev => ({
       ...prev,
       [filterType]: value
@@ -91,7 +127,11 @@ const ShowroomPage = () => {
           
           {/* Vehículos */}
           <div className="lg:w-3/4">
-            {filteredVehicles.length > 0 ? (
+            {loading ? (
+              <div className="flex justify-center items-center h-60">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#ffe600]"></div>
+              </div>
+            ) : filteredVehicles.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredVehicles.map((vehicle, index) => (
                   <motion.div
