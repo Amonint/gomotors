@@ -88,7 +88,7 @@ const Postventa = () => {
   }, []);
 
   return (
-    <section ref={container} className="relative bg-black text-white">
+    <section id="postventa" ref={container} className="relative bg-black text-white">
       {/* Intro Section - Simplified and Centered */}
       <div className="intro relative h-[50vh] flex items-center justify-center bg-black">
         <div className="text-center max-w-4xl mx-auto px-6">

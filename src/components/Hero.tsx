@@ -46,9 +46,8 @@ const Hero = () => {
         {images.map((image, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
           >
             <Image
               src={image}
@@ -63,7 +62,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
-     
+
 
       {/* Navbar */}
       <Navbar />
@@ -115,7 +114,9 @@ const Hero = () => {
             </div>
           </Link>
           <Link
-            href="/contacto"
+            href="https://wa.me/593999454243"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-white/10 hover:bg-[#ffe600]/20 backdrop-blur-sm border border-white/20 px-6 py-4 transition-all group"
           >
             <div className="flex justify-between items-center">
@@ -125,6 +126,7 @@ const Hero = () => {
               </span>
             </div>
           </Link>
+
         </div>
       </div>
     </div>

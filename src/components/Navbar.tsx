@@ -384,49 +384,56 @@ const Navbar = () => {
                           </h3>
                           <ul className="space-y-4">
                             <li>
-                              <Link
-                                href="/postventa/mantenimiento"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Mantenimiento Preventivo
-                              </Link>
+                              <h4 className="text-white font-medium mb-2">HYUNDAI</h4>
+                              <ul className="space-y-2 ml-4">
+                                <li>
+                                  <a
+                                    href="https://www.hyundai.com.ec/citas-taller"
+                                    className={dropdownStyles.menuLink}
+                                    onClick={() => setActiveDropdown("")}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Agenda tu cita
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href="https://www.hyundai.com.ec/campa%C3%B1as"
+                                    className={dropdownStyles.menuLink}
+                                    onClick={() => setActiveDropdown("")}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Campañas
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href="https://www.hyundai.com.ec/repuestos"
+                                    className={dropdownStyles.menuLink}
+                                    onClick={() => setActiveDropdown("")}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Consulta tus repuestos
+                                  </a>
+                                </li>
+                              </ul>
                             </li>
                             <li>
-                              <Link
-                                href="/postventa/reparacion"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Reparaciones
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href="/postventa/repuestos"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Repuestos Originales
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href="/postventa/garantia"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Campañas
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href="/postventa/asistencia"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                              >
-                                Asistencia en Carretera
-                              </Link>
+                              <h4 className="text-white font-medium mb-2">MULTIMARCA</h4>
+                              <ul className="space-y-2 ml-4">
+                                <li>
+                                  <Link
+                                    href="/citas-taller"
+                                    className={dropdownStyles.menuLink}
+                                    onClick={() => setActiveDropdown("")}
+                                  >
+                                    Agenda tu cita
+                                  </Link>
+                                </li>
+                              </ul>
                             </li>
                           </ul>
                         </div>
@@ -437,42 +444,7 @@ const Navbar = () => {
                             className="block group"
                             onClick={() => setActiveDropdown("")}
                           >
-                            <div
-                              className={`${dropdownStyles.card} w-1/2 mx-auto`}
-                            >
-                              <div className="absolute top-0 left-0 w-full h-full">
-                                <div className="absolute top-0 w-full h-16 bg-gradient-to-r from-[#ffe600]/10 to-[#ffd700]/10 rounded-t-lg"></div>
-                                <div className="absolute top-0 left-0 right-0 mx-auto w-4/5 h-28 bg-[#ffe600]/5 rounded-full blur-3xl -translate-y-1/2"></div>
-                              </div>
-                              <div className="pt-[12px] px-4 pb-4 relative z-10">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <svg
-                                    className="w-5 h-5 text-[#ffe600]"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                    ></path>
-                                  </svg>
-                                  <h3 className="text-base font-bold text-white">
-                                    Agenda tu Cita
-                                  </h3>
-                                </div>
-                                <p className="text-sm text-gray-400 mb-2">
-                                  Programa tu mantenimiento con nuestros
-                                  especialistas
-                                </p>
-                                <div className="text-xs text-[#ffe600] font-medium">
-                                  Agendar ahora →
-                                </div>
-                              </div>
-                            </div>
+                            
                           </Link>
                         </div>
                       </div>
@@ -484,7 +456,15 @@ const Navbar = () => {
               {/* Nosotros - Enlace simple */}
               <div>
                 <Link
-                  href="/nosotros"
+                  href="/#about-us"
+                  scroll={false}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById('about-us');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                   className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
                 >
                   NOSOTROS
@@ -492,7 +472,15 @@ const Navbar = () => {
               </div>
               <div>
                 <Link
-                  href="/mantenimientos-preventivos"
+                  href="/#postventa"
+                  scroll={false}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById('postventa');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                   className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
                 >
                   MANTENIMIENTO
@@ -566,7 +554,7 @@ const Navbar = () => {
                   {activeDropdown === "mobile-showroom" && (
                     <div className={dropdownStyles.mobileDropdown}>
                       <Link
-                        href="/showroom/deportivos"
+                        href="/showroom"
                         className="block text-gray-300 hover:text-white transition-colors py-2"
                         onClick={() => {
                           setActiveDropdown("");
@@ -656,56 +644,58 @@ const Navbar = () => {
                   </button>
                   {activeDropdown === "mobile-postventa" && (
                     <div className={dropdownStyles.mobileDropdown}>
-                      <Link
-                        href="/postventa/mantenimiento"
-                        className="block text-gray-300 hover:text-white transition-colors py-2"
-                        onClick={() => {
-                          setActiveDropdown("");
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Mantenimiento Preventivo
-                      </Link>
-                      <Link
-                        href="/postventa/reparacion"
-                        className="block text-gray-300 hover:text-white transition-colors py-2"
-                        onClick={() => {
-                          setActiveDropdown("");
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Reparaciones
-                      </Link>
-                      <Link
-                        href="/postventa/repuestos"
-                        className="block text-gray-300 hover:text-white transition-colors py-2"
-                        onClick={() => {
-                          setActiveDropdown("");
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Repuestos Originales
-                      </Link>
-                      <Link
-                        href="/postventa/garantia"
-                        className="block text-gray-300 hover:text-white transition-colors py-2"
-                        onClick={() => {
-                          setActiveDropdown("");
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Garantía Extendida
-                      </Link>
-                      <Link
-                        href="/postventa/asistencia"
-                        className="block text-gray-300 hover:text-white transition-colors py-2"
-                        onClick={() => {
-                          setActiveDropdown("");
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Asistencia en Carretera
-                      </Link>
+                      <div className="mb-4">
+                        <h4 className="text-white font-medium mb-2">Hyundai</h4>
+                        <a
+                          href="https://www.hyundai.com.ec/citas-taller"
+                          className="block text-gray-300 hover:text-white transition-colors py-2"
+                          onClick={() => {
+                            setActiveDropdown("");
+                            setIsMenuOpen(false);
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Agenda tu cita
+                        </a>
+                        <a
+                          href="https://www.hyundai.com.ec/campa%C3%B1as"
+                          className="block text-gray-300 hover:text-white transition-colors py-2"
+                          onClick={() => {
+                            setActiveDropdown("");
+                            setIsMenuOpen(false);
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Campañas
+                        </a>
+                        <a
+                          href="https://www.hyundai.com.ec/repuestos"
+                          className="block text-gray-300 hover:text-white transition-colors py-2"
+                          onClick={() => {
+                            setActiveDropdown("");
+                            setIsMenuOpen(false);
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Consulta tus repuestos
+                        </a>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-medium mb-2">Multimarca</h4>
+                        <Link
+                          href="/citas-taller"
+                          className="block text-gray-300 hover:text-white transition-colors py-2"
+                          onClick={() => {
+                            setActiveDropdown("");
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          Agenda tu cita
+                        </Link>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -713,11 +703,38 @@ const Navbar = () => {
                 {/* Mobile Nosotros */}
                 <div>
                   <Link
-                    href="/nosotros"
+                    href="/#about-us"
+                    scroll={false}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const element = document.getElementById('about-us');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setIsMenuOpen(false);
+                    }}
                     className={dropdownStyles.mobileButton}
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     <span>NOSOTROS</span>
+                  </Link>
+                </div>
+
+                {/* Mobile Mantenimiento */}
+                <div>
+                  <Link
+                    href="/#postventa"
+                    scroll={false}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const element = document.getElementById('postventa');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setIsMenuOpen(false);
+                    }}
+                    className={dropdownStyles.mobileButton}
+                  >
+                    <span>MANTENIMIENTO</span>
                   </Link>
                 </div>
 

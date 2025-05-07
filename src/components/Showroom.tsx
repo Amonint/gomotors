@@ -35,19 +35,19 @@ const categories = [
     title: "Pick Ups",
     desc: "Pick Ups versátiles y robustos para cualquier tarea.",
     img: "/images/NAZ_be17eae85be84cf5bc04927889924346.jpg",
-    link: "/showroom/deportivos"
+    link: "/showroom"
   },
   {
     title: "SUVs & Crossovers",
     desc: "Vehículos espaciosos con mayor altura y tracción mejorada.",
     img: "/images/about-us/about-us2.avif",
-    link: "/showroom/suv"
+    link: "/showroom"
   },
   {
     title: "Sedanes",
     desc: "Confort y elegancia para el uso diario con gran eficiencia.",
     img: "/images/about-us/Soueast-A5-Yiwu-2019.jpg",
-    link: "/showroom/sedanes"
+    link: "/showroom"
   }
 ];
 

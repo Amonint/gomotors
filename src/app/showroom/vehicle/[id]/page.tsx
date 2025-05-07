@@ -52,9 +52,9 @@ const VehicleDetailPage = () => {
   // Si está cargando, mostrar indicador
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-[70vh] w-full bg-[#0A0A0A] text-white">
+      <div className="flex items-center justify-center h-[70vh] w-full bg-white text-gray-800">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-5xl text-[#ffe600] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-5xl text-[#2563eb] mx-auto mb-4" />
           <p className="text-xl">Cargando información del vehículo...</p>
         </div>
       </div>
@@ -64,13 +64,13 @@ const VehicleDetailPage = () => {
   // Si no se encuentra el vehículo
   if (!vehicle) {
     return (
-      <div className="flex flex-col items-center justify-center h-[70vh] w-full bg-[#0A0A0A] text-white px-4">
+      <div className="flex flex-col items-center justify-center h-[70vh] w-full bg-white text-gray-800 px-4">
         <div className="text-center max-w-lg">
           <h2 className="text-3xl font-bold mb-4">Vehículo no encontrado</h2>
-          <p className="text-gray-300 mb-8">Lo sentimos, el vehículo que estás buscando no está disponible o ha sido eliminado.</p>
+          <p className="text-gray-600 mb-8">Lo sentimos, el vehículo que estás buscando no está disponible o ha sido eliminado.</p>
           <Link 
             href="/showroom" 
-            className="inline-flex items-center bg-[#ffe600] text-black py-3 px-6 rounded-full font-medium hover:bg-[#fff200] transition-colors"
+            className="inline-flex items-center bg-[#2563eb] text-white py-3 px-6 rounded-full font-medium hover:bg-[#1d4ed8] transition-colors"
           >
             <FaArrowLeft className="mr-2" /> Volver al Showroom
           </Link>
@@ -80,22 +80,22 @@ const VehicleDetailPage = () => {
   }
   
   return (
-    <div className="bg-[#0A0A0A] text-white min-h-screen pb-16">
+    <div className="bg-white text-gray-800 min-h-screen pb-16">
       {/* Encabezado con imagen principal */}
       <div className="relative h-[50vh] w-full">
         <Image
-          src={vehicle.imageUrls[0]} // Usar la primera imagen
+          src={vehicle.imageUrls && vehicle.imageUrls.length > 0 ? vehicle.imageUrls[0] : '/images/vehicle-placeholder.svg'}
           alt={`${vehicle.marca} ${vehicle.modelo}`}
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent"></div>
         
         <div className="absolute top-8 left-8">
           <Link 
             href="/showroom"
-            className="flex items-center text-white bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-black/70 transition-colors"
+            className="flex items-center text-gray-800 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/90 transition-colors"
           >
             <FaArrowLeft className="mr-2" /> Volver
           </Link>
@@ -103,21 +103,21 @@ const VehicleDetailPage = () => {
       </div>
       
       <div className="container mx-auto px-4 -mt-24 relative z-10">
-        <div className="bg-[#121212] rounded-xl p-6 md:p-8 shadow-2xl mb-8">
+        <div className="bg-white rounded-xl p-6 md:p-8 shadow-lg mb-8 border border-gray-100">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <div className="inline-block bg-[#ffe600] text-black px-3 py-1 rounded-full text-sm font-bold mb-3">
+              <div className="inline-block bg-[#2563eb] text-white px-3 py-1 rounded-full text-sm font-bold mb-3">
                 {vehicle.marca}
               </div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">{vehicle.modelo}</h1>
-              <div className="flex items-center text-gray-300">
-                <FaCalendarAlt className="mr-2 text-[#ffe600]" />
+              <div className="flex items-center text-gray-600">
+                <FaCalendarAlt className="mr-2 text-[#2563eb]" />
                 <span>{vehicle.año}</span>
                 <span className="mx-3">•</span>
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  vehicle.tipoVehiculo === 'SUV' ? 'bg-green-500/20 text-green-300' :
-                  vehicle.tipoVehiculo === 'Sedán' ? 'bg-blue-500/20 text-blue-300' :
-                  'bg-orange-500/20 text-orange-300'
+                  vehicle.tipoVehiculo === 'SUV' ? 'bg-green-100 text-green-700' :
+                  vehicle.tipoVehiculo === 'Sedán' ? 'bg-blue-100 text-blue-700' :
+                  'bg-orange-100 text-orange-700'
                 }`}>
                   {vehicle.tipoVehiculo}
                 </span>
@@ -126,22 +126,22 @@ const VehicleDetailPage = () => {
             
           </div>
           
-          <p className="text-gray-300 mb-8">
+          <p className="text-gray-600 mb-8">
             {vehicle.descripcion}
           </p>
           
           {/* Tabs para especificaciones, características y financiamiento */}
-          <div className="border-b border-gray-800 mb-6">
+          <div className="border-b border-gray-200 mb-6">
             <div className="flex space-x-4">
               <button 
                 onClick={() => setActiveTab('specs')}
-                className={`pb-3 font-medium ${activeTab === 'specs' ? 'text-[#ffe600] border-b-2 border-[#ffe600]' : 'text-gray-400 hover:text-white'}`}
+                className={`pb-3 font-medium ${activeTab === 'specs' ? 'text-[#2563eb] border-b-2 border-[#2563eb]' : 'text-gray-500 hover:text-gray-800'}`}
               >
                 Especificaciones
               </button>
               <button 
                 onClick={() => setActiveTab('features')}
-                className={`pb-3 font-medium ${activeTab === 'features' ? 'text-[#ffe600] border-b-2 border-[#ffe600]' : 'text-gray-400 hover:text-white'}`}
+                className={`pb-3 font-medium ${activeTab === 'features' ? 'text-[#2563eb] border-b-2 border-[#2563eb]' : 'text-gray-500 hover:text-gray-800'}`}
               >
                 Características
               </button>
@@ -159,69 +159,69 @@ const VehicleDetailPage = () => {
                 transition={{ duration: 0.3 }}
                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
               >
-                <div className="bg-[#1A1A1A] rounded-lg p-5">
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <FaGasPump className="text-[#ffe600] text-2xl mr-3" />
+                    <FaGasPump className="text-[#2563eb] text-2xl mr-3" />
                     <div>
-                      <h3 className="text-sm text-gray-400">Motor</h3>
-                      <p className="font-semibold">{vehicle.especificaciones.motor.principal}</p>
+                      <h3 className="text-sm text-gray-500">Motor</h3>
+                      <p className="font-semibold text-gray-800">{vehicle.especificaciones.motor.principal}</p>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-sm text-gray-300">
+                  <ul className="space-y-2 text-sm text-gray-600">
                     {vehicle.especificaciones.motor.adicionales.map((item, index) => (
                       <li key={index} className="flex items-center">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {item}
                       </li>
                     ))}
                   </ul>
                 </div>
                 
-                <div className="bg-[#1A1A1A] rounded-lg p-5">
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <FaCogs className="text-[#ffe600] text-2xl mr-3" />
+                    <FaCogs className="text-[#2563eb] text-2xl mr-3" />
                     <div>
-                      <h3 className="text-sm text-gray-400">Transmisión</h3>
-                      <p className="font-semibold">{vehicle.especificaciones.transmision.principal}</p>
+                      <h3 className="text-sm text-gray-500">Transmisión</h3>
+                      <p className="font-semibold text-gray-800">{vehicle.especificaciones.transmision.principal}</p>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-sm text-gray-300">
+                  <ul className="space-y-2 text-sm text-gray-600">
                     {vehicle.especificaciones.transmision.adicionales.map((item, index) => (
                       <li key={index} className="flex items-center">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {item}
                       </li>
                     ))}
                   </ul>
                 </div>
                 
-                <div className="bg-[#1A1A1A] rounded-lg p-5">
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <FaRoad className="text-[#ffe600] text-2xl mr-3" />
+                    <FaRoad className="text-[#2563eb] text-2xl mr-3" />
                     <div>
-                      <h3 className="text-sm text-gray-400">Consumo</h3>
-                      <p className="font-semibold">{vehicle.especificaciones.consumo.principal}</p>
+                      <h3 className="text-sm text-gray-500">Consumo</h3>
+                      <p className="font-semibold text-gray-800">{vehicle.especificaciones.consumo.principal}</p>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-sm text-gray-300">
+                  <ul className="space-y-2 text-sm text-gray-600">
                     {vehicle.especificaciones.consumo.adicionales.map((item, index) => (
                       <li key={index} className="flex items-center">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {item}
                       </li>
                     ))}
                   </ul>
                 </div>
                 
-                <div className="bg-[#1A1A1A] rounded-lg p-5">
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <FaTachometerAlt className="text-[#ffe600] text-2xl mr-3" />
+                    <FaTachometerAlt className="text-[#2563eb] text-2xl mr-3" />
                     <div>
-                      <h3 className="text-sm text-gray-400">Potencia</h3>
-                      <p className="font-semibold">{vehicle.especificaciones.potencia.principal}</p>
+                      <h3 className="text-sm text-gray-500">Potencia</h3>
+                      <p className="font-semibold text-gray-800">{vehicle.especificaciones.potencia.principal}</p>
                     </div>
                   </div>
-                  <ul className="space-y-2 text-sm text-gray-300">
+                  <ul className="space-y-2 text-sm text-gray-600">
                     {vehicle.especificaciones.potencia.adicionales.map((item, index) => (
                       <li key={index} className="flex items-center">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {item}
                       </li>
                     ))}
                   </ul>
@@ -237,62 +237,62 @@ const VehicleDetailPage = () => {
                 transition={{ duration: 0.3 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-[#1A1A1A] rounded-lg p-5">
+                  <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                     <h3 className="font-semibold mb-3 flex items-center">
-                      <FaShieldAlt className="text-[#ffe600] mr-2" /> Seguridad
+                      <FaShieldAlt className="text-[#2563eb] mr-2" /> Seguridad
                     </h3>
-                    <ul className="space-y-2 text-sm text-gray-300">
+                    <ul className="space-y-2 text-sm text-gray-600">
                       <li className="flex items-center font-medium">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {vehicle.caracteristicas.seguridad.principal}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {vehicle.caracteristicas.seguridad.principal}
                       </li>
                       {vehicle.caracteristicas.seguridad.adicionales.map((item, index) => (
                         <li key={index} className="flex items-center">
-                          <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                          <FaCheck className="text-[#2563eb] mr-2" /> {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                   
-                  <div className="bg-[#1A1A1A] rounded-lg p-5">
+                  <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                     <h3 className="font-semibold mb-3 flex items-center">
-                      <FaStar className="text-[#ffe600] mr-2" /> Confort
+                      <FaStar className="text-[#2563eb] mr-2" /> Confort
                     </h3>
-                    <ul className="space-y-2 text-sm text-gray-300">
+                    <ul className="space-y-2 text-sm text-gray-600">
                       <li className="flex items-center font-medium">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {vehicle.caracteristicas.confort.principal}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {vehicle.caracteristicas.confort.principal}
                       </li>
                       {vehicle.caracteristicas.confort.adicionales.map((item, index) => (
                         <li key={index} className="flex items-center">
-                          <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                          <FaCheck className="text-[#2563eb] mr-2" /> {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                   
-                  <div className="bg-[#1A1A1A] rounded-lg p-5">
+                  <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                     <h3 className="font-semibold mb-3 flex items-center">
-                      <FaStar className="text-[#ffe600] mr-2" /> Exterior
+                      <FaStar className="text-[#2563eb] mr-2" /> Exterior
                     </h3>
-                    <ul className="space-y-2 text-sm text-gray-300">
+                    <ul className="space-y-2 text-sm text-gray-600">
                       <li className="flex items-center font-medium">
-                        <FaCheck className="text-[#ffe600] mr-2" /> {vehicle.caracteristicas.exterior.principal}
+                        <FaCheck className="text-[#2563eb] mr-2" /> {vehicle.caracteristicas.exterior.principal}
                       </li>
                       {vehicle.caracteristicas.exterior.adicionales.map((item, index) => (
                         <li key={index} className="flex items-center">
-                          <FaCheck className="text-[#ffe600] mr-2" /> {item}
+                          <FaCheck className="text-[#2563eb] mr-2" /> {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
                 
-                <div className="bg-[#1A1A1A] rounded-lg p-5">
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
                   <h3 className="font-semibold mb-3">Colores disponibles</h3>
                   <div className="flex space-x-4 mt-3">
                     {vehicle.coloresDisponibles.map((color, index) => (
                       <div 
                         key={index}
-                        className="w-8 h-8 rounded-full border-2 border-gray-700 cursor-pointer hover:border-[#ffe600] transition-colors"
+                        className="w-8 h-8 rounded-full border-2 border-gray-200 cursor-pointer hover:border-[#2563eb] transition-colors"
                         style={{ backgroundColor: color }}
                       ></div>
                     ))}
@@ -307,7 +307,7 @@ const VehicleDetailPage = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
               href="/contact-us" 
-              className="bg-[#ffe600] text-black font-semibold py-3 px-6 rounded-full hover:bg-[#fff200] transition-colors flex-1 text-center"
+              className="bg-[#2563eb] text-white font-semibold py-3 px-6 rounded-full hover:bg-[#1d4ed8] transition-colors flex-1 text-center"
             >
               Contactar vendedor
             </Link>
@@ -322,24 +322,24 @@ const VehicleDetailPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedVehicles.map((relatedVehicle) => (
               <Link key={relatedVehicle.id} href={`/showroom/vehicle/${relatedVehicle.id}`}>
-                <div className="bg-[#121212] rounded-xl overflow-hidden hover:scale-[1.02] transition-transform group cursor-pointer">
+                <div className="bg-gray-50 rounded-xl overflow-hidden hover:scale-[1.02] transition-transform group cursor-pointer">
                   <div className="relative w-full h-40">
                     <Image
-                      src={relatedVehicle.imageUrls[0]}
+                      src={relatedVehicle.imageUrls && relatedVehicle.imageUrls.length > 0 ? relatedVehicle.imageUrls[0] : '/images/vehicle-placeholder.svg'}
                       alt={`${relatedVehicle.marca} ${relatedVehicle.modelo}`}
                       fill
                       className="object-cover transition-transform group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-transparent to-transparent"></div>
                   </div>
                   
                   <div className="p-4">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <span className="text-xs text-[#ffe600] font-medium">{relatedVehicle.marca}</span>
+                        <span className="text-xs text-[#2563eb] font-medium">{relatedVehicle.marca}</span>
                         <h3 className="font-bold">{relatedVehicle.modelo}</h3>
                       </div>
-                      <span className="text-gray-400">{relatedVehicle.año}</span>
+                      <span className="text-gray-500">{relatedVehicle.año}</span>
                     </div>
                     
                     {/* Aquí iría el precio si se agrega a la estructura */}

@@ -83,27 +83,27 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-[#111111] rounded-xl p-5 sticky top-24"
+      className="bg-white rounded-xl p-5 sticky top-24 shadow-lg"
     >
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold flex items-center">
-          <FaFilter className="mr-2 text-[#ffe600]" /> Filtros
+        <h2 className="text-xl font-semibold flex items-center text-gray-900">
+          <FaFilter className="mr-2 text-[#2563eb]" /> Filtros
         </h2>
         <button 
           onClick={resetFilters}
-          className="text-sm text-gray-400 hover:text-[#ffe600] transition-colors"
+          className="text-sm text-gray-600 hover:text-[#2563eb] transition-colors"
         >
           Reiniciar
         </button>
       </div>
 
       {/* Filtro por marca */}
-      <div className="mb-6 border-b border-gray-800 pb-5">
+      <div className="mb-6 border-b border-gray-200 pb-5">
         <button 
           onClick={() => toggleSection('brands')}
           className="flex items-center justify-between w-full text-left mb-3"
         >
-          <span className="font-medium">Marca</span>
+          <span className="font-medium text-gray-900">Marca</span>
           <FaChevronDown 
             className={`transition-transform ${expandedSections.brands ? 'rotate-180' : ''}`} 
           />
@@ -114,15 +114,15 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
             {brands.map(brand => (
               <label 
                 key={brand} 
-                className="flex items-center cursor-pointer hover:text-[#ffe600] transition-colors"
+                className="flex items-center cursor-pointer hover:text-[#2563eb] transition-colors"
                 onClick={() => toggleBrand(brand)}
               >
-                <div className={`w-5 h-5 rounded border ${activeFilters.brands.includes(brand) ? 'bg-[#ffe600] border-[#ffe600]' : 'border-gray-600'} mr-3 flex items-center justify-center`}>
+                <div className={`w-5 h-5 rounded border ${activeFilters.brands.includes(brand) ? 'bg-[#2563eb] border-[#2563eb]' : 'border-gray-300'} mr-3 flex items-center justify-center`}>
                   {activeFilters.brands.includes(brand) && (
-                    <FaCheck className="text-black text-xs" />
+                    <FaCheck className="text-white text-xs" />
                   )}
                 </div>
-                <span className="text-sm">{brand}</span>
+                <span className="text-sm text-gray-700">{brand}</span>
               </label>
             ))}
           </div>
@@ -130,12 +130,12 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
       </div>
 
       {/* Filtro por tipo */}
-      <div className="mb-6 border-b border-gray-800 pb-5">
+      <div className="mb-6 border-b border-gray-200 pb-5">
         <button 
           onClick={() => toggleSection('types')}
           className="flex items-center justify-between w-full text-left mb-3"
         >
-          <span className="font-medium">Tipo de vehículo</span>
+          <span className="font-medium text-gray-900">Tipo de vehículo</span>
           <FaChevronDown 
             className={`transition-transform ${expandedSections.types ? 'rotate-180' : ''}`} 
           />
@@ -146,15 +146,15 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
             {types.map(type => (
               <label 
                 key={type} 
-                className="flex items-center cursor-pointer hover:text-[#ffe600] transition-colors"
+                className="flex items-center cursor-pointer hover:text-[#2563eb] transition-colors"
                 onClick={() => toggleType(type)}
               >
-                <div className={`w-5 h-5 rounded border ${activeFilters.types.includes(type) ? 'bg-[#ffe600] border-[#ffe600]' : 'border-gray-600'} mr-3 flex items-center justify-center`}>
+                <div className={`w-5 h-5 rounded border ${activeFilters.types.includes(type) ? 'bg-[#2563eb] border-[#2563eb]' : 'border-gray-300'} mr-3 flex items-center justify-center`}>
                   {activeFilters.types.includes(type) && (
-                    <FaCheck className="text-black text-xs" />
+                    <FaCheck className="text-white text-xs" />
                   )}
                 </div>
-                <span className="text-sm">{type}</span>
+                <span className="text-sm text-gray-700">{type}</span>
               </label>
             ))}
           </div>
@@ -167,7 +167,7 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
           onClick={() => toggleSection('features')}
           className="flex items-center justify-between w-full text-left mb-3"
         >
-          <span className="font-medium">Características</span>
+          <span className="font-medium text-gray-900">Características</span>
           <FaChevronDown 
             className={`transition-transform ${expandedSections.features ? 'rotate-180' : ''}`} 
           />
@@ -178,15 +178,15 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
             {availableFeatures.map(feature => (
               <label 
                 key={feature} 
-                className="flex items-center cursor-pointer hover:text-[#ffe600] transition-colors"
+                className="flex items-center cursor-pointer hover:text-[#2563eb] transition-colors"
                 onClick={() => toggleFeature(feature)}
               >
-                <div className={`w-5 h-5 rounded border ${activeFilters.features.includes(feature) ? 'bg-[#ffe600] border-[#ffe600]' : 'border-gray-600'} mr-3 flex items-center justify-center`}>
+                <div className={`w-5 h-5 rounded border ${activeFilters.features.includes(feature) ? 'bg-[#2563eb] border-[#2563eb]' : 'border-gray-300'} mr-3 flex items-center justify-center`}>
                   {activeFilters.features.includes(feature) && (
-                    <FaCheck className="text-black text-xs" />
+                    <FaCheck className="text-white text-xs" />
                   )}
                 </div>
-                <span className="text-sm">{feature}</span>
+                <span className="text-sm text-gray-700">{feature}</span>
               </label>
             ))}
           </div>

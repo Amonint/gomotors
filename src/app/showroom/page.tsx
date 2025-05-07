@@ -98,7 +98,7 @@ const ShowroomPage = () => {
   };
   
   return (
-    <section className="w-full bg-[#0A0A0A] min-h-screen text-white py-16">
+    <section className="w-full bg-white min-h-screen text-gray-800 py-16">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -107,9 +107,9 @@ const ShowroomPage = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Nuestro <span className="text-[#ffe600]">Showroom</span>
+            Nuestro <span className="text-[#2563eb]">Showroom</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Explora nuestra colección de vehículos premium y encuentra el que mejor se adapte a tus necesidades.
           </p>
         </motion.div>
@@ -129,7 +129,7 @@ const ShowroomPage = () => {
           <div className="lg:w-3/4">
             {loading ? (
               <div className="flex justify-center items-center h-60">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#ffe600]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#2563eb]"></div>
               </div>
             ) : filteredVehicles.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -145,14 +145,14 @@ const ShowroomPage = () => {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 px-4 bg-[#111111] rounded-xl">
+              <div className="flex flex-col items-center justify-center py-12 px-4 bg-gray-50 rounded-xl">
                 <img 
                   src="/images/empty-results.svg" 
                   alt="No se encontraron vehículos" 
                   className="w-40 h-40 mb-6 opacity-70"
                 />
                 <h3 className="text-2xl font-semibold mb-2">No se encontraron vehículos</h3>
-                <p className="text-gray-400 text-center max-w-md">
+                <p className="text-gray-600 text-center max-w-md">
                   No hay vehículos que coincidan con los filtros seleccionados. Intenta modificar tus criterios de búsqueda.
                 </p>
               </div>

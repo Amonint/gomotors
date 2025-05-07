@@ -38,7 +38,7 @@ const AboutUs = () => {
   };
 
   return (
-    <section className="h-screen bg-white text-black overflow-hidden font-tt-hoves">
+    <section id="about-us" className="h-screen bg-white text-black overflow-hidden font-tt-hoves">
       <div className="h-full flex flex-col lg:flex-row">
         {/* Grid Gallery con imágenes de diferentes proporciones */}
         <div className="w-full lg:w-1/2 h-1/2 lg:h-full relative overflow-hidden">
