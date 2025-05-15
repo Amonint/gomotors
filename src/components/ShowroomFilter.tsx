@@ -21,27 +21,21 @@ const availableFeatures = [
 // Interfaz para los filtros activos
 interface ActiveFilters {
   brands: string[];
-  types: string[];
-  features: string[];
 }
 
 interface ShowroomFilterProps {
   brands: string[];
-  types: string[];
   activeFilters: ActiveFilters;
   updateFilters: (filterType: keyof ActiveFilters, value: string[]) => void;
 }
 
 const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
   brands,
-  types,
   activeFilters,
   updateFilters
 }) => {
   const [expandedSections, setExpandedSections] = useState({
-    brands: true,
-    types: true,
-    features: true
+    brands: true
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -58,24 +52,8 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
     updateFilters('brands', newBrands);
   };
 
-  const toggleType = (type: string) => {
-    const newTypes = activeFilters.types.includes(type)
-      ? activeFilters.types.filter(t => t !== type)
-      : [...activeFilters.types, type];
-    updateFilters('types', newTypes);
-  };
-
-  const toggleFeature = (feature: string) => {
-    const newFeatures = activeFilters.features.includes(feature)
-      ? activeFilters.features.filter(f => f !== feature)
-      : [...activeFilters.features, feature];
-    updateFilters('features', newFeatures);
-  };
-
   const resetFilters = () => {
     updateFilters('brands', []);
-    updateFilters('types', []);
-    updateFilters('features', []);
   };
 
   return (
@@ -83,115 +61,68 @@ const ShowroomFilter: React.FC<ShowroomFilterProps> = ({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-xl p-5 sticky top-24 shadow-lg"
+      className="bg-gray-900 rounded-xl p-6 sticky top-24 shadow-xl border border-gray-800"
     >
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold flex items-center text-gray-900">
-          <FaFilter className="mr-2 text-[#2563eb]" /> Filtros
+        <h2 className="text-xl font-semibold flex items-center text-white">
+          <FaFilter className="mr-2 text-gray-400" /> Filtros
         </h2>
         <button 
           onClick={resetFilters}
-          className="text-sm text-gray-600 hover:text-[#2563eb] transition-colors"
+          className="text-sm text-gray-400 hover:text-white transition-colors px-3 py-1 rounded-lg hover:bg-gray-800"
         >
           Reiniciar
         </button>
       </div>
 
       {/* Filtro por marca */}
-      <div className="mb-6 border-b border-gray-200 pb-5">
+      <div className="mb-3">
         <button 
           onClick={() => toggleSection('brands')}
           className="flex items-center justify-between w-full text-left mb-3"
         >
-          <span className="font-medium text-gray-900">Marca</span>
+          <span className="font-medium text-white">Marca</span>
           <FaChevronDown 
-            className={`transition-transform ${expandedSections.brands ? 'rotate-180' : ''}`} 
+            className={`transition-transform text-gray-400 ${expandedSections.brands ? 'rotate-180' : ''}`} 
           />
         </button>
         
         {expandedSections.brands && (
-          <div className="space-y-2 mt-3">
+          <div className="space-y-2 mt-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
             {brands.map(brand => (
               <label 
                 key={brand} 
-                className="flex items-center cursor-pointer hover:text-[#2563eb] transition-colors"
+                className="flex items-center cursor-pointer hover:text-white transition-colors group"
                 onClick={() => toggleBrand(brand)}
               >
-                <div className={`w-5 h-5 rounded border ${activeFilters.brands.includes(brand) ? 'bg-[#2563eb] border-[#2563eb]' : 'border-gray-300'} mr-3 flex items-center justify-center`}>
+                <div className={`w-5 h-5 rounded border ${activeFilters.brands.includes(brand) ? 'bg-gray-700 border-gray-500' : 'border-gray-600'} mr-3 flex items-center justify-center group-hover:border-gray-400`}>
                   {activeFilters.brands.includes(brand) && (
                     <FaCheck className="text-white text-xs" />
                   )}
                 </div>
-                <span className="text-sm text-gray-700">{brand}</span>
+                <span className="text-sm text-gray-300 group-hover:text-white">{brand}</span>
               </label>
             ))}
           </div>
         )}
       </div>
 
-      {/* Filtro por tipo */}
-      <div className="mb-6 border-b border-gray-200 pb-5">
-        <button 
-          onClick={() => toggleSection('types')}
-          className="flex items-center justify-between w-full text-left mb-3"
-        >
-          <span className="font-medium text-gray-900">Tipo de vehículo</span>
-          <FaChevronDown 
-            className={`transition-transform ${expandedSections.types ? 'rotate-180' : ''}`} 
-          />
-        </button>
-        
-        {expandedSections.types && (
-          <div className="space-y-2 mt-3">
-            {types.map(type => (
-              <label 
-                key={type} 
-                className="flex items-center cursor-pointer hover:text-[#2563eb] transition-colors"
-                onClick={() => toggleType(type)}
-              >
-                <div className={`w-5 h-5 rounded border ${activeFilters.types.includes(type) ? 'bg-[#2563eb] border-[#2563eb]' : 'border-gray-300'} mr-3 flex items-center justify-center`}>
-                  {activeFilters.types.includes(type) && (
-                    <FaCheck className="text-white text-xs" />
-                  )}
-                </div>
-                <span className="text-sm text-gray-700">{type}</span>
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Filtro por características */}
-      <div className="mb-3">
-        <button 
-          onClick={() => toggleSection('features')}
-          className="flex items-center justify-between w-full text-left mb-3"
-        >
-          <span className="font-medium text-gray-900">Características</span>
-          <FaChevronDown 
-            className={`transition-transform ${expandedSections.features ? 'rotate-180' : ''}`} 
-          />
-        </button>
-        
-        {expandedSections.features && (
-          <div className="space-y-2 mt-3">
-            {availableFeatures.map(feature => (
-              <label 
-                key={feature} 
-                className="flex items-center cursor-pointer hover:text-[#2563eb] transition-colors"
-                onClick={() => toggleFeature(feature)}
-              >
-                <div className={`w-5 h-5 rounded border ${activeFilters.features.includes(feature) ? 'bg-[#2563eb] border-[#2563eb]' : 'border-gray-300'} mr-3 flex items-center justify-center`}>
-                  {activeFilters.features.includes(feature) && (
-                    <FaCheck className="text-white text-xs" />
-                  )}
-                </div>
-                <span className="text-sm text-gray-700">{feature}</span>
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #1f2937;
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #4b5563;
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #6b7280;
+        }
+      `}</style>
     </motion.div>
   );
 };
