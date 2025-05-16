@@ -10,8 +10,11 @@ const brandLogos = [
   { name: "Haval", img: "/images/brands/haval-logo-freelogovectors.net_.png" },
   { name: "Great Wall", img: "/images/brands/Great-Wall-Logo.png" },
   { name: "Hyundai", img: "/images/brands/logo-Hyundai.png" },
-  { name: "Soueast", img: "/images/brands/Logo-Soueast.png" },
+  { name: "Soueast", img: "/images/brands/Soueast_logo.png" },
   { name: "SWM", img: "/images/brands/SWM_red_RGB.png" },
+  { name: "DFSK", img: "/images/brands/DFSK.png" },
+  { name: "GWM", img: "/images/brands/gwm-Logo.png" },
+  { name: "Kyc", img: "/images/brands/kyc-Logo.png" },
   
 ];
 
@@ -190,7 +193,7 @@ const Showroom = () => {
   return (
     <section className="w-full bg-[#0A0A0A] text-white py-16 font-tt-hoves">
       {/* Brand Logo Carousel */}
-      <div className="py-10 overflow-hidden bg-gradient-to-r from-[#0A0A0A] via-[#0f0f0f] to-[#0A0A0A] mb-14 ">
+      <div className="py-10 overflow-hidden bg-gradient-to-r from-[#0000F] via-[#0f0f0f] to-[#0A0A0A] mb-14 ">
         
         
         <div className="relative overflow-hidden max-w-[100%]">
