@@ -1,8 +1,9 @@
 import Hero from '@/components/Hero';
 import AboutUs from '@/components/AboutUs';
 import Showroom from '@/components/Showroom';
-import Postventa from '@/components/Postventa';
 import { Footer } from '@/components/Footer';
+import ReferenteGo from '@/components/ReferenteGo';
+import PostventaGo from '@/components/PostventaGO';
 
 export default function Home() {
   return (
@@ -10,8 +11,10 @@ export default function Home() {
       <Hero />
       <AboutUs />
       <Showroom />
-      <Postventa />
+      <ReferenteGo></ReferenteGo>
+      <PostventaGo></PostventaGo>
       <Footer />
+      
     </main>
   );
 }
