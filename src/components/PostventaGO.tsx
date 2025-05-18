@@ -314,22 +314,6 @@ const PostventaGO = () => {
               variants={fadeInUp}
               className="mt-auto"
             >
-              <div className="bg-white/5 p-8 border-t border-l border-white/10 rounded-sm">
-                <p className="text-lg text-white/80 font-light italic mb-6">
-                  "Porque la verdadera confianza comienza después de la compra."
-                </p>
-                <div className="w-12 h-[1px] bg-white/30 my-6"></div>
-                <p className="text-base text-white/70 font-light mb-4">
-                  Tu tranquilidad es nuestra prioridad. Aquí no solo damos servicio, creamos relaciones de largo plazo.
-                </p>
-                
-                {/* Visual accent element */}
-                <div className="flex space-x-3 pt-4">
-                  <div className="w-1.5 h-1.5 bg-white/50 rounded-full"></div>
-                  <div className="w-1.5 h-1.5 bg-white/30 rounded-full"></div>
-                  <div className="w-1.5 h-1.5 bg-white/10 rounded-full"></div>
-                </div>
-              </div>
             </motion.div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { FaLinkedin, FaInstagram, FaPhoneAlt, FaMapMarkerAlt, FaEnvelope, FaTools } from "react-icons/fa";
+
+import { FaLinkedin, FaInstagram, FaPhoneAlt, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 
 // Add proper Google Maps type declarations at the top
@@ -52,7 +52,7 @@ export const Footer = () => {
             streetViewControl: false,
             rotateControl: false,
             fullscreenControl: true,
-            fullscreenControlOptions: {
+ fullscreenControlOptions: {
               position: window.google.maps.ControlPosition.RIGHT_BOTTOM
             },
             styles: [
@@ -119,226 +119,121 @@ export const Footer = () => {
     loadGoogleMaps();
   }, []);
 
-  // Primary navigation section
-  const Navigation = () => (
-    <div className="bg-[#0A0A0A] py-16">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-12 gap-x-6">
-          <div className="col-span-12 md:col-span-3 mb-12 md:mb-0">
-            <Image 
-              src="/images/logo.png" 
-              alt="GoMotors Logo" 
-              width={130} 
-              height={55} 
-              className="brightness-0 invert"
-            />
-          </div>
-
-          <div className="col-span-6 md:col-span-3">
-            <h3 className="font-normal text-xs uppercase tracking-widest text-white/60 mb-6">Navegación</h3>
-            <ul className="space-y-4">
-              <li><Link href="/about-us" className="text-white/80 hover:text-white text-sm tracking-wide">Sobre Nosotros</Link></li>
-              <li><Link href="/showroom" className="text-white/80 hover:text-white text-sm tracking-wide">Showroom</Link></li>
-              <li><Link href="/contact-us" className="text-white/80 hover:text-white text-sm tracking-wide">Contáctanos</Link></li>
-            </ul>
-          </div>
-
-          <div className="col-span-6 md:col-span-2">
-            <h3 className="font-normal text-xs uppercase tracking-widest text-white/60 mb-6">Vehículos</h3>
-            <ul className="space-y-4">
-              <li><Link href="/showroom/suv" className="text-white/80 hover:text-white text-sm tracking-wide">SUVs & Crossovers</Link></li>
-              <li><Link href="/showroom/sedanes" className="text-white/80 hover:text-white text-sm tracking-wide">Sedanes</Link></li>
-              <li><Link href="/showroom/deportivos" className="text-white/80 hover:text-white text-sm tracking-wide">Pick Ups</Link></li>
-            </ul>
-          </div>
-
-          <div className="col-span-6 md:col-span-2 mt-12 md:mt-0">
-            <h3 className="font-normal text-xs uppercase tracking-widest text-white/60 mb-6">Servicios</h3>
-            <ul className="space-y-4">
-              <li><Link href="/financing" className="text-white/80 hover:text-white text-sm tracking-wide">Financiamiento</Link></li>
-              <li><Link href="/maintenance" className="text-white/80 hover:text-white text-sm tracking-wide">Mantenimiento</Link></li>
-              <li><Link href="/insurance" className="text-white/80 hover:text-white text-sm tracking-wide">Seguros</Link></li>
-            </ul>
-          </div>
-
-          <div className="col-span-6 md:col-span-2 mt-12 md:mt-0">
-            <h3 className="font-normal text-xs uppercase tracking-widest text-white/60 mb-6">Marcas</h3>
-            <ul className="space-y-4">
-              <li><Link href="/brands/hyundai" className="text-white/80 hover:text-white text-sm tracking-wide">Hyundai</Link></li>
-              <li><Link href="/brands/great-wall" className="text-white/80 hover:text-white text-sm tracking-wide">Great Wall</Link></li>
-              <li><Link href="/brands/swm" className="text-white/80 hover:text-white text-sm tracking-wide">SWM</Link></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+ 
 
   // Editorial-style contact section with maps
-  const LocationsSection = () => (
-    <section className="bg-white py-20 md:py-32" style={{ fontFamily: 'Inter, Helvetica, sans-serif' }}>
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-12 gap-x-8 gap-y-16">
-          {/* Section heading with editorial style */}
-          <div className="col-span-12 mb-1">
-            <h2 className="text-4xl md:text-6xl font-light tracking-tight pb-6 mb-0 border-b border-neutral-200 text-neutral-700">
-              Sucursales y Contacto
-            </h2>
-          </div>
-
-          {/* Hyundai Column */}
-          <div className="col-span-12 md:col-span-6 pr-0 md:pr-12 lg:pr-20">
-            <div className="mb-20">
-              <h3 className="text-xs font-medium tracking-widest uppercase text-neutral-500 mb-10">Hyundai</h3>
-              
-              {/* Map container */}
-              <div className="mb-14">
-                <div ref={hyundaiMapRef} className="w-full aspect-[4/3] bg-neutral-100"></div>
-                <p className="text-xs text-neutral-500 mt-2">2QCW+V78, Loja (GoMotors-HYUNDAI)</p>
-              </div>
-
-              {/* VENTAS HYUNDAI */}
-              <div className="mb-14">
-                <h4 className="text-xl font-normal mb-5 text-neutral-700">VENTAS HYUNDAI</h4>
-                <div className="grid grid-cols-12 gap-x-4">
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaMapMarkerAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm leading-relaxed mb-3 text-neutral-600">
-                    Av. 8 de Diciembre e Isidro Ayora, frente al Terminal Terrestre
-                  </div>
-                  
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaPhoneAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm mb-3 text-neutral-600">
-                    099-945-4243
-                  </div>
-                  
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaEnvelope className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm text-neutral-600">
-                    recepcionloja@gomotors.com.ec
-                  </div>
-                </div>
-              </div>
-
-              {/* POSVENTA HYUNDAI */}
-              <div>
-                <h4 className="text-xl font-normal mb-5 text-neutral-700">POSVENTA HYUNDAI</h4>
-                <div className="grid grid-cols-12 gap-x-4">
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaMapMarkerAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm leading-relaxed text-neutral-600">
-                    Av. 8 de Diciembre e Isidro Ayora, entrada por calle Machala
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Multimarca Column */}
-          <div className="col-span-12 md:col-span-6 pl-0 md:pl-8 lg:pl-12">
-            <div className="mb-20">
-              <h3 className="text-xs font-medium tracking-widest uppercase text-neutral-500 mb-10">Multimarca</h3>
-              
-              {/* Map container */}
-              <div className="mb-14">
-                <div ref={multimarcaMapRef} className="w-full aspect-[4/3] bg-neutral-100"></div>
-                <p className="text-xs text-neutral-500 mt-2">2QCF+W83, Loja (GoMotors-Multimarca)</p>
-              </div>
-
-              {/* VENTAS MULTIMARCAS */}
-              <div className="mb-14">
-                <h4 className="text-xl font-normal mb-5 text-neutral-700">VENTAS MULTIMARCAS</h4>
-                <div className="grid grid-cols-12 gap-x-4">
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaMapMarkerAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm leading-relaxed mb-3 text-neutral-600">
-                    Sector Belén Km 2 Vía a Catamayo
-                  </div>
-                  
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaPhoneAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm mb-3 text-neutral-600">
-                    099-945-4243
-                  </div>
-                  
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaEnvelope className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm text-neutral-600">
-                    recepcionloja@gomotors.com.ec
-                  </div>
-                </div>
-              </div>
-
-              {/* POSVENTA MULTIMARCAS */}
-              <div>
-                <h4 className="text-xl font-normal mb-5 text-neutral-700">POSVENTA MULTIMARCAS</h4>
-                <div className="grid grid-cols-12 gap-x-4">
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaMapMarkerAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm leading-relaxed mb-3 text-neutral-600">
-                    Sector Belén Km 2 Vía a Catamayo
-                  </div>
-                  
-                  <div className="col-span-1 flex justify-end pt-1">
-                    <FaPhoneAlt className="text-neutral-400" />
-                  </div>
-                  <div className="col-span-11 text-sm text-neutral-600">
-                    099-945-4243
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          
-        </div>
-      </div>
-    </section>
-  );
-
-  // Legal and social section
-  const LegalSection = () => (
-    <div className="bg-neutral-100 py-10">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-12 gap-x-6">
-          <div className="col-span-12 md:col-span-4 mb-6 md:mb-0">
-            <p className="text-xs text-neutral-500">&copy; 2024 GoMotors. Todos los derechos reservados.</p>
-          </div>
-          
-          <div className="col-span-12 md:col-span-4 mb-6 md:mb-0 md:text-center">
-            <div className="flex space-x-6 md:justify-center">
-              <Link href="/terms" className="text-xs text-neutral-500 hover:text-neutral-800">Términos y Condiciones</Link>
-              <Link href="/privacy" className="text-xs text-neutral-500 hover:text-neutral-800">Política de Privacidad</Link>
-            </div>
-          </div>
-          
-          <div className="col-span-12 md:col-span-4 flex justify-start md:justify-end space-x-4">
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <FaLinkedin className="w-4 h-4 text-neutral-400 hover:text-neutral-800" />
-            </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <FaInstagram className="w-4 h-4 text-neutral-400 hover:text-neutral-800" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <footer className="antialiased">
-      <Navigation />
-      <LocationsSection />
-      <LegalSection />
+    <footer className="bg-neutral-100 text-neutral-800 pt-16 pb-8 antialiased" style={{ fontFamily: 'Montserrat-Arabic, sans-serif' }}>
+      <div className="container mx-auto px-4 md:px-8 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          {/* Column 1: Logo and Description */}
+          <div className="col-span-1">
+            <Link href="/" className="flex items-center mb-6">
+              <span className="text-2xl font-medium text-neutral-800">GoMotors</span>
+            </Link>
+            <p className="text-sm leading-relaxed text-neutral-700 mb-6">
+              Concesionario y taller multimarca en Loja, Ecuador. Ofrecemos vehículos nuevos y usados, repuestos originales y servicio técnico especializado.
+            </p>
+            <div className="flex space-x-4">
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <FaLinkedin className="w-5 h-5 text-neutral-600 hover:text-neutral-900 transition-colors duration-200" />
+              </a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <FaInstagram className="w-5 h-5 text-neutral-600 hover:text-neutral-900 transition-colors duration-200" />
+              </a>
+            </div>
+          </div>
+
+          {/* Column 2: Contact Information */}
+          <div className="col-span-1">
+            <h4 className="text-base font-semibold text-neutral-900 mb-6">Contáctanos</h4>
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <FaPhoneAlt className="w-4 h-4 text-neutral-600 mr-3 mt-1" />
+                <p className="text-sm text-neutral-700">099-945-4243</p>
+              </div>
+              <div className="flex items-start">
+                <FaEnvelope className="w-4 h-4 text-neutral-600 mr-3 mt-1" />
+                <p className="text-sm text-neutral-700">recepcionloja@gomotors.com.ec</p>
+              </div>
+              <div className="flex items-start">
+                <FaMapMarkerAlt className="w-4 h-4 text-neutral-600 mr-3 mt-1" />
+                <p className="text-sm text-neutral-700">
+                  Av. 8 de Diciembre e Isidro Ayora, frente al Terminal Terrestre, Loja.
+                </p>
+              </div>
+              <div className="flex items-start">
+                <FaMapMarkerAlt className="w-4 h-4 text-neutral-600 mr-3 mt-1" />
+                <p className="text-sm text-neutral-700">
+                  Sector Belén Km 2 Vía a Catamayo, Loja.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 3: Quick Links */}
+          <div className="col-span-1">
+            <h4 className="text-base font-semibold text-neutral-900 mb-6">Explora</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/" className="text-sm text-neutral-700 hover:text-neutral-900 transition-colors duration-200">
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link href="/showroom" className="text-sm text-neutral-700 hover:text-neutral-900 transition-colors duration-200">
+                  Showroom
+                </Link>
+              </li>
+              <li>
+                <Link href="/postventa" className="text-sm text-neutral-700 hover:text-neutral-900 transition-colors duration-200">
+                  Posventa
+                </Link>
+              </li>
+              <li>
+                <Link href="/referente-go" className="text-sm text-neutral-700 hover:text-neutral-900 transition-colors duration-200">
+                  Referente Go
+                </Link>
+              </li>
+              <li>
+                <Link href="/about-us" className="text-sm text-neutral-700 hover:text-neutral-900 transition-colors duration-200">
+                  Nosotros
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Maps */}
+          <div className="col-span-1">
+            <h4 className="text-base font-semibold text-neutral-900 mb-6">Ubicaciones</h4>
+            <div className="space-y-6">
+              {/* Hyundai Map Placeholder */}
+              <div ref={hyundaiMapRef} className="w-full h-32 bg-neutral-200 rounded-md overflow-hidden shadow-inner">
+                {/* This div will be replaced by the Google Map */}
+              </div>
+              {/* Multimarca Map Placeholder */}
+              <div ref={multimarcaMapRef} className="w-full h-32 bg-neutral-200 rounded-md overflow-hidden shadow-inner">
+                {/* This div will be replaced by the Google Map */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Copyright and Legal Links */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 mt-12 border-t border-neutral-300 pt-8">
+        <div className="flex flex-col md:flex-row justify-between items-center text-sm text-neutral-700">
+          <p className="mb-4 md:mb-0">&copy; 2024 GoMotors. Todos los derechos reservados.</p>
+          <div className="flex space-x-6">
+            <Link href="/terms" className="hover:text-neutral-900 transition-colors duration-200">
+              Términos y Condiciones
+            </Link>
+            <Link href="/privacy" className="hover:text-neutral-900 transition-colors duration-200">
+              Política de Privacidad
+            </Link>
+          </div>
+        </div>
+      </div>
     </footer>
   );
 };
