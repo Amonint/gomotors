@@ -11,11 +11,11 @@ interface VehicleProps {
 }
 
 const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
-  const formatCurrency = (amount: number) => {
-    return `$${amount.toLocaleString()}`;
+  const formatCurrency = (amount: string | undefined) => {
+    if (!amount) return '$0';
+    return `$${Number(amount).toLocaleString()}`;
   };
-  
-  // Determinar clase de tipo de vehículo para el badge
+
   const getTypeClass = (type: string) => {
     switch(type.toLowerCase()) {
       case 'sedán':
@@ -29,74 +29,70 @@ const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
     }
   };
 
-  // Validar que existan imágenes y proporcionar una imagen por defecto
-  const imageUrl = vehicle.imageUrls && vehicle.imageUrls.length > 0 
-    ? vehicle.imageUrls[0] 
-    : '/images/vehicle-placeholder.svg';
+  const imageUrl = (vehicle.imagenes && vehicle.imagenes.length > 0) 
+    ? vehicle.imagenes[0] 
+    : (vehicle.imageUrls && vehicle.imageUrls.length > 0)
+      ? vehicle.imageUrls[0]
+      : '/images/vehicle-placeholder.svg';
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden transition-transform hover:scale-[1.02] duration-300 group shadow-lg hover:shadow-xl">
+    <div className="bg-black text-white rounded-lg overflow-hidden transition-all hover:scale-[1.02] duration-300 group shadow-sm hover:shadow-white/10 border border-neutral-700">
       {/* Imagen del vehículo */}
-      <div className="relative w-full h-48 overflow-hidden">
+      <div className="relative w-full h-48 sm:h-56 overflow-hidden">
         <Image
           src={imageUrl}
           alt={`${vehicle.marca} ${vehicle.modelo}`}
           fill
           className="object-cover transition-transform group-hover:scale-105 duration-500"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
           priority={false}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
         
         {/* Badge de tipo */}
-        <div className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium ${
-          vehicle.tipoVehiculo === 'SUV' ? 'bg-green-100 text-green-800' :
-          vehicle.tipoVehiculo === 'Sedán' ? 'bg-blue-100 text-blue-800' :
-          'bg-orange-100 text-orange-800'
-        }`}>
+        <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-900 backdrop-blur-sm">
           {vehicle.tipoVehiculo}
         </div>
         
         {/* Badge de marca */}
-        <div className="absolute top-3 left-3 bg-[#2563eb] text-white px-3 py-1 rounded-full text-xs font-bold">
+        <div className="absolute top-3 left-3 bg-black/80 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
           {vehicle.marca}
         </div>
       </div>
       
       {/* Contenido */}
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-bold text-gray-900">{vehicle.modelo}</h3>
-          <span className="text-[#2563eb] font-semibold">{vehicle.año}</span>
+          <h3 className="text-base sm:text-lg font-bold text-white">{vehicle.modelo}</h3>
+          <span className="text-neutral-400 font-semibold">{vehicle.año}</span>
         </div>
         
-        <p className="text-gray-600 text-sm line-clamp-2 mb-4">{vehicle.descripcion}</p>
+        <p className="text-neutral-400 text-sm line-clamp-2 mb-4">{vehicle.descripcion}</p>
         
         {/* Especificaciones */}
         <div className="grid grid-cols-2 gap-3 mb-5">
           <div className="flex items-center">
-            <FaGasPump className="text-[#2563eb] mr-2" />
-            <span className="text-xs text-gray-600">{vehicle.especificaciones.motor.principal}</span>
+            <FaGasPump className="text-neutral-500 mr-2" />
+            <span className="text-xs text-neutral-400">{vehicle.especificaciones.motor.principal}</span>
           </div>
           <div className="flex items-center">
-            <FaCogs className="text-[#2563eb] mr-2" />
-            <span className="text-xs text-gray-600">{vehicle.especificaciones.transmision.principal}</span>
+            <FaCogs className="text-neutral-500 mr-2" />
+            <span className="text-xs text-neutral-400">{vehicle.especificaciones.transmision.principal}</span>
           </div>
           <div className="flex items-center">
-            <FaRoad className="text-[#2563eb] mr-2" />
-            <span className="text-xs text-gray-600">{vehicle.especificaciones.consumo.principal}</span>
+            <FaRoad className="text-neutral-500 mr-2" />
+            <span className="text-xs text-neutral-400">{vehicle.especificaciones.consumo.principal}</span>
           </div>
           <div className="flex items-center">
-            <FaTachometerAlt className="text-[#2563eb] mr-2" />
-            <span className="text-xs text-gray-600">{vehicle.especificaciones.potencia.principal}</span>
+            <FaTachometerAlt className="text-neutral-500 mr-2" />
+            <span className="text-xs text-neutral-400">{vehicle.especificaciones.potencia.principal}</span>
           </div>
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="text-lg font-bold"></div>
+          <div className="text-lg font-bold text-white">{formatCurrency(vehicle.precio)}</div>
           <Link 
             href={`/showroom/vehicle/${vehicle.id}`} 
-            className="bg-[#2563eb] text-white font-medium rounded-full px-4 py-1 text-sm hover:bg-[#1d4ed8] transition-colors"
+            className="bg-neutral-800 text-white font-medium rounded-full px-4 py-1.5 text-sm hover:bg-neutral-700 transition-colors"
           >
             Ver detalles
           </Link>
@@ -106,4 +102,4 @@ const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
   );
 };
 
-export default VehicleCard; 
+export default VehicleCard;

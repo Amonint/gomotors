@@ -19,21 +19,24 @@ const dropdownStyles = {
     static md:relative group
   `,
   mobileDropdown: `
-    w-full bg-[#111111] rounded-md mt-3 p-5 space-y-3
-    transform transition-all duration-200
+    w-full bg-[#111111] rounded-lg mt-2 p-5 space-y-3
+    transform transition-all duration-200 ease-in-out
     max-h-[60vh] overflow-y-auto
+    border border-[#1C1C1C]
   `,
   mobileMenu: `
     lg:hidden fixed top-[70px] left-0 right-0 
     bg-[#0A0A0A] border-t border-[#292C24] shadow-lg z-50
     max-h-[calc(100vh-70px)] overflow-y-auto
+    transform transition-all duration-300 ease-in-out
   `,
   mobileMenuContainer: `
-    container mx-auto px-5 py-7
+    container mx-auto px-5 py-7 animate-fadeIn
   `,
   mobileButton: `
     flex items-center justify-between w-full text-white 
-    py-3.5 px-5 rounded-md hover:bg-[#111111] transition-colors
+    py-4 px-5 rounded-lg hover:bg-[#111111] transition-all duration-200
+    text-[15px] font-medium
   `,
   mobileLink: `
     block text-white py-3.5 px-5 rounded-md 
@@ -209,7 +212,7 @@ const Navbar = () => {
               <Link href="/" className="flex items-center">
                 <span className="text-white font-bold flex items-center">
                   <Image
-                    src="/images/logo.png"
+                    src="/images/logogomo.png"
                     alt="Logo"
                     width={140}
                     height={40}
@@ -463,13 +466,16 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden">
+            <div className="lg:hidden absolute right-4">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-white p-2.5"
+                className="text-white p-2.5 rounded-lg hover:bg-[#111111] transition-all duration-200"
+                aria-label="Toggle menu"
               >
                 <svg
-                  className="w-6 h-6"
+                  className={`w-6 h-6 transform transition-transform duration-200 ${
+                    isMenuOpen ? 'rotate-180' : ''
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -479,7 +485,10 @@ const Navbar = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M4 6h16M4 12h16m-7 6h7"
+                    d={isMenuOpen 
+                      ? "M6 18L18 6M6 6l12 12" 
+                      : "M4 6h16M4 12h16M4 18h16"
+                    }
                   ></path>
                 </svg>
               </button>
@@ -489,9 +498,13 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className={dropdownStyles.mobileMenu}>
+          <div 
+            className={`${dropdownStyles.mobileMenu} ${
+              isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+            }`}
+          >
             <div className={dropdownStyles.mobileMenuContainer}>
-              <nav className="flex flex-col space-y-2">
+              <nav className="flex flex-col space-y-3">
                 {/* Mobile Showroom */}
                 <div>
                   <button

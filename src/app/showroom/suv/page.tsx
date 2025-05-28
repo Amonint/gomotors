@@ -8,13 +8,39 @@ import { FaArrowLeft } from 'react-icons/fa';
 import ShowroomFilter from '@/components/ShowroomFilter';
 import VehicleCard from '@/components/VehicleCard';
 import { vehicles } from '@/data/vehicles';
+import { Vehicle } from '@/services/vehicleService';
+
+interface FilterState {
+  brands: string[];
+  types: string[];
+  priceRange: [number, number];
+  features: string[];
+}
+
+interface RawVehicle {
+  id: string;
+  name: string;
+  brand: string;
+  type: string;
+  image: string;
+  price: number;
+  year: number;
+  description: string;
+  specs: {
+    engine: string;
+    transmission: string;
+    mileage: string;
+    power: string;
+  };
+  features: string[];
+}
 
 const SUVPage = () => {
   // Filtrar solo los vehículos tipo SUV
   const suvVehicles = vehicles.filter(vehicle => vehicle.type === 'SUV');
   
   const [filteredVehicles, setFilteredVehicles] = useState(suvVehicles);
-  const [activeFilters, setActiveFilters] = useState({
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
     brands: [],
     types: ['SUV'], // Por defecto, el tipo ya está seleccionado
     priceRange: [0, 100000],
@@ -52,9 +78,31 @@ const SUVPage = () => {
     }
     
     setFilteredVehicles(result);
-  }, [activeFilters]);
+  }, [activeFilters, suvVehicles]);
   
-  const updateFilters = (filterType, value) => {
+  const mapToVehicleType = (vehicle: RawVehicle): Vehicle => ({
+    id: vehicle.id,
+    marca: vehicle.brand,
+    modelo: vehicle.name,
+    año: vehicle.year.toString(),
+    tipoVehiculo: vehicle.type,
+    descripcion: vehicle.description,
+    imageUrls: [vehicle.image],
+    especificaciones: {
+      motor: { principal: vehicle.specs.engine, adicionales: [] },
+      transmision: { principal: vehicle.specs.transmission, adicionales: [] },
+      consumo: { principal: vehicle.specs.mileage, adicionales: [] },
+      potencia: { principal: vehicle.specs.power, adicionales: [] }
+    },
+    caracteristicas: {
+      seguridad: { principal: '', adicionales: [] },
+      confort: { principal: '', adicionales: [] },
+      exterior: { principal: '', adicionales: [] }
+    },
+    coloresDisponibles: []
+  });
+
+  const updateFilters = (filterType: keyof FilterState, value: string[] | [number, number]) => {
     if (filterType === 'types') {
       // Ignorar cambios en el tipo ya que siempre queremos mostrar SUVs
       return;
@@ -114,16 +162,18 @@ const SUVPage = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <VehicleCard vehicle={vehicle} />
+                    <VehicleCard vehicle={mapToVehicleType(vehicle)} />
                   </motion.div>
                 ))}
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-12 px-4 bg-[#111111] rounded-xl">
-                <img 
+                <Image 
                   src="/images/empty-results.svg" 
                   alt="No se encontraron vehículos" 
-                  className="w-40 h-40 mb-6 opacity-70"
+                  width={160}
+                  height={160}
+                  className="mb-6 opacity-70"
                 />
                 <h3 className="text-2xl font-semibold mb-2">No se encontraron SUVs</h3>
                 <p className="text-gray-400 text-center max-w-md">

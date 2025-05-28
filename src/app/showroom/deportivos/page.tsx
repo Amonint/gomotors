@@ -8,13 +8,43 @@ import { FaArrowLeft } from 'react-icons/fa';
 import ShowroomFilter from '@/components/ShowroomFilter';
 import VehicleCard from '@/components/VehicleCard';
 import { vehicles } from '@/data/vehicles';
+import { Vehicle } from '@/services/vehicleService';
+
+interface FilterState {
+  brands: string[];
+  types: string[];
+  priceRange: [number, number];
+  features: string[];
+}
+
+const mapToVehicleType = (vehicle: any): Vehicle => ({
+  id: vehicle.id,
+  marca: vehicle.brand,
+  modelo: vehicle.name,
+  año: vehicle.year.toString(),
+  tipoVehiculo: vehicle.type,
+  descripcion: vehicle.description,
+  imageUrls: [vehicle.image],
+  especificaciones: {
+    motor: { principal: vehicle.specs.engine, adicionales: [] },
+    transmision: { principal: vehicle.specs.transmission, adicionales: [] },
+    consumo: { principal: vehicle.specs.mileage, adicionales: [] },
+    potencia: { principal: vehicle.specs.power, adicionales: [] }
+  },
+  caracteristicas: {
+    seguridad: { principal: '', adicionales: [] },
+    confort: { principal: '', adicionales: [] },
+    exterior: { principal: '', adicionales: [] }
+  },
+  coloresDisponibles: []
+});
 
 const PickupsPage = () => {
   // Filtrar solo los vehículos tipo Pickup
   const pickupVehicles = vehicles.filter(vehicle => vehicle.type === 'Pickup');
   
   const [filteredVehicles, setFilteredVehicles] = useState(pickupVehicles);
-  const [activeFilters, setActiveFilters] = useState({
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
     brands: [],
     types: ['Pickup'], // Por defecto, el tipo ya está seleccionado
     priceRange: [0, 100000],
@@ -54,7 +84,7 @@ const PickupsPage = () => {
     setFilteredVehicles(result);
   }, [activeFilters]);
   
-  const updateFilters = (filterType, value) => {
+  const updateFilters = (filterType: string, value: any) => {
     if (filterType === 'types') {
       // Ignorar cambios en el tipo ya que siempre queremos mostrar Pickups
       return;
@@ -114,7 +144,7 @@ const PickupsPage = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <VehicleCard vehicle={vehicle} />
+                    <VehicleCard vehicle={mapToVehicleType(vehicle)} />
                   </motion.div>
                 ))}
               </div>

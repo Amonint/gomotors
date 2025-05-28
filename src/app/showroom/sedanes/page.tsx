@@ -8,15 +8,23 @@ import { FaArrowLeft } from 'react-icons/fa';
 import ShowroomFilter from '@/components/ShowroomFilter';
 import VehicleCard from '@/components/VehicleCard';
 import { vehicles } from '@/data/vehicles';
+import { Vehicle } from '@/services/vehicleService';
+
+interface FilterState {
+  brands: string[];
+  types: string[];
+  priceRange: [number, number];
+  features: string[];
+}
 
 const SedanesPage = () => {
   // Filtrar solo los vehículos tipo Sedán
   const sedanVehicles = vehicles.filter(vehicle => vehicle.type === 'Sedán');
   
   const [filteredVehicles, setFilteredVehicles] = useState(sedanVehicles);
-  const [activeFilters, setActiveFilters] = useState({
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
     brands: [],
-    types: ['Sedán'], // Por defecto, el tipo ya está seleccionado
+    types: ['Sedán'],
     priceRange: [0, 100000],
     features: []
   });
@@ -54,9 +62,8 @@ const SedanesPage = () => {
     setFilteredVehicles(result);
   }, [activeFilters]);
   
-  const updateFilters = (filterType, value) => {
+  const updateFilters = (filterType: keyof FilterState, value: any) => {
     if (filterType === 'types') {
-      // Ignorar cambios en el tipo ya que siempre queremos mostrar Sedanes
       return;
     }
     
@@ -65,6 +72,28 @@ const SedanesPage = () => {
       [filterType]: value
     }));
   };
+
+  const mapToVehicleType = (vehicle: any): Vehicle => ({
+    id: vehicle.id,
+    marca: vehicle.brand,
+    modelo: vehicle.name,
+    año: vehicle.year.toString(),
+    tipoVehiculo: vehicle.type,
+    descripcion: vehicle.description,
+    imageUrls: [vehicle.image],
+    especificaciones: {
+      motor: { principal: vehicle.specs.engine, adicionales: [] },
+      transmision: { principal: vehicle.specs.transmission, adicionales: [] },
+      consumo: { principal: vehicle.specs.mileage, adicionales: [] },
+      potencia: { principal: vehicle.specs.power, adicionales: [] }
+    },
+    caracteristicas: {
+      seguridad: { principal: '', adicionales: [] },
+      confort: { principal: '', adicionales: [] },
+      exterior: { principal: '', adicionales: [] }
+    },
+    coloresDisponibles: []
+  });
   
   return (
     <section className="w-full bg-[#0A0A0A] min-h-screen text-white py-16">
@@ -114,7 +143,7 @@ const SedanesPage = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <VehicleCard vehicle={vehicle} />
+                    <VehicleCard vehicle={mapToVehicleType(vehicle)} />
                   </motion.div>
                 ))}
               </div>

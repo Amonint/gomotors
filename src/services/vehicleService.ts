@@ -10,6 +10,9 @@ export interface Vehicle {
   tipoVehiculo: string;
   descripcion: string;
   imageUrls: string[];
+  imagenes: string[];
+  precio?: string;
+  fichaTecnicaUrl?: string;
   especificaciones: {
     motor: {
       principal: string;
