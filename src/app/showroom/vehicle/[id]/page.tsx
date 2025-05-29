@@ -67,16 +67,43 @@ const VehicleDetailPage = () => {
   };
 
   // Si está cargando, mostrar indicador
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[70vh] w-full bg-white text-gray-800">
-        <div className="text-center">
-          <FaSpinner className="animate-spin text-5xl text-[#2563eb] mx-auto mb-4" />
-          <p className="text-xl">Cargando información del vehículo...</p>
+  // Pantalla de carga mejorada sin dependencias externas
+if (loading) {
+  return (
+    <div className="flex items-center justify-center h-[70vh] w-full bg-white">
+      <div className="text-center">
+        {/* Spinner mejorado */}
+        <div className="relative mb-6">
+          <div className="w-16 h-16 mx-auto relative">
+            {/* Círculo de fondo */}
+            <div className="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
+            {/* Círculo animado principal */}
+            <div className="absolute inset-0 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+            {/* Círculo interno más pequeño */}
+            <div className="absolute inset-2 border-2 border-gray-600 border-b-transparent rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '1.5s'}}></div>
+          </div>
+        </div>
+        
+        {/* Texto principal */}
+        <h3 className="text-xl font-semibold text-black mb-3">
+          Cargando información del vehículo...
+        </h3>
+        
+        {/* Indicador de puntos animados */}
+        <div className="flex items-center justify-center space-x-1">
+          <div className="w-2 h-2 bg-black rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-black rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+          <div className="w-2 h-2 bg-black rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+        </div>
+        
+        {/* Barra de progreso sutil */}
+        <div className="w-64 h-1 bg-gray-200 rounded-full mx-auto mt-6 overflow-hidden">
+          <div className="h-full bg-black rounded-full animate-pulse"></div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // Si no se encuentra el vehículo
   if (!vehicle) {
