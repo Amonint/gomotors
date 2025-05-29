@@ -429,12 +429,14 @@ const VehicleDetailPage = () => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact-us"
+              <a
+                href="https://wa.me/593961022800?text=Hola%2C%20estoy%20interesado%20en%20una%20cotizaci%C3%B3n"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white text-neutral-900 font-semibold py-4 px-8 rounded-lg hover:bg-neutral-100 hover:shadow-lg transition-all duration-200 flex-1 text-center border border-neutral-300 transform hover:scale-[1.02]"
               >
                 Cotizar
-              </Link>
+              </a>
             </div>
           </div>
 

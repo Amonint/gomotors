@@ -66,7 +66,7 @@ const ReferenteGo = () => {
   };
 
   return (
-    <section className="bg-neutral-100 overflow-hidden" ref={containerRef}>
+    <section id="referente-go" className="bg-neutral-100 overflow-hidden" ref={containerRef}>
       <div className="w-full bg-[#F5F5F5] border-b border-neutral-300">
         <div className="max-w-[1600px] mx-auto px-6 py-12 md:py-16 lg:py-20">
           <motion.div

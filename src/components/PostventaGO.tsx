@@ -131,7 +131,7 @@ const PostventaGO = () => {
   ];
 
   return (
-    <section className="w-full bg-gradient-to-b from-[#0A0A0A] to-[#111111] text-white py-20 overflow-hidden">
+    <section id="postventa" className="w-full bg-gradient-to-b from-[#0A0A0A] to-[#111111] text-white py-20 overflow-hidden">
       {/* Title Bar Section - Top Accent */}
       <div className="w-full border-b border-white/10 mb-16">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">

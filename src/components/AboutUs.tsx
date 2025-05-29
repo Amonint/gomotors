@@ -36,7 +36,7 @@ const AboutUs = () => {
   };
 
   return (
-    <div>
+    <div id="about-us">
       {/* Custom fonts */}
       <style jsx global>{`
         @font-face {

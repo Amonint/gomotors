@@ -28,6 +28,7 @@ export const Footer = () => {
   const multimarcaMapRef = useRef<HTMLDivElement>(null);
   const yantzazaMapRef = useRef<HTMLDivElement>(null);
   const loadedRef = useRef(false);
+  const scriptLoadedRef = useRef(false);
 
   useEffect(() => {
     if (loadedRef.current) return;
@@ -38,91 +39,107 @@ export const Footer = () => {
         (hyundaiMapRef.current || multimarcaMapRef.current || yantzazaMapRef.current) &&
         typeof window !== "undefined"
       ) {
-        const script = document.createElement("script");
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCXbf0rbYvqOnl8untBA_-F7kFd2XBNQpY&callback=initMap`;
-        script.async = true;
-        script.defer = true;
+        // Verificar si el script ya está cargado
+        if (document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]')) {
+          if (window.google && window.google.maps) {
+            initMap();
+          }
+          return;
+        }
 
-        window.initMap = () => {
-          const hyundaiLocation = { lat: -3.977638239161408, lng: -79.20404956911804};
-          const multimarcaLocation = { lat: -3.977603460086567, lng: -79.2266462593288};
-          const yantzazaLocation = {
-            lat: -3.7963305009051984,
-            lng: -78.75708430350988,
+        // Si el script no está cargado, lo cargamos
+        if (!scriptLoadedRef.current) {
+          scriptLoadedRef.current = true;
+          const script = document.createElement("script");
+          script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCXbf0rbYvqOnl8untBA_-F7kFd2XBNQpY&callback=initMap`;
+          script.async = true;
+          script.defer = true;
+
+          window.initMap = () => {
+            initMap();
           };
 
-          const mapOptions = {
-            zoom: 16,
-            disableDefaultUI: true,
-            zoomControl: false,
-            mapTypeControl: false,
-            streetViewControl: false,
-            rotateControl: false,
-            fullscreenControl: false,
-          };
+          document.head.appendChild(script);
+        }
+      }
+    };
 
-          if (hyundaiMapRef.current) {
-            const hyundaiMap = new window.google.maps.Map(
-              hyundaiMapRef.current,
-              {
-                ...mapOptions,
-                center: hyundaiLocation,
-              }
-            );
+    const initMap = () => {
+      const hyundaiLocation = { lat: -3.977638239161408, lng: -79.20404956911804};
+      const multimarcaLocation = { lat: -3.977603460086567, lng: -79.2266462593288};
+      const yantzazaLocation = {
+        lat: -3.7963305009051984,
+        lng: -78.75708430350988,
+      };
 
-            const hyundaiMarker = new window.google.maps.Marker({
-              position: hyundaiLocation,
-              map: hyundaiMap,
-              title: "GoMotors-HYUNDAI"
-            });
+      const mapOptions = {
+        zoom: 16,
+        disableDefaultUI: true,
+        zoomControl: false,
+        mapTypeControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+      };
 
-            hyundaiMarker.addListener("click", () => {
-              window.open(`https://www.google.com/maps?q=${hyundaiLocation.lat},${hyundaiLocation.lng}`, "_blank");
-            });
+      if (hyundaiMapRef.current) {
+        const hyundaiMap = new window.google.maps.Map(
+          hyundaiMapRef.current,
+          {
+            ...mapOptions,
+            center: hyundaiLocation,
           }
+        );
 
-          if (multimarcaMapRef.current) {
-            const multimarcaMap = new window.google.maps.Map(
-              multimarcaMapRef.current,
-              {
-                ...mapOptions,
-                center: multimarcaLocation,
-              }
-            );
+        const hyundaiMarker = new window.google.maps.Marker({
+          position: hyundaiLocation,
+          map: hyundaiMap,
+          title: "GoMotors-HYUNDAI"
+        });
 
-            const multimarcaMarker = new window.google.maps.Marker({
-              position: multimarcaLocation,
-              map: multimarcaMap,
-              title: "GoMotors-Multimarca"
-            });
+        hyundaiMarker.addListener("click", () => {
+          window.open(`https://www.google.com/maps?q=${hyundaiLocation.lat},${hyundaiLocation.lng}`, "_blank");
+        });
+      }
 
-            multimarcaMarker.addListener("click", () => {
-              window.open(`https://www.google.com/maps?q=${multimarcaLocation.lat},${multimarcaLocation.lng}`, "_blank");
-            });
+      if (multimarcaMapRef.current) {
+        const multimarcaMap = new window.google.maps.Map(
+          multimarcaMapRef.current,
+          {
+            ...mapOptions,
+            center: multimarcaLocation,
           }
+        );
 
-          if (yantzazaMapRef.current) {
-            const yantzazaMap = new window.google.maps.Map(
-              yantzazaMapRef.current,
-              {
-                ...mapOptions,
-                center: yantzazaLocation,
-              }
-            );
+        const multimarcaMarker = new window.google.maps.Marker({
+          position: multimarcaLocation,
+          map: multimarcaMap,
+          title: "GoMotors-Multimarca"
+        });
 
-            const yantzazaMarker = new window.google.maps.Marker({
-              position: yantzazaLocation,
-              map: yantzazaMap,
-              title: "GoMotors-Yantzaza"
-            });
+        multimarcaMarker.addListener("click", () => {
+          window.open(`https://www.google.com/maps?q=${multimarcaLocation.lat},${multimarcaLocation.lng}`, "_blank");
+        });
+      }
 
-            yantzazaMarker.addListener("click", () => {
-              window.open(`https://www.google.com/maps?q=${yantzazaLocation.lat},${yantzazaLocation.lng}`, "_blank");
-            });
+      if (yantzazaMapRef.current) {
+        const yantzazaMap = new window.google.maps.Map(
+          yantzazaMapRef.current,
+          {
+            ...mapOptions,
+            center: yantzazaLocation,
           }
-        };
+        );
 
-        document.head.appendChild(script);
+        const yantzazaMarker = new window.google.maps.Marker({
+          position: yantzazaLocation,
+          map: yantzazaMap,
+          title: "GoMotors-Yantzaza"
+        });
+
+        yantzazaMarker.addListener("click", () => {
+          window.open(`https://www.google.com/maps?q=${yantzazaLocation.lat},${yantzazaLocation.lng}`, "_blank");
+        });
       }
     };
 
