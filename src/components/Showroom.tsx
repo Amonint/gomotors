@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import gsap from "gsap";
 import { motion } from "framer-motion";
 
@@ -30,27 +29,6 @@ const benefits = [
   {
     title: "Garantía y Respaldo Total",
     desc: "Respaldas tu compra con tranquilidad.Disponemos de talleres autorizados por nuestras marcas, con técnicos capacitados internacionalmente y equipos de diagnóstico de última tecnología.Además, nuestro amplio stock de repuestos genuinos nos permite darte soluciones inmediatas ante cualquier inconveniente.En GOmotors, el respaldo va más allá de la venta.",
-  },
-];
-
-const categories = [
-  {
-    title: "Pick Ups",
-    desc: "Pick Ups versátiles y robustos para cualquier tarea.",
-    img: "/images/NAZ_be17eae85be84cf5bc04927889924346.jpg",
-    link: "/showroom",
-  },
-  {
-    title: "SUVs & Crossovers",
-    desc: "Vehículos espaciosos con mayor altura y tracción mejorada.",
-    img: "/images/about-us/about-us2.avif",
-    link: "/showroom",
-  },
-  {
-    title: "Sedanes",
-    desc: "Confort y elegancia para el uso diario con gran eficiencia.",
-    img: "/images/about-us/Soueast-A5-Yiwu-2019.jpg",
-    link: "/showroom",
   },
 ];
 

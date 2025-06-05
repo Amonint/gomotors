@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/noticias/page": "app/noticias/page.js",
+  "/page": "app/page.js",
+  "/noticias/[id]/page": "app/noticias/[id]/page.js",
+  "/proteccion-datos/page": "app/proteccion-datos/page.js",
+  "/showroom/page": "app/showroom/page.js",
+  "/showroom/vehicle/[id]/page": "app/showroom/vehicle/[id]/page.js",
+  "/promociones/page": "app/promociones/page.js"
+}

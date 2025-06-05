@@ -7,6 +7,7 @@ import VehicleCard from "@/components/VehicleCard";
 import { Vehicle, getVehicles } from "@/services/vehicleService";
 import { useRouter } from "next/navigation";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Image from "next/image";
 
 interface ActiveFilters {
   brands: string[];
@@ -57,11 +58,6 @@ const ShowroomPage = () => {
       ? [...new Set(vehicles.map((vehicle) => vehicle.marca))]
       : [];
 
-  const types =
-    vehicles.length > 0
-      ? [...new Set(vehicles.map((vehicle) => vehicle.tipoVehiculo))]
-      : [];
-
   useEffect(() => {
     if (vehicles.length === 0) return;
 
@@ -70,12 +66,6 @@ const ShowroomPage = () => {
     if (activeFilters.brands.length > 0) {
       result = result.filter((vehicle) =>
         activeFilters.brands.includes(vehicle.marca)
-      );
-    }
-
-    if (activeFilters.types.length > 0) {
-      result = result.filter((vehicle) =>
-        activeFilters.types.includes(vehicle.tipoVehiculo)
       );
     }
 
@@ -136,7 +126,6 @@ const ShowroomPage = () => {
         <div className="mb-8">
           <ShowroomFilter
             brands={brands}
-            types={types}
             activeFilters={activeFilters}
             updateFilters={updateFilters}
           />
@@ -162,10 +151,12 @@ const ShowroomPage = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12 px-4 bg-black rounded-lg shadow-sm border border-neutral-700">
-              <img
+              <Image
                 src="/images/empty-results.svg"
                 alt="No se encontraron vehículos"
-                className="w-40 h-40 mb-6 opacity-50"
+                width={160}
+                height={160}
+                className="mb-6 opacity-50"
               />
               <h3 className="text-2xl font-semibold mb-2 text-white">
                 No se encontraron vehículos
@@ -177,6 +168,8 @@ const ShowroomPage = () => {
             </div>
           )}
         </div>
+
+       
       </div>
     </section>
   );

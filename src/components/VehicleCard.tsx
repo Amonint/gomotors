@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaGasPump, FaCogs, FaRoad, FaTachometerAlt } from 'react-icons/fa';
@@ -11,29 +11,16 @@ interface VehicleProps {
 }
 
 const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
+  const [imageError, setImageError] = useState(false);
+
   const formatCurrency = (amount: string | undefined) => {
     if (!amount) return '$0';
     return `$${Number(amount).toLocaleString()}`;
   };
 
-  const getTypeClass = (type: string) => {
-    switch(type.toLowerCase()) {
-      case 'sedán':
-        return 'bg-blue-500/20 text-blue-300';
-      case 'suv':
-        return 'bg-green-500/20 text-green-300';
-      case 'pickup':
-        return 'bg-orange-500/20 text-orange-300';
-      default:
-        return 'bg-gray-500/20 text-gray-300';
-    }
-  };
-
-  const imageUrl = (vehicle.imagenes && vehicle.imagenes.length > 0) 
-    ? vehicle.imagenes[0] 
-    : (vehicle.imageUrls && vehicle.imageUrls.length > 0)
-      ? vehicle.imageUrls[0]
-      : '/images/vehicle-placeholder.svg';
+  const imageUrl = imageError || !vehicle.imagenTarjeta
+    ? '/images/vehicle-placeholder.svg'
+    : vehicle.imagenTarjeta;
 
   return (
     <div className="bg-black text-white rounded-lg overflow-hidden transition-all hover:scale-[1.02] duration-300 group shadow-sm hover:shadow-white/10 border border-neutral-700">
@@ -46,6 +33,8 @@ const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
           className="object-cover transition-transform group-hover:scale-105 duration-500"
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
           priority={false}
+          onError={() => setImageError(true)}
+          unoptimized={imageUrl.startsWith('https://firebasestorage.googleapis.com')}
         />
         
         {/* Badge de tipo */}

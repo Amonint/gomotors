@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/noticias/page": "/noticias",
+  "/page": "/",
+  "/noticias/[id]/page": "/noticias/[id]",
+  "/proteccion-datos/page": "/proteccion-datos",
+  "/showroom/page": "/showroom",
+  "/showroom/vehicle/[id]/page": "/showroom/vehicle/[id]",
+  "/promociones/page": "/promociones"
+}

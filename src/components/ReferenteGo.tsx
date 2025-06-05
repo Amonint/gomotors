@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
 
 const ReferenteGo = () => {
   const containerRef = useRef(null);
@@ -66,7 +67,11 @@ const ReferenteGo = () => {
   };
 
   return (
-    <section id="referente-go" className="bg-neutral-100 overflow-hidden" ref={containerRef}>
+    <section
+      id="referente-go"
+      className="bg-neutral-100 overflow-hidden"
+      ref={containerRef}
+    >
       <div className="w-full bg-[#F5F5F5] border-b border-neutral-300">
         <div className="max-w-[1600px] mx-auto px-6 py-12 md:py-16 lg:py-20">
           <motion.div
@@ -251,6 +256,16 @@ const ReferenteGo = () => {
             >
               Haz correr la voz y gana con nosotros.
             </motion.p>
+
+            {/* Botón Refiere */}
+            <motion.div variants={fadeInUp} className="mt-8">
+              <Link
+                href="/referente-go"
+                className="inline-flex items-center bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-neutral-100 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Refiere
+              </Link>
+            </motion.div>
 
             <motion.div
               initial="hidden"

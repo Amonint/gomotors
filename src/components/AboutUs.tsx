@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { RxChevronRight } from "react-icons/rx";
+import Image from "next/image";
 
 const AboutUs = () => {
   // Images for carousel
@@ -67,9 +67,10 @@ const AboutUs = () => {
       {/* HEADER SECTION */}
       <div className="relative min-h-screen flex items-center">
         <div className="absolute inset-0 bg-black/70 z-0">
-          <img
+          <Image
             src="/images/about-us/1.jpg"
             alt="Background"
+            fill
             className="w-full h-full object-cover opacity-30"
           />
         </div>
@@ -191,9 +192,10 @@ const AboutUs = () => {
                         : "opacity-0 z-0"
                     }`}
                   >
-                    <img
+                    <Image
                       src={image}
                       alt={`Imagen de flota vehicular ${index + 1}`}
+                      fill
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full">
@@ -314,9 +316,10 @@ const AboutUs = () => {
               index === activeImage ? "opacity-100" : "opacity-0"
             }`}
           >
-            <img
+            <Image
               src={image}
               alt={`Imagen de flota vehicular ${index + 1}`}
+              fill
               className="w-full h-full object-cover"
             />
           </div>

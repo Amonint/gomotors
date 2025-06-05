@@ -457,6 +457,22 @@ const Navbar = () => {
                   REFERENTE-GO
                 </Link>
               </div>
+              <div>
+                <Link
+                  href="/noticias"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                >
+                  NOTICIAS
+                </Link>
+              </div>
+              <div>
+                <Link
+                  href="/promociones"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                >
+                  PROMOCIONES
+                </Link>
+              </div>
             </nav>
 
             {/* Right Side Navigation */}

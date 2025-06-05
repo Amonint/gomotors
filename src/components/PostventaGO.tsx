@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const PostventaGO = () => {
   // State for gallery controls
   const [currentImage, setCurrentImage] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying] = useState(true);
 
   // Gallery images
   const galleryImages = [
@@ -28,11 +28,6 @@ const PostventaGO = () => {
 
   const prevImage = () => {
     setCurrentImage((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
-  };
-
-  // Toggle autoplay
-  const toggleAutoplay = () => {
-    setIsPlaying(prev => !prev);
   };
 
   // Autoplay functionality

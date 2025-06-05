@@ -1,0 +1,25 @@
+# Node.js dependencies
+node_modules/
+
+# Build output
+.next/
+lib/
+
+# Development files
+.git/
+.gitignore
+.eslintrc.js
+*.log
+.env
+.env.*
+
+# Test files
+__tests__/
+*.test.js
+*.spec.js
+
+# Keep only necessary files
+!package.json
+!package-lock.json
+!src/
+!tsconfig.json 

@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { FaLinkedin, FaInstagramSquare, FaMapMarkerAlt, FaFacebookSquare } from "react-icons/fa";
+import { FaInstagramSquare, FaMapMarkerAlt, FaFacebookSquare } from "react-icons/fa";
 
 // Add proper Google Maps type declarations
 declare global {
@@ -11,13 +10,15 @@ declare global {
     initMap: () => void;
     google: {
       maps: {
-        Map: any;
-        Marker: any;
-        LatLng: any;
-        Size: any;
-        Point: any;
-        MapTypeControlStyle: any;
-        ControlPosition: any;
+        Map: new (element: HTMLElement, options: object) => object;
+        Marker: new (options: object) => {
+          addListener: (event: string, callback: () => void) => void;
+        };
+        LatLng: new (lat: number, lng: number) => object;
+        Size: new (width: number, height: number) => object;
+        Point: new (x: number, y: number) => object;
+        MapTypeControlStyle: { [key: string]: number };
+        ControlPosition: { [key: string]: number };
       };
     };
   }
