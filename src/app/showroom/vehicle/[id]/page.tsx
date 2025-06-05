@@ -13,11 +13,10 @@ export async function generateStaticParams() {
 
 type Props = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function VehicleDetailPage({ params, searchParams }: Props) {
-  const [resolvedParams] = await Promise.all([params, searchParams]);
+export default async function VehicleDetailPage({ params }: Props) {
+  const resolvedParams = await params;
   const vehicle = await getVehicleById(resolvedParams.id);
   const allVehicles = await getVehicles();
   const relatedVehicles = allVehicles
