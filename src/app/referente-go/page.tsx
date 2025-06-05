@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa";
-import Link from "next/link";
-
+import Link from "next/link"
 interface FormData {
   referrerName: string;
   referrerLastName: string;

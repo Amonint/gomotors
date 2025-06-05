@@ -11,8 +11,14 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function VehicleDetailPage({ params }: { params: { id: string } }) {
-  const vehicle = await getVehicleById(params.id);
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function VehicleDetailPage({ params, searchParams }: Props) {
+  const [resolvedParams] = await Promise.all([params, searchParams]);
+  const vehicle = await getVehicleById(resolvedParams.id);
   const allVehicles = await getVehicles();
   const relatedVehicles = allVehicles
     .filter((v) => v.tipoVehiculo === vehicle?.tipoVehiculo && v.id !== vehicle?.id)
