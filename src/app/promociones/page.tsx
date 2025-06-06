@@ -46,7 +46,7 @@ export default function PromotionsPage() {
         setCurrentIndex((prevIndex) => 
           prevIndex === promotions.length - 1 ? 0 : prevIndex + 1
         );
-      }, 5000); // Change slide every 5 seconds
+      }, 5000);
 
       return () => clearInterval(interval);
     }
@@ -57,7 +57,6 @@ export default function PromotionsPage() {
     setCurrentIndex((prevIndex) => 
       prevIndex === 0 ? promotions.length - 1 : prevIndex - 1
     );
-    // Resume autoplay after 10 seconds
     setTimeout(() => setIsPaused(false), 10000);
   };
 
@@ -66,7 +65,6 @@ export default function PromotionsPage() {
     setCurrentIndex((prevIndex) => 
       prevIndex === promotions.length - 1 ? 0 : prevIndex + 1
     );
-    // Resume autoplay after 10 seconds
     setTimeout(() => setIsPaused(false), 10000);
   };
 
@@ -78,14 +76,13 @@ export default function PromotionsPage() {
     <div className="relative h-screen w-screen overflow-hidden group">
       {/* Back Button */}
       <div className="absolute top-8 left-8 z-50">
-  <Link
-    href="/"
-    className="flex items-center text-white bg-black px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
-  >
-    <FaArrowLeft className="mr-2 text-white" /> Volver
-  </Link>
-</div>
-
+        <Link
+          href="/"
+          className="flex items-center text-white bg-black px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
+        >
+          <FaArrowLeft className="mr-2 text-white" /> Volver
+        </Link>
+      </div>
 
       {/* Images */}
       {promotions.map((promotion, index) => (
@@ -105,32 +102,30 @@ export default function PromotionsPage() {
         </div>
       ))}
 
-      {/* Navigation Arrows - Only show if more than 1 promotion */}
+      {/* Navigation Arrows */}
       {promotions.length > 1 && (
         <>
           {/* Left Arrow */}
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 
-                     w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm
-                     flex items-center justify-center
-                     opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                     hover:bg-black/30 active:scale-95 transition-all"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 
+                     w-12 h-12 bg-black/50 hover:bg-black/70 
+                     rounded-full flex items-center justify-center
+                     transition-all duration-300 opacity-0 group-hover:opacity-100
+                     border border-white/20 hover:border-white/40"
             aria-label="Imagen anterior"
           >
             <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
+              className="w-6 h-6 text-white" 
               fill="none" 
-              className="text-white"
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
             >
               <path 
-                d="M15 18L9 12L15 6" 
-                stroke="currentColor" 
-                strokeWidth="2" 
                 strokeLinecap="round" 
-                strokeLinejoin="round"
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M15 19l-7-7 7-7" 
               />
             </svg>
           </button>
@@ -138,36 +133,34 @@ export default function PromotionsPage() {
           {/* Right Arrow */}
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 
-                     w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm
-                     flex items-center justify-center
-                     opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                     hover:bg-black/30 active:scale-95 transition-all"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 
+                     w-12 h-12 bg-black/50 hover:bg-black/70 
+                     rounded-full flex items-center justify-center
+                     transition-all duration-300 opacity-0 group-hover:opacity-100
+                     border border-white/20 hover:border-white/40"
             aria-label="Siguiente imagen"
           >
             <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
+              className="w-6 h-6 text-white" 
               fill="none" 
-              className="text-white"
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
             >
               <path 
-                d="M9 18L15 12L9 6" 
-                stroke="currentColor" 
-                strokeWidth="2" 
                 strokeLinecap="round" 
-                strokeLinejoin="round"
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M9 5l7 7-7 7" 
               />
             </svg>
           </button>
         </>
       )}
 
-      {/* Indicators */}
+      {/* Indicators - También mejorados */}
       {promotions.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 
-                      flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 
+                      flex space-x-3 opacity-70 hover:opacity-100 transition-opacity duration-200">
           {promotions.map((_, index) => (
             <button
               key={index}
@@ -176,10 +169,10 @@ export default function PromotionsPage() {
                 setCurrentIndex(index);
                 setTimeout(() => setIsPaused(false), 10000);
               }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`w-3 h-3 rounded-full transition-all duration-300 border border-white/30 ${
                 index === currentIndex 
-                  ? 'bg-white' 
-                  : 'bg-white/50 hover:bg-white/70'
+                  ? 'bg-white scale-110' 
+                  : 'bg-white/50 hover:bg-white/80 hover:scale-105'
               }`}
               aria-label={`Ir a imagen ${index + 1}`}
             />

@@ -14,6 +14,7 @@ import {
   FaStar,
   FaCalendarAlt,
   FaFileDownload,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { Vehicle } from "@/services/vehicleService";
 
@@ -90,6 +91,13 @@ const VehicleDetailClient = ({ vehicle, relatedVehicles }: VehicleDetailClientPr
                 </a>
               )}
             </div>
+          </div>
+
+          {/* Descripción del vehículo */}
+          <div className="mb-6">
+            <p className="text-neutral-300 leading-relaxed">
+              {vehicle.descripcion}
+            </p>
           </div>
 
           {/* Tabs */}
@@ -262,36 +270,103 @@ const VehicleDetailClient = ({ vehicle, relatedVehicles }: VehicleDetailClientPr
           )}
         </div>
 
+        {/* Botón CTA WhatsApp */}
+        <div className="bg-neutral-900 rounded-xl p-6 md:p-8 shadow-2xl mb-8 border border-neutral-700 text-center">
+          <h2 className="text-2xl font-bold mb-4">¿Te interesa este vehículo?</h2>
+          <p className="text-neutral-300 mb-6">
+            Contáctanos vía WhatsApp para obtener más información y cotizar este {vehicle.marca} {vehicle.modelo}
+          </p>
+          <a
+            href={`https://wa.me/+1234567890?text=Hola, me interesa el ${vehicle.marca} ${vehicle.modelo} ${vehicle.año}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200"
+          >
+            <FaWhatsapp className="mr-2 text-xl" />
+            Cotizar por WhatsApp
+          </a>
+        </div>
+
         {/* Vehículos relacionados */}
         {relatedVehicles.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-6">Vehículos relacionados</h2>
+            <h2 className="text-2xl font-bold mb-6">Más {vehicle.tipoVehiculo} que te pueden interesar</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedVehicles.map((relatedVehicle) => (
+              {relatedVehicles
+                .filter(relatedVehicle => 
+                  relatedVehicle.tipoVehiculo === vehicle.tipoVehiculo && 
+                  relatedVehicle.id !== vehicle.id
+                )
+                .slice(0, 3)
+                .map((relatedVehicle) => (
                 <Link
                   key={relatedVehicle.id}
                   href={`/showroom/vehicle/${relatedVehicle.id}`}
                   className="group"
                 >
-                  <div className="bg-neutral-900 rounded-xl overflow-hidden border border-neutral-700 hover:border-neutral-500 transition-colors">
-                    <div className="relative h-48">
+                  <div className="bg-black text-white rounded-lg overflow-hidden transition-all hover:scale-[1.02] duration-300 group shadow-sm hover:shadow-white/10 border border-neutral-700">
+                    {/* Imagen del vehículo */}
+                    <div className="relative w-full h-48 sm:h-56 overflow-hidden">
                       <Image
-                        src={relatedVehicle.imagenTarjeta}
+                        src={relatedVehicle.imagenTarjeta || "/images/vehicle-placeholder.svg"}
                         alt={`${relatedVehicle.marca} ${relatedVehicle.modelo}`}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover transition-transform group-hover:scale-105 duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                        priority={false}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/images/vehicle-placeholder.svg";
+                        }}
                       />
-                    </div>
-                    <div className="p-4">
-                      <div className="text-sm text-neutral-400 mb-1">
+                      
+                      {/* Badge de tipo */}
+                      <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-900 backdrop-blur-sm">
+                        {relatedVehicle.tipoVehiculo}
+                      </div>
+                      
+                      {/* Badge de marca */}
+                      <div className="absolute top-3 left-3 bg-black/80 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
                         {relatedVehicle.marca}
                       </div>
-                      <h3 className="text-lg font-semibold mb-2">
-                        {relatedVehicle.modelo}
-                      </h3>
-                      <div className="text-xl font-bold">
-                        ${Number(relatedVehicle.precio).toLocaleString()} USD
+                    </div>
+                    
+                    {/* Contenido */}
+                    <div className="p-4 sm:p-5">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-base sm:text-lg font-bold text-white">{relatedVehicle.modelo}</h3>
+                        <span className="text-neutral-400 font-semibold">{relatedVehicle.año}</span>
+                      </div>
+                      
+                      <p className="text-neutral-400 text-sm line-clamp-2 mb-4">{relatedVehicle.descripcion}</p>
+                      
+                      {/* Especificaciones */}
+                      <div className="grid grid-cols-2 gap-3 mb-5">
+                        <div className="flex items-center">
+                          <FaGasPump className="text-neutral-500 mr-2 flex-shrink-0" />
+                          <span className="text-xs text-neutral-400 line-clamp-1">{relatedVehicle.especificaciones.motor.principal}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <FaCogs className="text-neutral-500 mr-2 flex-shrink-0" />
+                          <span className="text-xs text-neutral-400 line-clamp-1">{relatedVehicle.especificaciones.transmision.principal}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <FaRoad className="text-neutral-500 mr-2 flex-shrink-0" />
+                          <span className="text-xs text-neutral-400 line-clamp-1">{relatedVehicle.especificaciones.consumo.principal}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <FaTachometerAlt className="text-neutral-500 mr-2 flex-shrink-0" />
+                          <span className="text-xs text-neutral-400 line-clamp-1">{relatedVehicle.especificaciones.potencia.principal}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="text-lg font-bold text-white">
+                          ${Number(relatedVehicle.precio).toLocaleString()} USD
+                        </div>
+                        <div className="bg-neutral-800 text-white font-medium rounded-full px-4 py-1.5 text-sm hover:bg-neutral-700 transition-colors">
+                          Ver detalles
+                        </div>
                       </div>
                     </div>
                   </div>
