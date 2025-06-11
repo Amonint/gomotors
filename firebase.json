@@ -6,7 +6,13 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "cleanUrls": true,
+    "trailingSlash": false,
     "rewrites": [
+      {
+        "source": "/showroom/vehicle/**",
+        "destination": "/showroom/vehicle/[id].html"
+      },
       {
         "source": "**",
         "destination": "/index.html"
