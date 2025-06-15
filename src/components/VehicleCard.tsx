@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { FaGasPump, FaCogs, FaRoad, FaTachometerAlt } from 'react-icons/fa';
 import { Vehicle } from '@/services/vehicleService';
 
 interface VehicleProps {
   vehicle: Vehicle;
+  onSelect?: () => void;
 }
 
-const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
+const VehicleCard: React.FC<VehicleProps> = ({ vehicle, onSelect }) => {
   const [imageError, setImageError] = useState(false);
 
   const formatCurrency = (amount: string | undefined) => {
@@ -79,12 +79,12 @@ const VehicleCard: React.FC<VehicleProps> = ({ vehicle }) => {
         
         <div className="flex items-center justify-between">
           <div className="text-lg font-bold text-white">{formatCurrency(vehicle.precio)}</div>
-          <Link 
-            href={`/showroom/vehicle/${vehicle.id}`} 
+          <button 
+            onClick={onSelect}
             className="bg-neutral-800 text-white font-medium rounded-full px-4 py-1.5 text-sm hover:bg-neutral-700 transition-colors"
           >
             Ver detalles
-          </Link>
+          </button>
         </div>
       </div>
     </div>

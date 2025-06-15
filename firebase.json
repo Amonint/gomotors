@@ -11,7 +11,7 @@
     "rewrites": [
       {
         "source": "/showroom/vehicle/**",
-        "destination": "/showroom/vehicle/[id].html"
+        "destination": "/showroom/index.html"
       },
       {
         "source": "**",

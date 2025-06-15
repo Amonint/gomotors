@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+
 import ShowroomFilter from "@/components/ShowroomFilter";
 import VehicleCard from "@/components/VehicleCard";
-import { Vehicle, getVehicles } from "@/services/vehicleService";
-import { useRouter } from "next/navigation";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Image from "next/image";
+import VehicleDetailClient from "@/components/VehicleDetailClient";
+import { Vehicle, getVehicles, getVehicleById } from "@/services/vehicleService";
 
 interface ActiveFilters {
   brands: string[];
@@ -18,23 +18,49 @@ interface ActiveFilters {
 const ShowroomPage = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [relatedVehicles, setRelatedVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'list' | 'detail'>('list');
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     brands: [],
     types: [],
     features: [],
   });
-  const router = useRouter();
 
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.replace("/showroom");
+  const loadVehicleDetail = useCallback(async (vehicleId: string) => {
+    try {
+      const vehicle = await getVehicleById(vehicleId);
+      if (vehicle) {
+        setSelectedVehicle(vehicle);
+        setViewMode('detail');
+        
+        // Cargar vehículos relacionados
+        const related = vehicles
+          .filter((v) => v.tipoVehiculo === vehicle.tipoVehiculo && v.id !== vehicle.id)
+          .slice(0, 3);
+        setRelatedVehicles(related);
       }
-    });
-    return () => unsubscribe();
-  }, [router]);
+    } catch (error) {
+      console.error("Error al cargar vehículo:", error);
+    }
+  }, [vehicles]);
+
+  // Detectar parámetros de URL del lado del cliente
+  useEffect(() => {
+    const checkUrlParams = () => {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const vehicleId = urlParams.get('vehicle');
+        
+        if (vehicleId && vehicles.length > 0) {
+          loadVehicleDetail(vehicleId);
+        }
+      }
+    };
+
+    checkUrlParams();
+  }, [vehicles, loadVehicleDetail]);
 
   useEffect(() => {
     const loadVehicles = async () => {
@@ -92,6 +118,54 @@ const ShowroomPage = () => {
     }));
   };
 
+  const handleVehicleSelect = (vehicle: Vehicle) => {
+    setSelectedVehicle(vehicle);
+    setViewMode('detail');
+    
+    // Actualizar URL sin recargar la página
+    if (typeof window !== 'undefined') {
+      const newUrl = `/showroom?vehicle=${vehicle.id}`;
+      window.history.pushState({}, '', newUrl);
+    }
+    
+    // Cargar vehículos relacionados
+    const related = vehicles
+      .filter((v) => v.tipoVehiculo === vehicle.tipoVehiculo && v.id !== vehicle.id)
+      .slice(0, 3);
+    setRelatedVehicles(related);
+  };
+
+  const handleBackToList = () => {
+    setViewMode('list');
+    setSelectedVehicle(null);
+    
+    // Actualizar URL sin recargar la página
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/showroom');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white">Cargando showroom...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (viewMode === 'detail' && selectedVehicle) {
+    return (
+      <VehicleDetailClient 
+        vehicle={selectedVehicle} 
+        relatedVehicles={relatedVehicles}
+        onBack={handleBackToList}
+      />
+    );
+  }
+
   return (
     <section className="w-full bg-black min-h-screen text-white py-16">
       <div className="container mx-auto px-4 md:px-6">
@@ -132,11 +206,7 @@ const ShowroomPage = () => {
         </div>
 
         <div className="w-full">
-          {loading ? (
-            <div className="flex justify-center items-center h-60">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-            </div>
-          ) : filteredVehicles.length > 0 ? (
+          {filteredVehicles.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredVehicles.map((vehicle, index) => (
                 <motion.div
@@ -145,7 +215,10 @@ const ShowroomPage = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <VehicleCard vehicle={vehicle} />
+                  <VehicleCard 
+                    vehicle={vehicle} 
+                    onSelect={() => handleVehicleSelect(vehicle)}
+                  />
                 </motion.div>
               ))}
             </div>
@@ -168,8 +241,6 @@ const ShowroomPage = () => {
             </div>
           )}
         </div>
-
-       
       </div>
     </section>
   );

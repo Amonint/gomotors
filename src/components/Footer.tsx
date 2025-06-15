@@ -155,7 +155,7 @@ export const Footer = () => {
           {/* Columna 1 - Hyundai */}
           <div className="md:col-span-4 space-y-6">
             <h3 className="text-gray-400 uppercase text-sm font-medium">
-              HYUNDAI
+              HYUNDAI-LOJA
             </h3>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -191,7 +191,7 @@ export const Footer = () => {
           {/* Columna 2 - Multimarca */}
           <div className="md:col-span-4 space-y-6">
             <h3 className="text-gray-400 uppercase text-sm font-medium">
-              MULTIMARCA
+              MULTIMARCA-LOJA
             </h3>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -225,7 +225,7 @@ export const Footer = () => {
           {/* Columna 3 - Yantzaza */}
           <div className="md:col-span-4 space-y-6">
             <h3 className="text-gray-400 uppercase text-sm font-medium">
-              YANTZAZA
+              YANTZAZA-ZAMORA 
             </h3>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -261,6 +261,7 @@ export const Footer = () => {
           {/* Información de contacto */}
           <div className="text-left space-y-3 mb-5 md:mb-0">
             <p className="text-white text-base">099-945-4243</p>
+            <p className="text-white text-base">(07) 2731143</p>
             <p className="text-white text-base">
               recepcionloja@gomotors.com.ec
             </p>

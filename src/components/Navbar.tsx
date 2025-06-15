@@ -207,31 +207,28 @@ const Navbar = () => {
         }`}
       >
         <div className="w-full">
-          <div className="flex items-center h-[80px] relative">
+          <div className="flex items-center justify-between h-[80px] relative">
             {/* Logo */}
             <div
               className="flex-shrink-0"
-              style={{ position: "absolute", left: "0", paddingLeft: "5px" }}
+              style={{ position: "absolute", left: "20px" }}
             >
               <Link href="/" className="flex items-center">
-                <span className="text-white font-bold flex items-center">
-                  <Image
-                    src="/images/logogomo.png"
-                    alt="Logo"
-                    width={140}
-                    height={40}
-                    className="object-contain"
-                    priority
-                    style={{ marginLeft: 0, paddingLeft: 0 }}
-                  />
-                </span>
+                <Image
+                  src="/images/logogomo.png"
+                  alt="Logo"
+                  width={140}
+                  height={40}
+                  className="object-contain"
+                  priority
+                />
               </Link>
             </div>
 
             {/* Desktop Navigation - Centered */}
             <nav className="hidden lg:flex items-center space-x-1.5 mx-auto">
               {/* Showroom */}
-              <div className={dropdownStyles.staticDropdown}>
+              <div>
                 <button
                   className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
                   onClick={() => toggleDropdown("showroom")}
@@ -260,7 +257,6 @@ const Navbar = () => {
                 {activeDropdown === "showroom" && (
                   <div
                     ref={(el) => setDropdownRef(el, "showroom")}
-                    id="showroom-dropdown"
                     className={dropdownStyles.dropdown}
                     onMouseEnter={() => handleMouseEnter("showroom")}
                     onMouseLeave={handleMouseLeave}
@@ -268,41 +264,48 @@ const Navbar = () => {
                   >
                     <div className={dropdownStyles.container}>
                       <div className={dropdownStyles.servicesMenu}>
+                        {/* Hyundai Section */}
                         <div className={dropdownStyles.servicesMenuLeft}>
                           <h3 className={dropdownStyles.sectionTitle}>
-                            Nuestras Marcas
+                            Hyundai
                           </h3>
-                          <ul className="space-y-4">
-                            <li>
-                              <a
-                                href="https://hyundai.com.ec/"
-                                className={dropdownStyles.menuLink}
-                                onClick={() => setActiveDropdown("")}
-                                target="_blank" // Opcional, para abrir en una nueva pestaña
-                                rel="noopener noreferrer"
-                              >
-                                Hyundai
-                              </a>
-                            </li>
+                          <a
+                            href="https://hyundai.com.ec/"
+                            className={dropdownStyles.menuLink}
+                            onClick={() => setActiveDropdown("")}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Ver catálogo →
+                          </a>
+                        </div>
 
-                            <li>
+                        {/* Nuestras Marcas Section */}
+                        <div className={dropdownStyles.servicesMenuRight}>
+                          <div>
+                            <h3 className={dropdownStyles.sectionTitle}>
+                              Nuestras Marcas
+                            </h3>
+                            <div className="flex flex-col space-y-4">
                               <Link
                                 href="/showroom"
                                 className={dropdownStyles.menuLink}
                                 onClick={() => setActiveDropdown("")}
                               >
-                                Multimarca
+                                Ver catálogo →
                               </Link>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <div className={dropdownStyles.servicesMenuRight}>
-                          <Link
-                            href="/showroom/destacado"
-                            className="block group"
-                            onClick={() => setActiveDropdown("")}
-                          ></Link>
+                              
+                              <div className="grid grid-cols-2 gap-4 mt-4">
+                                <span className="text-gray-500 text-base font-medium cursor-default">DFSK</span>
+                                <span className="text-gray-500 text-base font-medium cursor-default">Great Wall</span>
+                                <span className="text-gray-500 text-base font-medium cursor-default">GWM</span>
+                                <span className="text-gray-500 text-base font-medium cursor-default">Haval</span>
+                                <span className="text-gray-500 text-base font-medium cursor-default">KYC</span>
+                                <span className="text-gray-500 text-base font-medium cursor-default">Soueast</span>
+                                <span className="text-gray-500 text-base font-medium cursor-default">SWM</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -311,15 +314,10 @@ const Navbar = () => {
               </div>
 
               {/* Postventa */}
-              <div className={dropdownStyles.staticDropdown}>
+              <div>
                 <button
                   className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
-                  onClick={() => {
-                    const element = document.getElementById("postventa");
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
+                  onClick={() => toggleDropdown("postventa")}
                   onMouseEnter={() => handleMouseEnter("postventa")}
                 >
                   POSTVENTA
@@ -345,7 +343,6 @@ const Navbar = () => {
                 {activeDropdown === "postventa" && (
                   <div
                     ref={(el) => setDropdownRef(el, "postventa")}
-                    id="postventa-dropdown"
                     className={dropdownStyles.dropdown}
                     onMouseEnter={() => handleMouseEnter("postventa")}
                     onMouseLeave={handleMouseLeave}
@@ -355,66 +352,60 @@ const Navbar = () => {
                       <div className={dropdownStyles.servicesMenu}>
                         <div className={dropdownStyles.servicesMenuLeft}>
                           <h3 className={dropdownStyles.sectionTitle}>
-                            Servicios Postventa
+                            Hyundai
                           </h3>
                           <ul className="space-y-4">
                             <li>
-                              <h4 className="text-white font-medium mb-2">
-                                HYUNDAI
-                              </h4>
-                              <ul className="space-y-2 ml-4">
-                                <li>
-                                  <a
-                                    href="https://www.hyundai.com.ec/citas-taller"
-                                    className={dropdownStyles.menuLink}
-                                    onClick={() => setActiveDropdown("")}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Agenda tu cita
-                                  </a>
-                                </li>
-                                <li>
-                                  <a
-                                    href="https://www.hyundai.com.ec/campa%C3%B1as"
-                                    className={dropdownStyles.menuLink}
-                                    onClick={() => setActiveDropdown("")}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Campañas
-                                  </a>
-                                </li>
-                                <li>
-                                  <a
-                                    href="https://www.hyundai.com.ec/repuestos"
-                                    className={dropdownStyles.menuLink}
-                                    onClick={() => setActiveDropdown("")}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Consulta tus repuestos
-                                  </a>
-                                </li>
-                              </ul>
+                              <a
+                                href="https://www.hyundai.com.ec/citas-taller"
+                                className={dropdownStyles.menuLink}
+                                onClick={() => setActiveDropdown("")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Agenda tu cita
+                              </a>
                             </li>
                             <li>
-                              <h4 className="text-white font-medium mb-2">
-                                MULTIMARCA
-                              </h4>
-                              <ul className="space-y-2 ml-4">
-                                <li>
-                                  <Link
-                                    href="https://wa.me/593999454243?text=Quiero%20agendar%20una%20cita%20con%20taller"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={dropdownStyles.menuLink}
-                                    onClick={() => setActiveDropdown("")}
-                                  >
-                                    Agenda tu cita
-                                  </Link>
-                                </li>
-                              </ul>
+                              <a
+                                href="https://www.hyundai.com.ec/campañas"
+                                className={dropdownStyles.menuLink}
+                                onClick={() => setActiveDropdown("")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Campañas
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="https://www.hyundai.com.ec/repuestos"
+                                className={dropdownStyles.menuLink}
+                                onClick={() => setActiveDropdown("")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Consulta tus repuestos
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className={dropdownStyles.servicesMenuLeft}>
+                          <h3 className={dropdownStyles.sectionTitle}>
+                            Multimarca
+                          </h3>
+                          <ul className="space-y-4">
+                            <li>
+                              <Link
+                                href="https://wa.me/593999454243?text=Quiero%20agendar%20una%20cita%20con%20taller"
+                                className={dropdownStyles.menuLink}
+                                onClick={() => setActiveDropdown("")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Agenda tu cita
+                              </Link>
                             </li>
                           </ul>
                         </div>
@@ -424,7 +415,7 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Nosotros - Enlace simple */}
+              {/* Nosotros */}
               <div>
                 <Link
                   href="/#about-us"
@@ -441,6 +432,8 @@ const Navbar = () => {
                   NOSOTROS
                 </Link>
               </div>
+
+              {/* Referente-GO */}
               <div>
                 <Link
                   href="/#referente-go"
@@ -454,9 +447,11 @@ const Navbar = () => {
                   }}
                   className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
                 >
-                  REFERENTE-GO
+                  REFERERIDOS
                 </Link>
               </div>
+
+              {/* Noticias */}
               <div>
                 <Link
                   href="/noticias"
@@ -465,6 +460,8 @@ const Navbar = () => {
                   NOTICIAS
                 </Link>
               </div>
+
+              {/* Promociones */}
               <div>
                 <Link
                   href="/promociones"
@@ -477,12 +474,12 @@ const Navbar = () => {
 
             {/* Right Side Navigation */}
             <div
-              className="hidden lg:flex items-center pr-2 md:pr-4"
-              style={{ position: "absolute", right: "0" }}
+              className="hidden lg:flex items-center"
+              style={{ position: "absolute", right: "20px" }}
             >
               <Link
                 href="/proteccion-datos"
-                className="text-gray-300 hover:text-white transition-colors text-sm"
+                className="text-gray-300 hover:text-white transition-colors text-sm whitespace-nowrap"
               >
                 Política privacidad de datos
               </Link>
@@ -519,46 +516,126 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div
-            className={`${dropdownStyles.mobileMenu} ${
-              isMenuOpen
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 -translate-y-2"
-            }`}
-          >
-            <div className={dropdownStyles.mobileMenuContainer}>
-              <nav className="flex flex-col space-y-3">
-                {/* Mobile Showroom */}
-                <div>
-                  <button
-                    className={dropdownStyles.mobileButton}
-                    onClick={() => toggleDropdown("mobile-showroom")}
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div
+          className={`${dropdownStyles.mobileMenu} ${
+            isMenuOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-2"
+          }`}
+        >
+          <div className={dropdownStyles.mobileMenuContainer}>
+            <nav className="flex flex-col space-y-3">
+              {/* Mobile Showroom */}
+              <div>
+                <button
+                  className={dropdownStyles.mobileButton}
+                  onClick={() => toggleDropdown("mobile-showroom")}
+                >
+                  <span>SHOWROOM</span>
+                  <svg
+                    className={`w-4 h-4 transform transition-transform ${
+                      activeDropdown === "mobile-showroom" ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <span>SHOWROOM</span>
-                    <svg
-                      className={`w-4 h-4 transform transition-transform ${
-                        activeDropdown === "mobile-showroom" ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </button>
-                  {activeDropdown === "mobile-showroom" && (
-                    <div className={dropdownStyles.mobileDropdown}>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+
+                {activeDropdown === "mobile-showroom" && (
+                  <div className={dropdownStyles.mobileDropdown}>
+                    <div className="mb-6">
+                      <h3 className="text-sm font-medium text-gray-400 mb-3 uppercase tracking-wider">
+                        Hyundai
+                      </h3>
                       <a
                         href="https://hyundai.com.ec/"
+                        className="block text-white hover:text-[#ffe600] transition-colors text-base font-medium"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                          setActiveDropdown("");
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        Ver catálogo →
+                      </a>
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-400 mb-3 uppercase tracking-wider">
+                        Nuestras Marcas
+                      </h3>
+                      <div className="space-y-4">
+                        <Link
+                          href="/showroom"
+                          className="block text-white hover:text-[#ffe600] transition-colors text-base font-medium"
+                          onClick={() => {
+                            setActiveDropdown("");
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          Ver catálogo →
+                        </Link>
+
+                        <div className="space-y-3 pt-2">
+                          <span className="block text-gray-500 text-base font-medium">DFSK</span>
+                          <span className="block text-gray-500 text-base font-medium">Great Wall</span>
+                          <span className="block text-gray-500 text-base font-medium">GWM</span>
+                          <span className="block text-gray-500 text-base font-medium">Haval</span>
+                          <span className="block text-gray-500 text-base font-medium">KYC</span>
+                          <span className="block text-gray-500 text-base font-medium">Soueast</span>
+                          <span className="block text-gray-500 text-base font-medium">SWM</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Postventa */}
+              <div>
+                <button
+                  className={dropdownStyles.mobileButton}
+                  onClick={() => toggleDropdown("mobile-postventa")}
+                >
+                  <span>POSTVENTA</span>
+                  <svg
+                    className={`w-4 h-4 transform transition-transform ${
+                      activeDropdown === "mobile-postventa" ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+
+                {activeDropdown === "mobile-postventa" && (
+                  <div className={dropdownStyles.mobileDropdown}>
+                    <div className="mb-4">
+                      <h4 className="text-white font-medium mb-2">HYUNDAI</h4>
+                      <a
+                        href="https://www.hyundai.com.ec/citas-taller"
                         className="block text-gray-300 hover:text-white transition-colors py-2"
                         onClick={() => {
                           setActiveDropdown("");
@@ -567,164 +644,129 @@ const Navbar = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Hyundai
+                        Agenda tu cita
                       </a>
-                      <Link
-                        href="/showroom"
+                      <a
+                        href="https://www.hyundai.com.ec/campañas"
                         className="block text-gray-300 hover:text-white transition-colors py-2"
                         onClick={() => {
                           setActiveDropdown("");
                           setIsMenuOpen(false);
                         }}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        Multimarca
-                      </Link>
+                        Campañas
+                      </a>
+                      <a
+                        href="https://www.hyundai.com.ec/repuestos"
+                        className="block text-gray-300 hover:text-white transition-colors py-2"
+                        onClick={() => {
+                          setActiveDropdown("");
+                          setIsMenuOpen(false);
+                        }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Consulta tus repuestos
+                      </a>
                     </div>
-                  )}
-                </div>
-
-                {/* Mobile Postventa */}
-                <div>
-                  <button
-                    className={dropdownStyles.mobileButton}
-                    onClick={() => toggleDropdown("mobile-postventa")}
-                  >
-                    <span>POSTVENTA</span>
-                    <svg
-                      className={`w-4 h-4 transform transition-transform ${
-                        activeDropdown === "mobile-postventa"
-                          ? "rotate-180"
-                          : ""
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </button>
-                  {activeDropdown === "mobile-postventa" && (
-                    <div className={dropdownStyles.mobileDropdown}>
-                      <div className="mb-4">
-                        <h4 className="text-white font-medium mb-2">HYUNDAI</h4>
-                        <a
-                          href="https://www.hyundai.com.ec/citas-taller"
-                          className="block text-gray-300 hover:text-white transition-colors py-2"
-                          onClick={() => {
-                            setActiveDropdown("");
-                            setIsMenuOpen(false);
-                          }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Agenda tu cita
-                        </a>
-                        <a
-                          href="https://www.hyundai.com.ec/campa%C3%B1as"
-                          className="block text-gray-300 hover:text-white transition-colors py-2"
-                          onClick={() => {
-                            setActiveDropdown("");
-                            setIsMenuOpen(false);
-                          }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Campañas
-                        </a>
-                        <a
-                          href="https://www.hyundai.com.ec/repuestos"
-                          className="block text-gray-300 hover:text-white transition-colors py-2"
-                          onClick={() => {
-                            setActiveDropdown("");
-                            setIsMenuOpen(false);
-                          }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Consulta tus repuestos
-                        </a>
-                      </div>
-                      <div>
-                        <h4 className="text-white font-medium mb-2">
-                          MULTIMARCA
-                        </h4>
-                        <ul className="space-y-2 ml-4">
-                          <li>
-                            <Link
-                              href="https://wa.me/593999454243?text=Quiero%20agendar%20una%20cita%20con%20taller"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={dropdownStyles.menuLink}
-                              onClick={() => setActiveDropdown("")}
-                            >
-                              Agenda tu cita
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
+                    <div>
+                      <h4 className="text-white font-medium mb-2">
+                        MULTIMARCA
+                      </h4>
+                      <ul className="space-y-2 ml-4">
+                        <li>
+                          <Link
+                            href="https://wa.me/593999454243?text=Quiero%20agendar%20una%20cita%20con%20taller"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={dropdownStyles.menuLink}
+                            onClick={() => setActiveDropdown("")}
+                          >
+                            Agenda tu cita
+                          </Link>
+                        </li>
+                      </ul>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
+              </div>
 
-                {/* Mobile Nosotros */}
-                <div>
-                  <Link
-                    href="/#about-us"
-                    scroll={false}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const element = document.getElementById("about-us");
-                      if (element) {
-                        element.scrollIntoView({ behavior: "smooth" });
-                      }
-                      setIsMenuOpen(false);
-                    }}
-                    className={dropdownStyles.mobileButton}
-                  >
-                    <span>NOSOTROS</span>
-                  </Link>
-                </div>
+              {/* Mobile Nosotros */}
+              <div>
+                <Link
+                  href="/#about-us"
+                  scroll={false}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById("about-us");
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                    }
+                    setIsMenuOpen(false);
+                  }}
+                  className={dropdownStyles.mobileButton}
+                >
+                  <span>NOSOTROS</span>
+                </Link>
+              </div>
 
-                {/* Mobile Referente-GO */}
-                <div>
-                  <Link
-                    href="/#referente-go"
-                    scroll={false}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const element = document.getElementById("referente-go");
-                      if (element) {
-                        element.scrollIntoView({ behavior: "smooth" });
-                      }
-                      setIsMenuOpen(false);
-                    }}
-                    className={dropdownStyles.mobileButton}
-                  >
-                    <span>REFERENTE-GO</span>
-                  </Link>
-                </div>
+              {/* Mobile Referente-GO */}
+              <div>
+                <Link
+                  href="/#referente-go"
+                  scroll={false}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById("referente-go");
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                    }
+                    setIsMenuOpen(false);
+                  }}
+                  className={dropdownStyles.mobileButton}
+                >
+                  <span>REFERIDOS</span>
+                </Link>
+              </div>
 
-                {/* Mobile: Contact & Policy Links */}
-                <div className="mt-4 pt-4 border-t border-[#292C24] space-y-3">
-                  <Link
-                    href="/proteccion-datos"
-                    className="block text-gray-300 hover:text-white transition-colors py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Política privacidad de datos
-                  </Link>
-                </div>
-              </nav>
-            </div>
+              {/* Mobile Noticias */}
+              <div>
+                <Link
+                  href="/noticias"
+                  className={dropdownStyles.mobileButton}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span>NOTICIAS</span>
+                </Link>
+              </div>
+
+              {/* Mobile Promociones */}
+              <div>
+                <Link
+                  href="/promociones"
+                  className={dropdownStyles.mobileButton}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span>PROMOCIONES</span>
+                </Link>
+              </div>
+
+              {/* Mobile: Contact & Policy Links */}
+              <div className="mt-4 pt-4 border-t border-[#292C24] space-y-3">
+                <Link
+                  href="/proteccion-datos"
+                  className="block text-gray-300 hover:text-white transition-colors py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Política privacidad de datos
+                </Link>
+              </div>
+            </nav>
           </div>
-        )}
-      </header>
+        </div>
+      )}
     </>
   );
 };

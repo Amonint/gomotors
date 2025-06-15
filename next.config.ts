@@ -10,7 +10,12 @@ const nextConfig: NextConfig = {
         pathname: '/v0/b/**',
       },
     ],
-  }
+    unoptimized: true,
+  },
+  output: 'export',
+  distDir: 'out',
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
 };
 
 export default nextConfig;

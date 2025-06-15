@@ -1,9 +1,5 @@
-import DataProtectionForm from "@/components/DataProtectionForm";
+import PrivacyPolicy from "@/components/PrivacyPolicy";
 
 export default function ProteccionDatosPage() {
-  return (
-    <main className="min-h-screen bg-gray-50">
-      <DataProtectionForm />
-    </main>
-  );
+  return <PrivacyPolicy />;
 } 

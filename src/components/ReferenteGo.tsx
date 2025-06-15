@@ -141,21 +141,22 @@ const ReferenteGo = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-6 mt-8">
-                    <div className="border-t-2 border-neutral-700 pt-4">
-                      <span className="text-4xl font-light text-white">
-                        $150
-                      </span>
-                      <p className="text-sm text-neutral-400 mt-2">
-                        Por cada referido que compre
-                      </p>
-                    </div>
-                    <div className="border-t-2 border-neutral-700 pt-4">
-                      <span className="text-4xl font-light text-white">0%</span>
-                      <p className="text-sm text-neutral-400 mt-2">
-                        Complicaciones para participar
-                      </p>
-                    </div>
-                  </div>
+  <div className="border-t-2 border-neutral-700 pt-4">
+    <span className="text-4xl font-light text-white">
+      Hasta $150
+    </span>
+    <p className="text-sm text-neutral-400 mt-2">
+      Por cada referido que compre
+    </p>
+  </div>
+  <div className="border-t-2 border-neutral-700 pt-4">
+    <span className="text-4xl font-light text-white">0%</span>
+    <p className="text-sm text-neutral-400 mt-2">
+      Complicaciones para participar
+    </p>
+  </div>
+</div>
+
                 </div>
               </motion.div>
             </motion.div>
