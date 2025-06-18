@@ -470,6 +470,16 @@ const Navbar = () => {
                   PROMOCIONES
                 </Link>
               </div>
+
+              {/* Trabaja con nosotros */}
+              <div>
+                <Link
+                  href="/trabaja-con-nosotros"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                >
+                  TRABAJA CON NOSOTROS
+                </Link>
+              </div>
             </nav>
 
             {/* Right Side Navigation */}
@@ -752,6 +762,15 @@ const Navbar = () => {
                   <span>PROMOCIONES</span>
                 </Link>
               </div>
+              <div>
+                <Link
+                  href="/trabaja-con-nosotros"
+                  className={dropdownStyles.mobileButton}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span>TRABAJA CON NOSOTROS</span>
+                </Link>
+              </div>
 
               {/* Mobile: Contact & Policy Links */}
               <div className="mt-4 pt-4 border-t border-[#292C24] space-y-3">
@@ -762,6 +781,7 @@ const Navbar = () => {
                 >
                   Política privacidad de datos
                 </Link>
+                
               </div>
             </nav>
           </div>

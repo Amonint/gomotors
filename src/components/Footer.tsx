@@ -373,13 +373,13 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row md:space-x-10 space-y-2 md:space-y-0 text-xs text-gray-400">
             <div className="flex space-x-5">
               <Link
-                href="/terms"
+                href="/cookies"
                 className="hover:text-white transition-colors"
               >
                 Términos y Condiciones
               </Link>
               <Link
-                href="/privacy"
+                href="/proteccion-datos"
                 className="hover:text-white transition-colors"
               >
                 Política de Privacidad

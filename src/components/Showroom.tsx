@@ -13,8 +13,8 @@ const brandLogos = [
   { name: "Soueast", img: "/images/brands/Soueast_logo.png" },
   { name: "SWM", img: "/images/brands/SWM_red_RGB.png" },
   { name: "DFSK", img: "/images/brands/DFSK.png" },
-  { name: "GWM", img: "/images/brands/gwm-Logo.png" },
-  { name: "Kyc", img: "/images/brands/kyc-Logo.png" },
+  { name: "GWM", img: "/images/brands/gwm-logo.png" },
+  { name: "Kyc", img: "/images/brands/kyc-logo.png" },
 ];
 
 const benefits = [

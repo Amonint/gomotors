@@ -8,6 +8,8 @@ import ShowroomFilter from "@/components/ShowroomFilter";
 import VehicleCard from "@/components/VehicleCard";
 import VehicleDetailClient from "@/components/VehicleDetailClient";
 import { Vehicle, getVehicles, getVehicleById } from "@/services/vehicleService";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 interface ActiveFilters {
   brands: string[];
@@ -168,6 +170,14 @@ const ShowroomPage = () => {
 
   return (
     <section className="w-full bg-black min-h-screen text-white py-16">
+      <div className="absolute top-8 left-8">
+            <Link
+              href="/"
+              className="flex items-center text-white bg-black px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
+            >
+              <FaArrowLeft className="mr-2 text-white" /> Volver
+            </Link>
+          </div>
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
