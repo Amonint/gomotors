@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FaArrowLeft } from "react-icons/fa";
+import Link from "next/link";
 
 interface ContratacionFormData {
   name: string;
@@ -67,6 +69,14 @@ export function ContratacionForm() {
   return (
     <div className="bg-neutral-100 min-h-screen">
       <div className="w-full bg-[#F5F5F5] border-b border-neutral-300">
+      <div className="absolute top-8 left-8">
+            <Link
+              href="/proteccion-datos"
+              className="flex items-center text-white bg-black px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
+            >
+              <FaArrowLeft className="mr-2 text-white" /> Volver
+            </Link>
+          </div>
         <div className="max-w-[1600px] mx-auto px-6 py-12 md:py-16 lg:py-20">
           <div className="flex flex-col items-center md:flex-row md:items-end md:justify-between">
             <div>

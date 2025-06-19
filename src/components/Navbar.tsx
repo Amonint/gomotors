@@ -226,11 +226,11 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation - Centered */}
-            <nav className="hidden lg:flex items-center space-x-1.5 mx-auto">
+            <nav className="hidden lg:flex items-center space-x-2 xl:space-x-4 mx-auto">
               {/* Showroom */}
               <div>
                 <button
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                   onClick={() => toggleDropdown("showroom")}
                   onMouseEnter={() => handleMouseEnter("showroom")}
                 >
@@ -316,7 +316,7 @@ const Navbar = () => {
               {/* Postventa */}
               <div>
                 <button
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                   onClick={() => toggleDropdown("postventa")}
                   onMouseEnter={() => handleMouseEnter("postventa")}
                 >
@@ -427,7 +427,7 @@ const Navbar = () => {
                       element.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                 >
                   NOSOTROS
                 </Link>
@@ -445,9 +445,9 @@ const Navbar = () => {
                       element.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                 >
-                  REFERERIDOS
+                  GANA REFERIDOS
                 </Link>
               </div>
 
@@ -455,7 +455,7 @@ const Navbar = () => {
               <div>
                 <Link
                   href="/noticias"
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                 >
                   NOTICIAS
                 </Link>
@@ -465,7 +465,7 @@ const Navbar = () => {
               <div>
                 <Link
                   href="/promociones"
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                 >
                   PROMOCIONES
                 </Link>
@@ -475,7 +475,7 @@ const Navbar = () => {
               <div>
                 <Link
                   href="/trabaja-con-nosotros"
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-base font-medium px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
                 >
                   TRABAJA CON NOSOTROS
                 </Link>
@@ -489,7 +489,7 @@ const Navbar = () => {
             >
               <Link
                 href="/proteccion-datos"
-                className="text-gray-300 hover:text-white transition-colors text-sm whitespace-nowrap"
+                className="text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-sm whitespace-nowrap"
               >
                 Política privacidad de datos
               </Link>

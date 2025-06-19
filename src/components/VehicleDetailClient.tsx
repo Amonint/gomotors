@@ -18,6 +18,7 @@ import {
   FaCar,
 } from "react-icons/fa";
 import { Vehicle } from "@/services/vehicleService";
+import AccesoriosShowroomModule from "./AccesoriosShowroomModule";
 
 interface VehicleDetailClientProps {
   vehicle: Vehicle;
@@ -108,10 +109,10 @@ const VehicleDetailClient = ({
 
           {/* Tabs */}
           <div className="border-b border-neutral-700 mb-6">
-            <div className="flex space-x-8">
+            <div className="flex space-x-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab("specs")}
-                className={`pb-4 px-1 ${
+                className={`pb-4 px-1 whitespace-nowrap ${
                   activeTab === "specs"
                     ? "border-b-2 border-white text-white"
                     : "text-neutral-400 hover:text-white"
@@ -121,7 +122,7 @@ const VehicleDetailClient = ({
               </button>
               <button
                 onClick={() => setActiveTab("features")}
-                className={`pb-4 px-1 ${
+                className={`pb-4 px-1 whitespace-nowrap ${
                   activeTab === "features"
                     ? "border-b-2 border-white text-white"
                     : "text-neutral-400 hover:text-white"
@@ -131,13 +132,24 @@ const VehicleDetailClient = ({
               </button>
               <button
                 onClick={() => setActiveTab("gallery")}
-                className={`pb-4 px-1 ${
+                className={`pb-4 px-1 whitespace-nowrap ${
                   activeTab === "gallery"
                     ? "border-b-2 border-white text-white"
                     : "text-neutral-400 hover:text-white"
                 }`}
               >
                 Galería
+              </button>
+              <button
+                onClick={() => setActiveTab("accessories")}
+                className={`pb-4 px-1 whitespace-nowrap ${
+                  activeTab === "accessories"
+                    ? "border-b-2 border-white text-white"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                
+                Accesorios
               </button>
             </div>
           </div>
@@ -348,6 +360,20 @@ const VehicleDetailClient = ({
                 ))}
             </div>
           )}
+
+          {activeTab === "accessories" && (
+            <div className="w-full">
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold mb-2 flex items-center">
+                  Accesorios Disponibles
+                </h3>
+                <p className="text-neutral-300">
+                  Descubre los accesorios originales disponibles para complementar tu vehículo
+                </p>
+              </div>
+              <AccesoriosShowroomModule />
+            </div>
+          )}
         </div>
 
         {/* Botón CTA WhatsApp */}
@@ -360,7 +386,7 @@ const VehicleDetailClient = ({
             {vehicle.marca} {vehicle.modelo}
           </p>
           <a
-            href={`https://wa.me/+1234567890?text=Hola, me interesa el ${vehicle.marca} ${vehicle.modelo} ${vehicle.año}`}
+            href={`https://wa.me/593999454243?text=Hola, me interesa el ${vehicle.marca} ${vehicle.modelo} ${vehicle.año}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200"

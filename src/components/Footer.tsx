@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { FaInstagramSquare, FaMapMarkerAlt, FaFacebookSquare } from "react-icons/fa";
+
+
+
 
 // Add proper Google Maps type declarations
 declare global {
@@ -31,17 +33,24 @@ export const Footer = () => {
   const loadedRef = useRef(false);
   const scriptLoadedRef = useRef(false);
 
+
   useEffect(() => {
     if (loadedRef.current) return;
     loadedRef.current = true;
 
     const loadGoogleMaps = () => {
       if (
-        (hyundaiMapRef.current || multimarcaMapRef.current || yantzazaMapRef.current) &&
+        (hyundaiMapRef.current ||
+          multimarcaMapRef.current ||
+          yantzazaMapRef.current) &&
         typeof window !== "undefined"
       ) {
         // Verificar si el script ya está cargado
-        if (document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]')) {
+        if (
+          document.querySelector(
+            'script[src*="maps.googleapis.com/maps/api/js"]'
+          )
+        ) {
           if (window.google && window.google.maps) {
             initMap();
           }
@@ -66,8 +75,14 @@ export const Footer = () => {
     };
 
     const initMap = () => {
-      const hyundaiLocation = { lat: -3.977638239161408, lng: -79.20404956911804};
-      const multimarcaLocation = { lat: -3.977603460086567, lng: -79.2266462593288};
+      const hyundaiLocation = {
+        lat: -3.977638239161408,
+        lng: -79.20404956911804,
+      };
+      const multimarcaLocation = {
+        lat: -3.977603460086567,
+        lng: -79.2266462593288,
+      };
       const yantzazaLocation = {
         lat: -3.7963305009051984,
         lng: -78.75708430350988,
@@ -84,22 +99,22 @@ export const Footer = () => {
       };
 
       if (hyundaiMapRef.current) {
-        const hyundaiMap = new window.google.maps.Map(
-          hyundaiMapRef.current,
-          {
-            ...mapOptions,
-            center: hyundaiLocation,
-          }
-        );
+        const hyundaiMap = new window.google.maps.Map(hyundaiMapRef.current, {
+          ...mapOptions,
+          center: hyundaiLocation,
+        });
 
         const hyundaiMarker = new window.google.maps.Marker({
           position: hyundaiLocation,
           map: hyundaiMap,
-          title: "GoMotors-HYUNDAI"
+          title: "GoMotors-HYUNDAI",
         });
 
         hyundaiMarker.addListener("click", () => {
-          window.open(`https://www.google.com/maps?q=${hyundaiLocation.lat},${hyundaiLocation.lng}`, "_blank");
+          window.open(
+            `https://www.google.com/maps?q=${hyundaiLocation.lat},${hyundaiLocation.lng}`,
+            "_blank"
+          );
         });
       }
 
@@ -115,31 +130,34 @@ export const Footer = () => {
         const multimarcaMarker = new window.google.maps.Marker({
           position: multimarcaLocation,
           map: multimarcaMap,
-          title: "GoMotors-Multimarca"
+          title: "GoMotors-Multimarca",
         });
 
         multimarcaMarker.addListener("click", () => {
-          window.open(`https://www.google.com/maps?q=${multimarcaLocation.lat},${multimarcaLocation.lng}`, "_blank");
+          window.open(
+            `https://www.google.com/maps?q=${multimarcaLocation.lat},${multimarcaLocation.lng}`,
+            "_blank"
+          );
         });
       }
 
       if (yantzazaMapRef.current) {
-        const yantzazaMap = new window.google.maps.Map(
-          yantzazaMapRef.current,
-          {
-            ...mapOptions,
-            center: yantzazaLocation,
-          }
-        );
+        const yantzazaMap = new window.google.maps.Map(yantzazaMapRef.current, {
+          ...mapOptions,
+          center: yantzazaLocation,
+        });
 
         const yantzazaMarker = new window.google.maps.Marker({
           position: yantzazaLocation,
           map: yantzazaMap,
-          title: "GoMotors-Yantzaza"
+          title: "GoMotors-Yantzaza",
         });
 
         yantzazaMarker.addListener("click", () => {
-          window.open(`https://www.google.com/maps?q=${yantzazaLocation.lat},${yantzazaLocation.lng}`, "_blank");
+          window.open(
+            `https://www.google.com/maps?q=${yantzazaLocation.lat},${yantzazaLocation.lng}`,
+            "_blank"
+          );
         });
       }
     };
@@ -147,10 +165,12 @@ export const Footer = () => {
     loadGoogleMaps();
   }, []);
 
+
+
   return (
-    <footer className="bg-[#0A0A0A] text-white py-10 md:py-14">
-      <div className="container mx-auto px-4 md:px-6">
-        {/* Navegación principal */}
+    <footer className="bg-[#0A0A0A] text-white py-10 md:py-1">
+      <div className="container mx-auto px-4 md:px-6 py-10 md:py-10">
+        {/* Sección de ubicaciones con mapas */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-24">
           {/* Columna 1 - Hyundai */}
           <div className="md:col-span-4 space-y-6">
@@ -163,7 +183,6 @@ export const Footer = () => {
                   Ventas Hyundai
                 </h4>
                 <div className="flex items-start space-x-2">
-                  <FaMapMarkerAlt className="text-[#ffe600] mt-1" />
                   <p className="text-gray-300 text-sm">
                     Av. 8 de Diciembre e Isidro Ayora, frente al Terminal
                     Terrestre
@@ -171,7 +190,7 @@ export const Footer = () => {
                 </div>
                 <div
                   ref={hyundaiMapRef}
-                  className="w-full h-[200px] mt-2"
+                  className="w-full h-[200px] mt-2 rounded-lg overflow-hidden shadow-lg"
                 ></div>
               </div>
               <div className="space-y-2">
@@ -179,7 +198,6 @@ export const Footer = () => {
                   Posventa Hyundai
                 </h4>
                 <div className="flex items-start space-x-2">
-                  <FaMapMarkerAlt className="text-[#ffe600] mt-1" />
                   <p className="text-gray-300 text-sm">
                     Av. 8 de Diciembre e Isidro Ayora, entrada por calle Machala
                   </p>
@@ -199,14 +217,13 @@ export const Footer = () => {
                   Ventas Multimarca
                 </h4>
                 <div className="flex items-start space-x-2">
-                  <FaMapMarkerAlt className="text-[#ffe600] mt-1" />
                   <p className="text-gray-300 text-sm">
                     Sector Belén Km 2 Vía a Catamayo
                   </p>
                 </div>
                 <div
                   ref={multimarcaMapRef}
-                  className="w-full h-[200px] mt-2"
+                  className="w-full h-[200px] mt-2 rounded-lg overflow-hidden shadow-lg"
                 ></div>
               </div>
               <div className="space-y-2">
@@ -214,7 +231,6 @@ export const Footer = () => {
                   Posventa Multimarca
                 </h4>
                 <div className="flex items-start space-x-2">
-                  <FaMapMarkerAlt className="text-[#ffe600] mt-1" />
                   <p className="text-gray-300 text-sm">
                     Sector Belén Km 2 Vía a Catamayo
                   </p>
@@ -222,10 +238,11 @@ export const Footer = () => {
               </div>
             </div>
           </div>
+
           {/* Columna 3 - Yantzaza */}
           <div className="md:col-span-4 space-y-6">
             <h3 className="text-gray-400 uppercase text-sm font-medium">
-              YANTZAZA-ZAMORA 
+              YANTZAZA-ZAMORA
             </h3>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -233,157 +250,273 @@ export const Footer = () => {
                   Ventas Yantzaza
                 </h4>
                 <div className="flex items-start space-x-2">
-                  <FaMapMarkerAlt className="text-[#ffe600] mt-1" />
                   <p className="text-gray-300 text-sm">
                     Vía a el Pangui, junto a IASA
                   </p>
                 </div>
                 <div
                   ref={yantzazaMapRef}
-                  className="w-full h-[200px] mt-2"
+                  className="w-full h-[200px] mt-2 rounded-lg overflow-hidden shadow-lg"
                 ></div>
               </div>
-              
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Título Get In Touch y línea separadora */}
-        <div className="mb-8 md:mb-16">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-4">
-            Contáctanos
-          </h2>
-          <div className="h-px w-full bg-gray-800"></div>
-        </div>
-
-        {/* Información de contacto y redes sociales */}
-        <div className="flex flex-col md:flex-row justify-between mb-14 md:mb-28">
-          {/* Información de contacto */}
-          <div className="text-left space-y-3 mb-5 md:mb-0">
-            <p className="text-white text-base">099-945-4243</p>
-            <p className="text-white text-base">(07) 2731143</p>
-            <p className="text-white text-base">
-              recepcionloja@gomotors.com.ec
-            </p>
-            <p className="text-white text-base">Loja, Ecuador</p>
-          </div>
-
-          {/* Redes sociales */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* GOmotors Hyundai */}
-            <div className="space-y-2">
-              <h4 className="text-white text-sm font-medium">GOmotors Hyundai</h4>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.instagram.com/gomotors_hyundai/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram Hyundai"
-                >
-                  <FaInstagramSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-                <a
-                  href="https://www.facebook.com/gomotorshyundai1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook Hyundai"
-                >
-                  <FaFacebookSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-              </div>
-            </div>
-
-            {/* GOmotors Multimarcas */}
-            <div className="space-y-2">
-              <h4 className="text-white text-sm font-medium">GOmotors Multimarcas</h4>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.instagram.com/gomotors_greatwall/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram Multimarcas"
-                >
-                  <FaInstagramSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-                <a
-                  href="https://www.facebook.com/IOmotorsGreatWall"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook Multimarcas"
-                >
-                  <FaFacebookSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-              </div>
-            </div>
-
-            {/* GOmotors Yantzaza */}
-            <div className="space-y-2">
-              <h4 className="text-white text-sm font-medium">GOmotors Yantzaza</h4>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.instagram.com/gomotors_yantzaza/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram Yantzaza"
-                >
-                  <FaInstagramSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-                <a
-                  href="https://www.facebook.com/gomotorsyantzaza"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook Yantzaza"
-                >
-                  <FaFacebookSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-              </div>
-            </div>
-
-            {/* GOmotors Multimarcas Posventa */}
-            <div className="space-y-2">
-              <h4 className="text-white text-sm font-medium">Posventa Multimarcas</h4>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.instagram.com/gomotors_multimarcas/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram Posventa"
-                >
-                  <FaInstagramSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-                <a
-                  href="https://www.facebook.com/tmgomotors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook Posventa"
-                >
-                  <FaFacebookSquare className="w-6 h-6 text-[#FFFF] hover:text-gray-300 transition-colors" />
-                </a>
-              </div>
-            </div>
+      {/* FOOTER ESTILO OSMO SUPPLY */}
+      <div className="relative overflow-hidden border-t border-gray-800 bg-black">
+        {/* Large background text */}
+        <div
+          className="absolute left-0 pointer-events-none overflow-hidden"
+          style={{ bottom: "-1rem" }}
+        >
+          <div
+            className="text-[8rem] sm:text-[10rem] md:text-[12rem] lg:text-[16rem] xl:text-[20rem] font-bold text-white/10 select-none tracking-tight"
+            style={{ lineHeight: "0.8" }}
+          >
+            <div>GO</div>
           </div>
         </div>
 
-        {/* Información legal */}
-        <div className="pt-6 mb-3">
-          <p className="text-xs text-gray-400 mb-3">
-            &copy; 2024 GoMotors. Todos los derechos reservados.
-          </p>
+        <div className="relative z-10 w-full px-6 py-16">
+          {/* Main footer content - 4 columns */}
+          <div className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 xl:gap-16 mb-16 justify-items-start lg:justify-items-center">
+            {/* SITEMAP Column */}
+            <div className="text-left">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">
+                SECCIONES
+              </h3>
+              <ul className="space-y-4">
+                <li>
+                  <Link
+                    href="/"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/showroom"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Showroom
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/#about-us"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Nosotros
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/#referente-go"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Referidos
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/noticias"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Noticias
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/promociones"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Promociones
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/trabaja-con-nosotros"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Trabaja con nosotros
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          <div className="flex flex-col md:flex-row md:space-x-10 space-y-2 md:space-y-0 text-xs text-gray-400">
-            <div className="flex space-x-5">
-              <Link
-                href="/cookies"
-                className="hover:text-white transition-colors"
-              >
-                Términos y Condiciones
-              </Link>
-              <Link
-                href="/proteccion-datos"
-                className="hover:text-white transition-colors"
-              >
-                Política de Privacidad
-              </Link>
+            {/* COMPANY Column */}
+            <div className="text-left">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">
+                POLITICAS Y LEGAL
+              </h3>
+              <ul className="space-y-4">
+                <li>
+                  <Link
+                    href="/cookies"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Términos y Condiciones
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/proteccion-datos"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Política de Privacidad
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/cookies"
+                    className="text-white hover:text-gray-300 transition-colors"
+                  >
+                    Política de Cookies
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* CONTACT Column */}
+            <div className="text-left">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">
+                CONTACTO
+              </h3>
+              <ul className="space-y-4">
+                <li className="text-white">099-945-4243</li>
+                <li className="text-white">(07) 2731143</li>
+                <li className="text-white">recepcionloja@gomotors.com.ec</li>
+                <li className="text-white">Loja, Ecuador</li>
+              </ul>
+            </div>
+
+            {/* SOCIALS Column */}
+            <div className="text-left">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6">
+                Redes SOCIALES
+              </h3>
+
+              {/* Facebook Section */}
+              <div className="mb-8">
+                <div className="flex items-center space-x-2 mb-4">
+                  
+                  <h4 className="text-white font-semibold uppercase">
+                    FACEBOOK
+                  </h4>
+                </div>
+                <ul className="space-y-2 ml-2">
+                  <li>
+                    <a
+                      href="https://www.facebook.com/gomotorshyundai1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      GOmotors Hyundai
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.facebook.com/IOmotorsGreatWall"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      GOmotors Multimarcas
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.facebook.com/gomotorsyantzaza"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      GOmotors Yantzaza
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.facebook.com/tmgomotors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      Posventa Multimarcas
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Instagram Section */}
+              <div>
+                <div className="flex items-center space-x-2 mb-4">
+                
+                  <h4 className="text-white font-semibold uppercase">
+                    INSTAGRAM
+                  </h4>
+                </div>
+                <ul className="space-y-2 ml-2">
+                  <li>
+                    <a
+                      href="https://www.instagram.com/gomotors_hyundai/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      GOmotors Hyundai
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.instagram.com/gomotors_greatwall/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      GOmotors Multimarcas
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.instagram.com/gomotors_yantzaza/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      GOmotors Yantzaza
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.instagram.com/gomotors_multimarcas/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-white transition-colors text-sm"
+                    >
+                      Posventa Multimarcas
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          {/* Bottom section */}
+          <div className="pt-8 w-full">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-6 lg:space-y-0">
+              {/* Copyright */}
+              <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-8 space-y-4 lg:space-y-0"></div>
+
+              {/* Designer credit */}
+              <div className="text-sm text-gray-400 uppercase">
+                ©2025 GoMotors. Todos los derechos reservados.
+              </div>
             </div>
           </div>
         </div>
