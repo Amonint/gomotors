@@ -14,6 +14,7 @@ interface FormData {
   referredLastName: string;
   referredPhone: string;
   referredOccupation: string;
+  acceptTerms: boolean;
 }
 
 interface FormErrors {
@@ -31,6 +32,7 @@ export default function ReferenteGoPage() {
     referredLastName: "",
     referredPhone: "",
     referredOccupation: "",
+    acceptTerms: false,
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -85,6 +87,7 @@ export default function ReferenteGoPage() {
           referredLastName: "",
           referredPhone: "",
           referredOccupation: "",
+          acceptTerms: false,
         });
       } else {
         setSubmitStatus("error");
@@ -110,6 +113,14 @@ export default function ReferenteGoPage() {
         referrerId: undefined,
       }));
     }
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
   };
 
   const handleCedulaBlur = () => {
@@ -291,11 +302,37 @@ export default function ReferenteGoPage() {
               </div>
             </div>
 
+            {/* Términos y Condiciones */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
+              <div className="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="acceptTerms"
+                  name="acceptTerms"
+                  checked={formData.acceptTerms}
+                  onChange={handleCheckboxChange}
+                  required
+                  className="h-4 w-4 text-black focus:ring-neutral-500 border-neutral-300 rounded mt-1"
+                />
+                <label htmlFor="acceptTerms" className="text-sm text-neutral-700">
+                  Acepto los{" "}
+                  <Link
+                    href="/proteccion-datos"
+                    className="font-bold text-black hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Términos y Condiciones
+                  </Link>
+                </label>
+              </div>
+            </div>
+
             {/* Botón de envío */}
             <div className="flex justify-center">
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !formData.acceptTerms}
                 className="bg-black text-white px-8 py-3 rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "Enviando..." : "Enviar"}

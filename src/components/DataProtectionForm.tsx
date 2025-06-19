@@ -21,6 +21,10 @@ const DataProtectionForm = () => {
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -55,10 +59,47 @@ const DataProtectionForm = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Aquí iría la lógica para enviar los datos
+    setIsSubmitting(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      // Enviar a Firebase Function
+      const response = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendDataProtectionEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+        setFormData({
+          name: "",
+          lastName: "",
+          id: "",
+          phone: "",
+          email: "",
+          restrictions: {
+            offers: false,
+            surveys: false,
+            maintenance: false,
+            newProducts: false,
+            all: false,
+          },
+        });
+      } else {
+        setError("Error al enviar la solicitud. Por favor, inténtalo de nuevo.");
+      }
+    } catch (err) {
+      console.error("Error enviando solicitud:", err);
+      setError("Error al enviar la solicitud. Por favor, inténtalo de nuevo.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -257,11 +298,27 @@ const DataProtectionForm = () => {
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"
-                  className="bg-black text-white px-8 py-3 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500"
+                  disabled={isSubmitting}
+                  className="bg-black text-white px-8 py-3 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Enviar solicitud
+                  {isSubmitting ? "Enviando..." : "Enviar solicitud"}
                 </button>
               </div>
+
+              {/* Mensajes de estado */}
+              {success && (
+                <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-green-700 text-center">
+                    ¡Tu solicitud ha sido enviada correctamente! Te contactaremos pronto.
+                  </p>
+                </div>
+              )}
+
+              {error && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700 text-center">{error}</p>
+                </div>
+              )}
             </form>
           </div>
         </motion.div>

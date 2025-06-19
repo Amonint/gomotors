@@ -75,7 +75,7 @@ export const sendReferralEmail = functions.https.onRequest(async (req, res) => {
 
     // Crear el contenido del correo
     const mailOptions = {
-      from: `"Programa Referente GO" <${functions.config().email.user}>`,
+      from: `"referente-go" <${functions.config().email.user}>`,
       to: "sistemas@gomotors.com.ec",
       subject: "Nuevo referido - Programa Referente GO",
       html: `

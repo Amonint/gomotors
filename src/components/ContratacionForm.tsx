@@ -13,6 +13,7 @@ interface ContratacionFormData {
   position: string;
   message: string;
   cv: File | null;
+  acceptTerms: boolean;
 }
 
 export function ContratacionForm() {
@@ -24,6 +25,7 @@ export function ContratacionForm() {
     position: "",
     message: "",
     cv: null,
+    acceptTerms: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -45,25 +47,77 @@ export function ContratacionForm() {
     setFormData((prev) => ({ ...prev, cv: file }));
   }
 
+  function handleCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, checked } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: checked }));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
     setSuccess(false);
-    // Aquí iría la lógica para enviar los datos y el archivo
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSuccess(true);
-      setFormData({
-        name: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        position: "",
-        message: "",
-        cv: null,
+
+    try {
+      // Convertir CV a base64 si existe
+      let cvBase64 = "";
+      if (formData.cv) {
+        const reader = new FileReader();
+        cvBase64 = await new Promise((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            // Remover el prefijo "data:application/pdf;base64,"
+            resolve(result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.cv as File);
+        });
+      }
+
+      // Preparar datos para enviar
+      const dataToSend = {
+        name: formData.name,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        position: formData.position,
+        message: formData.message,
+        cv: cvBase64
+      };
+
+      // Enviar a Firebase Function
+      const response = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendContratacionEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
       });
-    }, 1200);
+
+      if (response.ok) {
+        setSuccess(true);
+        setFormData({
+          name: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          position: "",
+          message: "",
+          cv: null,
+          acceptTerms: false,
+        });
+        // Limpiar el input de archivo
+        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
+      } else {
+        setError("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
+      }
+    } catch (err) {
+      console.error("Error enviando formulario:", err);
+      setError("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -158,7 +212,7 @@ export function ContratacionForm() {
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-neutral-700 mb-2">
-                    Puesto al que aplica *
+                    Puesto al que desea aplicar *
                   </label>
                   <input
                     type="text"
@@ -202,16 +256,49 @@ export function ContratacionForm() {
                   )}
                 </div>
               </div>
+
+              {/* Términos y Condiciones */}
+              <div className="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="acceptTerms"
+                  name="acceptTerms"
+                  checked={formData.acceptTerms}
+                  onChange={handleCheckboxChange}
+                  required
+                  className="h-4 w-4 text-black focus:ring-neutral-500 border-neutral-300 rounded mt-1"
+                />
+                <label htmlFor="acceptTerms" className="text-sm text-neutral-700">
+                  Acepto los{" "}
+                  <Link
+                    href="/proteccion-datos"
+                    className="font-bold text-black hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Términos y Condiciones
+                  </Link>
+                </label>
+              </div>
+
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !formData.acceptTerms}
                 className="w-full py-3 px-6 bg-black text-white rounded-lg font-medium hover:bg-neutral-800 transition-colors disabled:opacity-60"
               >
                 {isSubmitting ? "Enviando..." : "Enviar solicitud"}
               </button>
               {success && (
-                <div className="text-green-600 text-center mt-4">
-                  ¡Tu solicitud ha sido enviada correctamente!
+                <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-green-700 text-center">
+                    ¡Tu solicitud ha sido enviada correctamente! Te contactaremos pronto.
+                  </p>
+                </div>
+              )}
+
+              {error && !formData.cv && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700 text-center">{error}</p>
                 </div>
               )}
             </form>

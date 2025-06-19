@@ -226,11 +226,11 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation - Centered */}
-            <nav className="hidden lg:flex items-center space-x-2 xl:space-x-4 mx-auto">
+            <nav className="hidden lg:flex items-center space-x-1 2xl:space-x-4 mx-auto overflow-hidden">
               {/* Showroom */}
               <div>
                 <button
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                   onClick={() => toggleDropdown("showroom")}
                   onMouseEnter={() => handleMouseEnter("showroom")}
                 >
@@ -316,7 +316,7 @@ const Navbar = () => {
               {/* Postventa */}
               <div>
                 <button
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                   onClick={() => toggleDropdown("postventa")}
                   onMouseEnter={() => handleMouseEnter("postventa")}
                 >
@@ -427,7 +427,7 @@ const Navbar = () => {
                       element.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                 >
                   NOSOTROS
                 </Link>
@@ -445,7 +445,7 @@ const Navbar = () => {
                       element.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                 >
                   GANA REFERIDOS
                 </Link>
@@ -455,7 +455,7 @@ const Navbar = () => {
               <div>
                 <Link
                   href="/noticias"
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                 >
                   NOTICIAS
                 </Link>
@@ -465,7 +465,7 @@ const Navbar = () => {
               <div>
                 <Link
                   href="/promociones"
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                 >
                   PROMOCIONES
                 </Link>
@@ -475,9 +475,10 @@ const Navbar = () => {
               <div>
                 <Link
                   href="/trabaja-con-nosotros"
-                  className="flex items-center text-gray-300 hover:text-white transition-colors text-sm lg:text-base xl:text-base font-medium px-3 lg:px-4 xl:px-[18px] py-[18px]"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors text-xs lg:text-sm xl:text-base font-medium px-2 lg:px-3 xl:px-[18px] py-[18px] whitespace-nowrap"
                 >
-                  TRABAJA CON NOSOTROS
+                  <span className="hidden 2xl:inline">TRABAJA CON NOSOTROS</span>
+                  <span className="2xl:hidden">ÚNETE AL EQUIPO</span>
                 </Link>
               </div>
             </nav>
