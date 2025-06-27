@@ -31,7 +31,9 @@ export function ContratacionForm() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleInputChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
@@ -67,7 +69,7 @@ export function ContratacionForm() {
           reader.onload = () => {
             const result = reader.result as string;
             // Remover el prefijo "data:application/pdf;base64,"
-            resolve(result.split(',')[1]);
+            resolve(result.split(",")[1]);
           };
           reader.onerror = reject;
           reader.readAsDataURL(formData.cv as File);
@@ -82,17 +84,20 @@ export function ContratacionForm() {
         phone: formData.phone,
         position: formData.position,
         message: formData.message,
-        cv: cvBase64
+        cv: cvBase64,
       };
 
       // Enviar a Firebase Function
-      const response = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendContratacionEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await fetch(
+        "https://us-central1-gomotors-web.cloudfunctions.net/sendContratacionEmail",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       if (response.ok) {
         setSuccess(true);
@@ -107,10 +112,14 @@ export function ContratacionForm() {
           acceptTerms: false,
         });
         // Limpiar el input de archivo
-        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        const fileInput = document.querySelector(
+          'input[type="file"]'
+        ) as HTMLInputElement;
         if (fileInput) fileInput.value = "";
       } else {
-        setError("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
+        setError(
+          "Error al enviar el formulario. Por favor, inténtalo de nuevo."
+        );
       }
     } catch (err) {
       console.error("Error enviando formulario:", err);
@@ -123,14 +132,14 @@ export function ContratacionForm() {
   return (
     <div className="bg-neutral-100 min-h-screen">
       <div className="w-full bg-[#F5F5F5] border-b border-neutral-300">
-      <div className="absolute top-8 left-8">
-            <Link
-              href="/proteccion-datos"
-              className="flex items-center text-white bg-black px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
-            >
-              <FaArrowLeft className="mr-2 text-white" /> Volver
-            </Link>
-          </div>
+        <div className="absolute top-4 md:top-8 left-4 md:left-8">
+          <Link
+            href="/"
+            className="flex items-center text-white bg-black px-2 md:px-4 py-1 md:py-2 rounded-full hover:bg-neutral-800 transition-colors text-sm md:text-base"
+          >
+            <FaArrowLeft className="mr-2 text-white" /> Volver
+          </Link>
+        </div>
         <div className="max-w-[1600px] mx-auto px-6 py-12 md:py-16 lg:py-20">
           <div className="flex flex-col items-center md:flex-row md:items-end md:justify-between">
             <div>
@@ -154,7 +163,8 @@ export function ContratacionForm() {
         >
           <div className="bg-white p-8 rounded-lg shadow-sm border border-neutral-200">
             <p className="text-neutral-600 mb-8">
-              Completa el siguiente formulario para aplicar a una vacante. Adjunta tu CV en PDF.
+              Completa el siguiente formulario para aplicar a una vacante.
+              Adjunta tu CV en PDF.
             </p>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -252,7 +262,9 @@ export function ContratacionForm() {
                     </span>
                   )}
                   {error && (
-                    <span className="text-sm text-red-600 mt-2 block">{error}</span>
+                    <span className="text-sm text-red-600 mt-2 block">
+                      {error}
+                    </span>
                   )}
                 </div>
               </div>
@@ -268,7 +280,10 @@ export function ContratacionForm() {
                   required
                   className="h-4 w-4 text-black focus:ring-neutral-500 border-neutral-300 rounded mt-1"
                 />
-                <label htmlFor="acceptTerms" className="text-sm text-neutral-700">
+                <label
+                  htmlFor="acceptTerms"
+                  className="text-sm text-neutral-700"
+                >
                   Acepto los{" "}
                   <Link
                     href="/proteccion-datos"
@@ -291,7 +306,8 @@ export function ContratacionForm() {
               {success && (
                 <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                   <p className="text-green-700 text-center">
-                    ¡Tu solicitud ha sido enviada correctamente! Te contactaremos pronto.
+                    ¡Tu solicitud ha sido enviada correctamente! Te
+                    contactaremos pronto.
                   </p>
                 </div>
               )}
@@ -307,4 +323,4 @@ export function ContratacionForm() {
       </div>
     </div>
   );
-} 
+}

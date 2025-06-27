@@ -24,11 +24,11 @@ const benefits = [
   },
   {
     title: "Atención Personalizada",
-    desc: "Tu satisfacción es nuestra prioridad.Contamos con asesores calificados y certificados por cada marca, preparadospara guiarte con profesionalismo y conocimiento.Porque elegir tu próximo vehículo debe ser una decisión informada, segura y sin presiones.",
+    desc: "Tu satisfacción es nuestra prioridad.Contamos con asesores calificados y certificados por cada marca, preparados para guiarte con profesionalismo y conocimiento.Porque elegir tu próximo vehículo debe ser una decisión informada, segura y sin presiones.",
   },
   {
     title: "Garantía y Respaldo Total",
-    desc: "Respaldas tu compra con tranquilidad.Disponemos de talleres autorizados por nuestras marcas, con técnicos capacitados internacionalmente y equipos de diagnóstico de última tecnología.Además, nuestro amplio stock de repuestos genuinos nos permite darte soluciones inmediatas ante cualquier inconveniente.En GOmotors, el respaldo va más allá de la venta.",
+    desc: "Respaldas tu compra con tranquilidad.Disponemos de talleres autorizados por nuestras marcas, con técnicos capacitados internacionalmente y equipos de diagnóstico de última tecnología. Además, nuestro amplio stock de repuestos genuinos nos permite darte soluciones inmediatas ante cualquier inconveniente.En GOmotors, el respaldo va más allá de la venta.",
   },
 ];
 
@@ -171,7 +171,7 @@ const Showroom = () => {
   return (
     <section className="w-full bg-[#0A0A0A] text-white py-16 font-tt-hoves">
       {/* Brand Logo Carousel */}
-      <div className="py-10 overflow-hidden bg-gradient-to-r from-[#0000F] via-[#0f0f0f] to-[#0A0A0A] mb-14 ">
+      <div className="hidden md:block py-8 overflow-hidden bg-gradient-to-r from-[#0000F] via-[#0f0f0f] to-[#0A0A0A] mb-14">
         <div className="relative overflow-hidden max-w-[100%]">
           {/* GSAP Marquee - optimizado */}
           <div className="overflow-hidden relative max-w-[100%]">
@@ -184,15 +184,15 @@ const Showroom = () => {
                 {brandLogos.map((logo, index) => (
                   <div
                     key={`logo-1-${index}`}
-                    className="logo-item mx-3 md:mx-5 cursor-pointer transition-transform"
+                    className="logo-item mx-3 sm:mx-4 md:mx-6 lg:mx-5 xl:mx-6 cursor-pointer transition-transform"
                   >
-                    <div className="w-20 h-20 bg-gradient-to-b rounded-md flex items-center justify-center p-3 hover:border-gray-600 transition-all shadow-md">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 bg-gradient-to-b rounded-md flex items-center justify-center p-1.5 sm:p-2 md:p-4 lg:p-4.5 xl:p-5 hover:border-gray-600 transition-all shadow-md">
                       <Image
                         src={logo.img}
                         alt={logo.name}
-                        width={60}
-                        height={60}
-                        className="object-contain opacity-90 hover:opacity-100 transition-all duration-300 invert brightness-0 filter"
+                        width={90}
+                        height={90}
+                        className="object-contain opacity-90 hover:opacity-100 transition-all duration-300 invert brightness-0 filter w-9 h-9 sm:w-11 sm:h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-[90px] xl:h-[90px]"
                         loading="eager"
                         style={{
                           willChange: "transform, opacity",
@@ -209,15 +209,15 @@ const Showroom = () => {
                 {brandLogos.map((logo, index) => (
                   <div
                     key={`logo-2-${index}`}
-                    className="logo-item mx-3 md:mx-5 cursor-pointer transition-transform"
+                    className="logo-item mx-3 sm:mx-4 md:mx-6 lg:mx-5 xl:mx-6 cursor-pointer transition-transform"
                   >
-                    <div className="w-20 h-20 bg-gradient-to-b rounded-md flex items-center justify-center p-3 hover:border-gray-600 transition-all shadow-md">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 bg-gradient-to-b rounded-md flex items-center justify-center p-1.5 sm:p-2 md:p-4 lg:p-4.5 xl:p-5 hover:border-gray-600 transition-all shadow-md">
                       <Image
                         src={logo.img}
                         alt={logo.name}
-                        width={60}
-                        height={60}
-                        className="object-contain opacity-90 hover:opacity-100 transition-all duration-300 invert brightness-0 filter"
+                        width={80}
+                        height={80}
+                        className="object-contain opacity-90 hover:opacity-100 transition-all duration-300 invert brightness-0 filter w-9 h-9 sm:w-11 sm:h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-[90px] xl:h-[90px]"
                         loading="eager"
                         style={{
                           willChange: "transform, opacity",
