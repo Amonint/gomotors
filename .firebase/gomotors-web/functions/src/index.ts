@@ -76,7 +76,7 @@ export const sendReferralEmail = functions.https.onRequest(async (req, res) => {
     // Crear el contenido del correo
     const mailOptions = {
       from: `"referente-go" <${functions.config().email.user}>`,
-      to: "sistemas@gomotors.com.ec",
+      to: "jatarihuana@gomotors.com.ec",
       subject: "Nuevo referido - Programa Referente GO",
       html: `
         <h2>Nuevo referido registrado</h2>
@@ -146,7 +146,7 @@ export const sendContratacionEmail = functions.https.onRequest(async (req, res) 
     // Crear el contenido del correo con el CV adjunto
     const mailOptions = {
       from: `"Contratación GOmotors" <${functions.config().email.user}>`,
-      to: "sistemas@gomotors.com.ec",
+      to: "jatarihuana@gomotors.com.ec",
       subject: `Nueva solicitud de empleo - ${data.position}`,
       html: `
         <h2>Nueva solicitud de empleo</h2>
@@ -223,7 +223,7 @@ export const sendDataProtectionEmail = functions.https.onRequest(async (req, res
     // Crear el contenido del correo
     const mailOptions = {
       from: `"Protección de Datos GOmotors" <${functions.config().email.user}>`,
-      to: "sistemas@gomotors.com.ec",
+      to: "jatarihuana@gomotors.com.ec",
       subject: "Solicitud de baja de datos personales",
       html: `
         <h2>Solicitud de baja de datos personales</h2>

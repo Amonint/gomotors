@@ -186,7 +186,7 @@ const ShowroomPage = () => {
           className="text-center max-w-4xl mx-auto mb-12 px-4"
         >
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
-            SHOWROOM <span className="text-white">MULTIMARCAS</span>
+            VEHÍCULOS <span className="text-white">MULTIMARCAS</span>
           </h1>
 
           <p className="text-lg text-neutral-400 mb-3 leading-normal">
@@ -217,20 +217,72 @@ const ShowroomPage = () => {
 
         <div className="w-full">
           {filteredVehicles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredVehicles.map((vehicle, index) => (
-                <motion.div
-                  key={vehicle.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <VehicleCard 
-                    vehicle={vehicle} 
-                    onSelect={() => handleVehicleSelect(vehicle)}
-                  />
-                </motion.div>
-              ))}
+            <div className="space-y-12">
+              {/* Agrupar vehículos por marca */}
+              {(() => {
+                // Crear grupos por tipo de vehículo
+                const vehiclesByType = filteredVehicles.reduce((acc, vehicle) => {
+                  if (!acc[vehicle.tipoVehiculo]) {
+                    acc[vehicle.tipoVehiculo] = [];
+                  }
+                  acc[vehicle.tipoVehiculo].push(vehicle);
+                  return acc;
+                }, {} as Record<string, Vehicle[]>);
+
+                // Ordenar tipos de vehículo alfabéticamente
+                const sortedTypes = Object.keys(vehiclesByType).sort();
+
+                return sortedTypes.map((type, typeIndex) => (
+                  <motion.div
+                    key={type}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: typeIndex * 0.2 }}
+                    className="mb-12"
+                  >
+                    {/* Título del tipo de vehículo */}
+                    <div className="mb-8">
+                      <motion.h2 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: typeIndex * 0.2 + 0.1 }}
+                        className="text-3xl md:text-4xl font-bold text-white mb-2"
+                      >
+                        {type}
+                      </motion.h2>
+                      <motion.div 
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: 0.6, delay: typeIndex * 0.2 + 0.2 }}
+                        className="h-1 w-24 bg-white rounded origin-left"
+                      />
+                      <p className="text-neutral-400 mt-3">
+                        {vehiclesByType[type].length} vehículo{vehiclesByType[type].length !== 1 ? 's' : ''} disponible{vehiclesByType[type].length !== 1 ? 's' : ''}
+                      </p>
+                    </div>
+                    
+                    {/* Grid de vehículos de este tipo */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {vehiclesByType[type].map((vehicle, vehicleIndex) => (
+                        <motion.div
+                          key={vehicle.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ 
+                            duration: 0.3, 
+                            delay: typeIndex * 0.2 + vehicleIndex * 0.1 + 0.3 
+                          }}
+                        >
+                          <VehicleCard 
+                            vehicle={vehicle} 
+                            onSelect={() => handleVehicleSelect(vehicle)}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ));
+              })()}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12 px-4 bg-black rounded-lg shadow-sm border border-neutral-700">

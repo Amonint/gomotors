@@ -16,9 +16,11 @@ import {
   FaWhatsapp,
   FaPalette,
   FaCar,
+  FaTimes,
 } from "react-icons/fa";
 import { Vehicle } from "@/services/vehicleService";
 import AccesoriosShowroomModule from "./AccesoriosShowroomModule";
+import Cotizacion from './Cotizacion';
 
 interface VehicleDetailClientProps {
   vehicle: Vehicle;
@@ -33,6 +35,10 @@ const VehicleDetailClient = ({
 }: VehicleDetailClientProps) => {
   const [activeTab, setActiveTab] = useState("specs");
   const [mainImageError, setMainImageError] = useState(false);
+
+  /* Codigo modal para eleguir whatsapp o formulaio*/
+  const [showModal, setShowModal] = useState(false);
+  const [showCotizacionForm, setShowCotizacionForm] = useState(false);
 
   return (
     <div className="bg-[#0A0A0A] text-white min-h-screen pb-16">
@@ -91,9 +97,9 @@ const VehicleDetailClient = ({
                   href={vehicle.fichaTecnicaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-neutral-300 hover:text-white transition-colors duration-200"
+                  className="inline-flex items-center text-green-400 hover:text-white border border-green-400 hover:bg-green-400 px-6 py-3 rounded-full transition-all duration-300 text-2lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  <FaFileDownload className="mr-2" />
+                  <FaFileDownload className="mr-2 text-2xl" />
                   Ficha técnica
                 </a>
               )}
@@ -112,43 +118,39 @@ const VehicleDetailClient = ({
             <div className="flex space-x-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab("specs")}
-                className={`pb-4 px-1 whitespace-nowrap ${
-                  activeTab === "specs"
-                    ? "border-b-2 border-white text-white"
-                    : "text-neutral-400 hover:text-white"
-                }`}
+                className={`pb-4 px-1 whitespace-nowrap ${activeTab === "specs"
+                  ? "border-b-2 border-white text-white"
+                  : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 Especificaciones
               </button>
               <button
                 onClick={() => setActiveTab("features")}
-                className={`pb-4 px-1 whitespace-nowrap ${
-                  activeTab === "features"
-                    ? "border-b-2 border-white text-white"
-                    : "text-neutral-400 hover:text-white"
-                }`}
+                className={`pb-4 px-1 whitespace-nowrap ${activeTab === "features"
+                  ? "border-b-2 border-white text-white"
+                  : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 Características
               </button>
               <button
                 onClick={() => setActiveTab("gallery")}
-                className={`pb-4 px-1 whitespace-nowrap ${
-                  activeTab === "gallery"
-                    ? "border-b-2 border-white text-white"
-                    : "text-neutral-400 hover:text-white"
-                }`}
+                className={`pb-4 px-1 whitespace-nowrap ${activeTab === "gallery"
+                  ? "border-b-2 border-white text-white"
+                  : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 Galería
               </button>
               <button
                 onClick={() => setActiveTab("accessories")}
-                className={`pb-4 px-1 whitespace-nowrap ${
-                  activeTab === "accessories"
-                    ? "border-b-2 border-white text-white"
-                    : "text-neutral-400 hover:text-white"
-                }`}
+                className={`pb-4 px-1 whitespace-nowrap ${activeTab === "accessories"
+                  ? "border-b-2 border-white text-white"
+                  : "text-neutral-400 hover:text-white"
+                  }`}
               >
-                
+
                 Accesorios
               </button>
             </div>
@@ -348,9 +350,8 @@ const VehicleDetailClient = ({
                   <div key={index} className="relative aspect-square">
                     <Image
                       src={image}
-                      alt={`${vehicle.marca} ${vehicle.modelo} - Imagen ${
-                        index + 1
-                      }`}
+                      alt={`${vehicle.marca} ${vehicle.modelo} - Imagen ${index + 1
+                        }`}
                       fill
                       className="object-cover rounded-lg"
                       sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
@@ -385,16 +386,81 @@ const VehicleDetailClient = ({
             Contáctanos vía WhatsApp para obtener más información y cotizar este{" "}
             {vehicle.marca} {vehicle.modelo}
           </p>
-          <a
-            href={`https://wa.me/593999454243?text=Hola, me interesa el ${vehicle.marca} ${vehicle.modelo} ${vehicle.año}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setShowModal(true)}
             className="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200"
           >
             <FaWhatsapp className="mr-2 text-xl" />
             Cotizar por WhatsApp
-          </a>
+          </button>
         </div>
+
+        {/* Modal de opciones */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-neutral-900 rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl border border-neutral-700">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-white">
+                  ¿Cómo te gustaría cotizar?
+                </h3>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-neutral-400 hover:text-white transition-colors"
+                >
+                  <FaTimes className="text-xl" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <button
+                  onClick={() => {
+                    setShowModal(false);
+                    setShowCotizacionForm(true);
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+                >
+                  📋 Déjanos tus datos
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowModal(false);
+                    window.open(
+                      `https://wa.me/593999454243?text=Hola, me interesa el ${vehicle.marca} ${vehicle.modelo} ${vehicle.año}`,
+                      '_blank'
+                    );
+                  }}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                >
+                  <FaWhatsapp className="mr-2 text-xl" />
+                  Cotizar por WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal del formulario de cotización */}
+        {showCotizacionForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+              <div className="p-4 border-b flex justify-between items-center">
+                <h3 className="text-xl font-bold text-neutral-900">
+                  Formulario de Cotización
+                </h3>
+                <button
+                  onClick={() => setShowCotizacionForm(false)}
+                  className="text-neutral-600 hover:text-neutral-900 transition-colors"
+                >
+                  <FaTimes className="text-xl" />
+                </button>
+              </div>
+              <div className="p-6">
+                <Cotizacion />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Vehículos relacionados */}
         {relatedVehicles.length > 0 && (

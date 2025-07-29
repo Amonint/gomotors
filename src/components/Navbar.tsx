@@ -234,7 +234,7 @@ const Navbar = () => {
                   onClick={() => toggleDropdown("showroom")}
                   onMouseEnter={() => handleMouseEnter("showroom")}
                 >
-                  SHOWROOM
+                  VEHÍCULOS
                   <svg
                     className={`w-[18px] h-[18px] ml-1 transform transition-transform ${
                       activeDropdown === "showroom" ? "rotate-180" : ""
@@ -284,7 +284,7 @@ const Navbar = () => {
                         <div className={dropdownStyles.servicesMenuRight}>
                           <div>
                             <h3 className={dropdownStyles.sectionTitle}>
-                              Nuestras Marcas
+                              MULTIMARCA
                             </h3>
                             <div className="flex flex-col space-y-4">
                               <Link
@@ -546,7 +546,7 @@ const Navbar = () => {
                   className={dropdownStyles.mobileButton}
                   onClick={() => toggleDropdown("mobile-showroom")}
                 >
-                  <span>SHOWROOM</span>
+                  <span>VEHÍCULOS</span>
                   <svg
                     className={`w-4 h-4 transform transition-transform ${
                       activeDropdown === "mobile-showroom" ? "rotate-180" : ""
@@ -587,7 +587,7 @@ const Navbar = () => {
 
                     <div>
                       <h3 className="text-sm font-medium text-gray-400 mb-3 uppercase tracking-wider">
-                        Nuestras Marcas
+                        MULTIMARCA
                       </h3>
                       <div className="space-y-4">
                         <Link
