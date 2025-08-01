@@ -38,6 +38,17 @@ interface DataProtectionData {
   };
 }
 
+interface CotizacionData {
+  nombreCompleto: string;
+  telefono: string;
+  ciudad: string;
+  marcaInteres: string;
+  segmento: string;
+  formaPago: string;
+  comentario: string;
+  aceptaTerminos: boolean;
+}
+
 export const sendReferralEmail = functions.https.onRequest(async (req, res) => {
   // Configurar CORS
   res.set("Access-Control-Allow-Origin", "*");
@@ -250,5 +261,81 @@ export const sendDataProtectionEmail = functions.https.onRequest(async (req, res
   } catch (error) {
     console.error("Error sending data protection email:", error);
     res.status(500).json({ error: "Error al enviar la solicitud de protección de datos" });
+  }
+});
+
+export const sendCotizacionEmail = functions.https.onRequest(async (req, res) => {
+  // Configurar CORS
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+
+  // Manejar preflight requests
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  // Solo permitir POST
+  if (req.method !== "POST") {
+    res.status(405).send("Method Not Allowed");
+    return;
+  }
+
+  try {
+    const data = req.body as CotizacionData;
+
+    // Configurar el transporter de nodemailer para GOmotors
+    const transporter = nodemailer.createTransport({
+      host: "mail.gomotors.com.ec",
+      port: 465,
+      secure: true,
+      auth: {
+        user: functions.config().email.user,
+        pass: functions.config().email.pass,
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    // Crear el contenido del correo
+    const mailOptions = {
+      from: `"Cotización GOmotors" <${functions.config().email.user}>`,
+      to: "marketingomo@gomotors.com.ec",
+      subject: "Nueva solicitud de cotización de vehículo",
+      html: `
+        <h2>Nueva solicitud de cotización</h2>
+        
+        <h3>Datos del cliente:</h3>
+        <ul>
+          <li><strong>Nombre completo:</strong> ${data.nombreCompleto}</li>
+          <li><strong>Teléfono:</strong> ${data.telefono}</li>
+          <li><strong>Ciudad:</strong> ${data.ciudad}</li>
+        </ul>
+
+        <h3>Interés en vehículo:</h3>
+        <ul>
+          <li><strong>Marca de interés:</strong> ${data.marcaInteres}</li>
+          <li><strong>Segmento:</strong> ${data.segmento}</li>
+          <li><strong>Forma de pago:</strong> ${data.formaPago || 'No especificado'}</li>
+        </ul>
+
+        ${data.comentario ? `
+        <h3>Comentario adicional:</h3>
+        <p>${data.comentario}</p>
+        ` : ''}
+
+        <p><em>Este cliente ha aceptado los términos y condiciones para recibir información sobre productos y servicios.</em></p>
+      `,
+    };
+
+    // Enviar el correo
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Error sending cotizacion email:", error);
+    res.status(500).json({ error: "Error al enviar la solicitud de cotización" });
   }
 }); 

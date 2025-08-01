@@ -40,6 +40,23 @@ const VehicleDetailClient = ({
   const [showModal, setShowModal] = useState(false);
   const [showCotizacionForm, setShowCotizacionForm] = useState(false);
 
+  /* Modal para mostrar imagen en grande */
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [galleryImageErrors, setGalleryImageErrors] = useState<Set<number>>(new Set());
+  const [modalImageError, setModalImageError] = useState(false);
+  const [modalImageLoading, setModalImageLoading] = useState(false);
+
+  // Función para verificar si una URL es válida
+  const isValidImageUrl = (url: string) => {
+    if (!url) return false;
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   return (
     <div className="bg-[#0A0A0A] text-white min-h-screen pb-16">
       {/* Encabezado con imagen principal */}
@@ -92,17 +109,20 @@ const VehicleDetailClient = ({
               <div className="text-3xl font-bold text-white mb-2">
                 ${Number(vehicle.precio || 0).toLocaleString()} USD
               </div>
-              {vehicle.fichaTecnicaUrl && (
-                <a
-                  href={vehicle.fichaTecnicaUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-green-400 hover:text-white border border-green-400 hover:bg-green-400 px-6 py-3 rounded-full transition-all duration-300 text-2lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  <FaFileDownload className="mr-2 text-2xl" />
-                  Ficha técnica
-                </a>
-              )}
+              <a
+                href={vehicle.fichaTecnicaUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center px-6 py-3 rounded-full transition-all duration-300 text-2lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 ${
+                  vehicle.fichaTecnicaUrl 
+                    ? "text-green-400 hover:text-white border border-green-400 hover:bg-green-400" 
+                    : "text-neutral-400 border border-neutral-400 cursor-not-allowed opacity-50"
+                }`}
+                onClick={!vehicle.fichaTecnicaUrl ? (e) => e.preventDefault() : undefined}
+              >
+                <FaFileDownload className="mr-2 text-2xl" />
+                Ficha técnica
+              </a>
             </div>
           </div>
 
@@ -343,24 +363,48 @@ const VehicleDetailClient = ({
             </div>
           )}
 
-          {activeTab === "gallery" && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {vehicle.imagenGaleria &&
-                vehicle.imagenGaleria.map((image, index) => (
-                  <div key={index} className="relative aspect-square">
-                    <Image
-                      src={image}
-                      alt={`${vehicle.marca} ${vehicle.modelo} - Imagen ${index + 1
-                        }`}
-                      fill
-                      className="object-cover rounded-lg"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                      unoptimized={true}
-                    />
-                  </div>
-                ))}
-            </div>
-          )}
+                                {activeTab === "gallery" && (
+             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+               {vehicle.imagenGaleria &&
+                 vehicle.imagenGaleria.map((image, index) => {
+                   const hasError = galleryImageErrors.has(index);
+                   const isValidUrl = isValidImageUrl(image);
+                   const imageUrl = hasError || !isValidUrl ? "/images/vehicle-placeholder.svg" : image;
+                   
+                   return (
+                     <div 
+                       key={index} 
+                       className="relative aspect-square cursor-pointer group"
+                       onClick={() => {
+                         if (!hasError) {
+                           console.log('Opening modal with image:', image);
+                           setSelectedImage(image);
+                           setModalImageError(false);
+                           setModalImageLoading(true);
+                         }
+                       }}
+                     >
+                       <Image
+                         src={imageUrl}
+                         alt={`${vehicle.marca} ${vehicle.modelo} - Imagen ${index + 1}`}
+                         fill
+                         className="object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                         unoptimized={imageUrl.startsWith('https://firebasestorage.googleapis.com')}
+                         onError={(e) => {
+                           console.error(`Error loading image ${index}:`, imageUrl, e);
+                           setGalleryImageErrors(prev => new Set(prev).add(index));
+                         }}
+                         onLoad={() => {
+                           console.log(`Image ${index} loaded successfully:`, imageUrl);
+                         }}
+                       />
+                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-lg"></div>
+                     </div>
+                   );
+                 })}
+             </div>
+           )}
 
           {activeTab === "accessories" && (
             <div className="w-full">
@@ -391,7 +435,7 @@ const VehicleDetailClient = ({
             className="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200"
           >
             <FaWhatsapp className="mr-2 text-xl" />
-            Cotizar por WhatsApp
+            Cotizar 
           </button>
         </div>
 
@@ -433,7 +477,7 @@ const VehicleDetailClient = ({
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
                 >
                   <FaWhatsapp className="mr-2 text-xl" />
-                  Cotizar por WhatsApp
+                  Cotizar 
                 </button>
               </div>
             </div>
@@ -457,6 +501,60 @@ const VehicleDetailClient = ({
               </div>
               <div className="p-6">
                 <Cotizacion />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal para mostrar imagen en grande */}
+        {selectedImage && (
+          <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+            <div className="relative max-w-4xl max-h-[90vh] w-full mx-4 h-[80vh]">
+              <button
+                onClick={() => {
+                  console.log('Closing modal');
+                  setSelectedImage(null);
+                  setModalImageError(false);
+                  setModalImageLoading(false);
+                }}
+                className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors bg-black bg-opacity-50 rounded-full p-2"
+              >
+                <FaTimes className="text-2xl" />
+              </button>
+              <div className="relative w-full h-full">
+                <Image
+                  src={selectedImage}
+                  alt={`${vehicle.marca} ${vehicle.modelo} - Vista ampliada`}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                  unoptimized={selectedImage.startsWith('https://firebasestorage.googleapis.com')}
+                  onError={(e) => {
+                    console.error('Modal image error:', selectedImage, e);
+                    setModalImageError(true);
+                    setModalImageLoading(false);
+                  }}
+                  onLoad={() => {
+                    console.log('Modal image loaded successfully:', selectedImage);
+                    setModalImageLoading(false);
+                  }}
+                />
+                {modalImageLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+                      <p className="text-lg">Cargando imagen...</p>
+                    </div>
+                  </div>
+                )}
+                {modalImageError && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <p className="text-lg mb-2">Error al cargar la imagen</p>
+                      <p className="text-sm text-gray-300 break-all max-w-md">URL: {selectedImage}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
