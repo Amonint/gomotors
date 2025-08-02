@@ -15,10 +15,7 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  output: 'export',
-  distDir: 'out',
-  trailingSlash: true,
-  skipTrailingSlashRedirect: true,
+  trailingSlash: false,
 };
 
 export default nextConfig;

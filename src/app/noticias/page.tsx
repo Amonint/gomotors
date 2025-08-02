@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { collection, getDocs, orderBy, query, doc, getDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,67 +17,36 @@ interface News {
   updatedAt: Date;
 }
 
-export default function NewsPage() {
+const NewsPage = () => {
   const [news, setNews] = useState<News[]>([]);
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
-  const [viewMode, setViewMode] = useState<'list' | 'detail'>('list');
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'list' | 'detail'>('list');
 
-  const loadNewsDetail = useCallback(async (newsId: string) => {
-    try {
-      const docRef = doc(db, 'news', newsId);
-      const docSnap = await getDoc(docRef);
-      
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const newsData: News = {
-          id: docSnap.id,
-          title: data.title,
-          description: data.description,
-          imageUrl: data.imageUrl,
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate(),
-        };
-        setSelectedNews(newsData);
-        setViewMode('detail');
-      }
-    } catch (error) {
-      console.error("Error al cargar noticia:", error);
-    }
-  }, []);
 
-  // Detectar parámetros de URL del lado del cliente
-  useEffect(() => {
-    const checkUrlParams = () => {
-      if (typeof window !== 'undefined') {
-        const path = window.location.pathname;
-        const match = path.match(/\/noticias\/(.+)/);
-        
-        if (match && match[1] && news.length > 0) {
-          loadNewsDetail(match[1]);
-        }
-      }
-    };
-
-    checkUrlParams();
-  }, [news, loadNewsDetail]);
 
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
       try {
-        const newsQuery = query(
-          collection(db, "news"),
-          orderBy("createdAt", "desc")
-        );
+        console.log("Iniciando carga de noticias...");
+        const newsCollection = collection(db, "news");
+        const newsSnapshot = await getDocs(newsCollection);
+        
+        console.log("Snapshot obtenido:", newsSnapshot.size, "documentos");
+        
+        const newsData = newsSnapshot.docs.map((doc) => {
+          const data = doc.data();
+          console.log("Documento:", doc.id, data);
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate(),
+          };
+        }) as News[];
 
-        const querySnapshot = await getDocs(newsQuery);
-        const newsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate(),
-          updatedAt: doc.data().updatedAt?.toDate(),
-        })) as News[];
-
+        console.log("Noticias procesadas:", newsData.length);
         setNews(newsData);
       } catch (error) {
         console.error("Error al cargar noticias:", error);
@@ -89,11 +58,46 @@ export default function NewsPage() {
     fetchNews();
   }, []);
 
+  // Detectar parámetros de URL del lado del cliente
+  useEffect(() => {
+    const checkUrlParams = () => {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newsId = urlParams.get('news');
+        
+        // Verificar si la URL tiene formato de ruta dinámica (/noticias/id)
+        const pathSegments = window.location.pathname.split('/');
+        const newsIdFromPath = pathSegments[pathSegments.length - 1];
+        
+        // Usar el ID de parámetros o de la ruta
+        const finalNewsId = newsId || newsIdFromPath;
+        
+        console.log("URL actual:", window.location.href);
+        console.log("Parámetro news:", newsId);
+        console.log("ID de ruta:", newsIdFromPath);
+        console.log("ID final:", finalNewsId);
+        console.log("Noticias cargadas:", news.length);
+        console.log("IDs de noticias:", news.map(n => n.id));
+        
+        if (finalNewsId && news.length > 0 && finalNewsId !== 'noticias') {
+          const newsItem = news.find(item => item.id === finalNewsId);
+          console.log("Noticia encontrada:", newsItem);
+          if (newsItem) {
+            setSelectedNews(newsItem);
+            setViewMode('detail');
+          }
+        }
+      }
+    };
+
+    checkUrlParams();
+  }, [news]);
+
   const handleNewsSelect = (newsItem: News) => {
     setSelectedNews(newsItem);
     setViewMode('detail');
     
-    // Actualizar URL sin recargar la página
+    // Actualizar URL sin recargar la página (formato de ruta dinámica como showroom)
     if (typeof window !== 'undefined') {
       const newUrl = `/noticias/${newsItem.id}`;
       window.history.pushState({}, '', newUrl);
@@ -148,13 +152,11 @@ export default function NewsPage() {
           
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
             <div className="max-w-[1600px] mx-auto">
-              <button 
+              <button
                 onClick={handleBackToList}
                 className="inline-flex items-center text-white/80 hover:text-white transition-colors mb-6"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <FaArrowLeft className="w-5 h-5 mr-2" />
                 Volver a noticias
               </button>
               
@@ -188,7 +190,7 @@ export default function NewsPage() {
     );
   }
 
-  // Vista de lista
+  // Vista principal de noticias
   return (
     <div className="bg-neutral-100 min-h-screen">
       <div className="w-full bg-[#F5F5F5] border-b border-neutral-300">
@@ -243,7 +245,7 @@ export default function NewsPage() {
                 <div className="p-6">
                   <div className="flex items-center mb-4">
                     <span className="block w-12 h-[2px] bg-neutral-300 mr-4"></span>
-                    <p className="text-neutral-500 text-sm font-medium uppercase tracking-wide">
+                    <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">
                       {formatDate(item.createdAt)}
                     </p>
                   </div>
@@ -263,4 +265,6 @@ export default function NewsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default NewsPage;

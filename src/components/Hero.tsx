@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Navbar from "./Navbar";
 
@@ -24,6 +24,7 @@ const slideContent = [
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,6 +32,19 @@ const Hero = () => {
     }, 5000); // cambia cada 5 segundos
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Limpiar video cuando el componente se desmonta
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        try {
+          videoRef.current.pause();
+        } catch (error) {
+          console.warn("Error pausing video:", error);
+        }
+      }
+    };
   }, []);
 
   return (
@@ -74,6 +88,15 @@ const Hero = () => {
           loop
           muted
           playsInline
+          onError={(e) => {
+            console.warn("Error loading video:", e);
+          }}
+          onLoadStart={() => {
+            console.log("Video loading started");
+          }}
+          onCanPlay={() => {
+            console.log("Video can play");
+          }}
         >
           <source src="/videos/0924.mp4" type="video/mp4" />
           Tu navegador no soporta videos HTML5.
