@@ -260,6 +260,17 @@ const PrivacyPolicy = () => {
                 Estas políticas estarán vigentes hasta que sean modificadas por otras debidamente publicadas.
               </p>
             </section>
+
+            <div className="mt-12 flex justify-center">
+              <Link href="/recoleccion-datos">
+                <button
+                  className="bg-black text-white px-6 py-3 rounded-full hover:bg-neutral-800 transition-colors font-medium text-sm md:text-base"
+                >
+                  Protección de datos
+                </button>
+              </Link>
+            </div>
+
           </div>
         </motion.div>
       </div>

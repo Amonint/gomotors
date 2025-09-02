@@ -49,6 +49,18 @@ interface CotizacionData {
   aceptaTerminos: boolean;
 }
 
+interface DataCollectionData {
+  nombres: string;
+  email: string;
+  cedulaPasaporte: string;
+  telefono: string;
+  ciudad: string;
+  asesor: string;
+  razon: string;
+  comentario: string;
+  aceptaPoliticas: boolean;
+}
+
 export const sendReferralEmail = functions.https.onRequest(async (req, res) => {
   // Configurar CORS
   res.set("Access-Control-Allow-Origin", "*");
@@ -337,5 +349,83 @@ export const sendCotizacionEmail = functions.https.onRequest(async (req, res) =>
   } catch (error) {
     console.error("Error sending cotizacion email:", error);
     res.status(500).json({ error: "Error al enviar la solicitud de cotización" });
+  }
+});
+
+export const sendDataCollectionEmail = functions.https.onRequest(async (req, res) => {
+  // Configurar CORS
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+
+  // Manejar preflight requests
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  // Solo permitir POST
+  if (req.method !== "POST") {
+    res.status(405).send("Method Not Allowed");
+    return;
+  }
+
+  try {
+    const data = req.body as DataCollectionData;
+
+    // Configurar el transporter de nodemailer para GOmotors
+    const transporter = nodemailer.createTransport({
+      host: "mail.gomotors.com.ec",
+      port: 465,
+      secure: true,
+      auth: {
+        user: functions.config().email.user,
+        pass: functions.config().email.pass,
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    // Crear el contenido del correo
+    const mailOptions = {
+      from: `"Recolección de Datos GOmotors" <${functions.config().email.user}>`,
+      to: "jatarihuana@gomotors.com.ec",
+      subject: "Nueva solicitud de recolección de datos",
+      html: `
+        <h2>Nueva solicitud de recolección de datos</h2>
+
+        <h3>Datos del solicitante:</h3>
+        <ul>
+          <li><strong>Nombres:</strong> ${data.nombres}</li>
+          <li><strong>Correo electrónico:</strong> ${data.email}</li>
+          <li><strong>Cédula/Pasaporte:</strong> ${data.cedulaPasaporte}</li>
+          <li><strong>Teléfono:</strong> ${data.telefono}</li>
+          <li><strong>Ciudad:</strong> ${data.ciudad}</li>
+          <li><strong>Asesor asignado:</strong> ${data.asesor}</li>
+          <li><strong>Razón de consulta:</strong> ${data.razon}</li>
+        </ul>
+
+        ${data.comentario ? `
+        <h3>Comentario adicional:</h3>
+        <p>${data.comentario}</p>
+        ` : ''}
+
+        <h3>Acuerdos legales:</h3>
+        <ul>
+          <li><strong>Acepta políticas de uso de datos:</strong> ${data.aceptaPoliticas ? 'Sí' : 'No'}</li>
+        </ul>
+
+        <p><em>Esta solicitud fue enviada desde el formulario de recolección de datos de GOmotors.</em></p>
+      `,
+    };
+
+    // Enviar el correo
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Error sending data collection email:", error);
+    res.status(500).json({ error: "Error al enviar la solicitud de recolección de datos" });
   }
 }); 
