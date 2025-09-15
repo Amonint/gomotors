@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     // Crear el contenido del correo
     const mailOptions = {
       from: `"Programa Referente GO" <${process.env.EMAIL_USER}>`,
-      to: "paulayala@gomotors.com.ec",
+      to: "sistemas@gomotors.com.ec",
       subject: "Nuevo referido - Programa Referente GO",
       html: `
         <h2>Nuevo referido registrado</h2>

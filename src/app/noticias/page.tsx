@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs} from "firebase/firestore";
 import { db } from "@/firebase/config";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,8 +22,6 @@ const NewsPage = () => {
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'list' | 'detail'>('list');
-
-
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -46,6 +44,9 @@ const NewsPage = () => {
           };
         }) as News[];
 
+        // Ordenar por fecha de creación (más reciente primero)
+        newsData.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
         console.log("Noticias procesadas:", newsData.length);
         setNews(newsData);
       } catch (error) {
@@ -63,24 +64,14 @@ const NewsPage = () => {
     const checkUrlParams = () => {
       if (typeof window !== 'undefined') {
         const urlParams = new URLSearchParams(window.location.search);
-        const newsId = urlParams.get('news');
-        
-        // Verificar si la URL tiene formato de ruta dinámica (/noticias/id)
-        const pathSegments = window.location.pathname.split('/');
-        const newsIdFromPath = pathSegments[pathSegments.length - 1];
-        
-        // Usar el ID de parámetros o de la ruta
-        const finalNewsId = newsId || newsIdFromPath;
+        const newsId = urlParams.get('id');
         
         console.log("URL actual:", window.location.href);
-        console.log("Parámetro news:", newsId);
-        console.log("ID de ruta:", newsIdFromPath);
-        console.log("ID final:", finalNewsId);
+        console.log("Parámetro id:", newsId);
         console.log("Noticias cargadas:", news.length);
-        console.log("IDs de noticias:", news.map(n => n.id));
         
-        if (finalNewsId && news.length > 0 && finalNewsId !== 'noticias') {
-          const newsItem = news.find(item => item.id === finalNewsId);
+        if (newsId && news.length > 0) {
+          const newsItem = news.find(item => item.id === newsId);
           console.log("Noticia encontrada:", newsItem);
           if (newsItem) {
             setSelectedNews(newsItem);
@@ -97,9 +88,9 @@ const NewsPage = () => {
     setSelectedNews(newsItem);
     setViewMode('detail');
     
-    // Actualizar URL sin recargar la página (formato de ruta dinámica como showroom)
+    // Actualizar URL sin recargar la página (igual que showroom)
     if (typeof window !== 'undefined') {
-      const newUrl = `/noticias/${newsItem.id}`;
+      const newUrl = `/noticias?id=${newsItem.id}`;
       window.history.pushState({}, '', newUrl);
     }
   };
@@ -218,50 +209,56 @@ const NewsPage = () => {
       </div>
 
       <div className="max-w-[1600px] mx-auto px-6 py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {news.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => handleNewsSelect(item)}
-              className="cursor-pointer"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group border border-neutral-200 hover:border-neutral-300"
+        {news.length === 0 ? (
+          <div className="text-center">
+            <p className="text-neutral-600 text-lg">No hay noticias disponibles.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {news.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => handleNewsSelect(item)}
+                className="cursor-pointer"
               >
-                <div className="relative h-56 overflow-hidden">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <span className="block w-12 h-[2px] bg-neutral-300 mr-4"></span>
-                    <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">
-                      {formatDate(item.createdAt)}
-                    </p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group border border-neutral-200 hover:border-neutral-300"
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
-                  <h2 className="text-xl font-semibold text-neutral-800 mb-3 line-clamp-2 group-hover:text-neutral-900 transition-colors">
-                    {item.title}
-                  </h2>
-                  <div className="flex items-center text-neutral-500 text-sm">
-                    <span className="hover:text-neutral-700 transition-colors">
-                      Leer más →
-                    </span>
+                  
+                  <div className="p-6">
+                    <div className="flex items-center mb-4">
+                      <span className="block w-12 h-[2px] bg-neutral-300 mr-4"></span>
+                      <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">
+                        {formatDate(item.createdAt)}
+                      </p>
+                    </div>
+                    <h2 className="text-xl font-semibold text-neutral-800 mb-3 line-clamp-2 group-hover:text-neutral-900 transition-colors">
+                      {item.title}
+                    </h2>
+                    <div className="flex items-center text-neutral-500 text-sm">
+                      <span className="hover:text-neutral-700 transition-colors">
+                        Leer más →
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            </div>
-          ))}
-        </div>
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
