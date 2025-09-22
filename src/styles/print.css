@@ -1,0 +1,226 @@
+/* Estilos específicos para impresión */
+@media print {
+  /* Reset general para impresión */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Configuración de página */
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+
+  /* Ocultar elementos que no deben imprimirse */
+  .print-hidden {
+    display: none !important;
+  }
+
+  /* Mostrar elementos solo en impresión */
+  .print-block {
+    display: block !important;
+  }
+
+  .print-inline {
+    display: inline !important;
+  }
+
+  .print-flex {
+    display: flex !important;
+  }
+
+  /* Colores y bordes para impresión */
+  .print-border-black {
+    border-color: #000000 !important;
+  }
+
+  .print-border-2 {
+    border-width: 2px !important;
+  }
+
+  .print-text-black {
+    color: #000000 !important;
+  }
+
+  /* Asegurar que el texto sea legible */
+  body {
+    color: #000000 !important;
+    background: white !important;
+  }
+
+  /* Eliminar sombras y efectos para impresión */
+  .print-shadow-none {
+    box-shadow: none !important;
+  }
+
+  .print-border-0 {
+    border: none !important;
+  }
+
+  /* Espaciado para impresión */
+  .print-px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .print-py-0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .print-p-6 {
+    padding: 1.5rem !important;
+  }
+
+  /* Asegurar que las páginas se rompan apropiadamente */
+  .print-break-page {
+    page-break-before: always;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Estilos específicos para formularios */
+  .formulario-impresion {
+    font-family: 'Times New Roman', serif !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  .formulario-impresion h1 {
+    font-size: 18pt !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    margin-bottom: 12pt !important;
+  }
+
+  .formulario-impresion h2 {
+    font-size: 14pt !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    margin-bottom: 8pt !important;
+  }
+
+  .formulario-impresion h3 {
+    font-size: 12pt !important;
+    font-weight: bold !important;
+    margin-top: 16pt !important;
+    margin-bottom: 8pt !important;
+    border-bottom: 1pt solid #000000 !important;
+    padding-bottom: 4pt !important;
+  }
+
+  /* Bordes para campos */
+  .border-dotted {
+    border-bottom: 1pt dotted #000000 !important;
+  }
+
+  /* Tablas para impresión */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  table th,
+  table td {
+    border: 1pt solid #000000 !important;
+    padding: 4pt !important;
+    text-align: left !important;
+  }
+
+  /* Asegurar que los checkboxes se vean */
+  input[type="checkbox"]:checked {
+    position: relative !important;
+  }
+
+  input[type="checkbox"]:checked::after {
+    content: "✓" !important;
+    position: absolute !important;
+    top: -2pt !important;
+    left: 0 !important;
+    font-size: 10pt !important;
+    font-weight: bold !important;
+  }
+
+  /* Estilos para la sección de políticas */
+  .politicas-aceptadas {
+    background-color: #f0f0f0 !important;
+    border: 2pt solid #000000 !important;
+    padding: 8pt !important;
+    margin: 8pt 0 !important;
+  }
+
+  .politicas-aceptadas .check-icon {
+    font-size: 14pt !important;
+    font-weight: bold !important;
+  }
+
+  /* Footer de impresión */
+  .print-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    text-align: center !important;
+    font-size: 8pt !important;
+    color: #666666 !important;
+    border-top: 1pt solid #cccccc !important;
+    padding-top: 4pt !important;
+  }
+
+  /* Evitar que las imágenes se desborden */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Estilos específicos para imágenes de cédula en impresión */
+  .print-block {
+    display: block !important;
+  }
+
+  .print-block img {
+    max-width: 400px !important;
+    max-height: 300px !important;
+    border: 1px solid #000000 !important;
+    margin: 8pt auto !important;
+    display: block !important;
+  }
+
+  /* Grid layouts para impresión */
+  .grid {
+    display: block !important;
+  }
+
+  .grid > div {
+    margin-bottom: 8pt !important;
+  }
+
+  /* Asegurar que los enlaces sean visibles */
+  a {
+    color: #000000 !important;
+    text-decoration: underline !important;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")" !important;
+    font-size: 8pt !important;
+    color: #666666 !important;
+  }
+
+  /* Espaciado entre secciones */
+  .section {
+    margin-bottom: 16pt !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Resaltar información importante */
+  .highlight {
+    background-color: #ffffcc !important;
+    padding: 4pt !important;
+    border: 1pt solid #000000 !important;
+  }
+}

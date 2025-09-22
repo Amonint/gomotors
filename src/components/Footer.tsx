@@ -514,8 +514,15 @@ export const Footer = () => {
               <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-8 space-y-4 lg:space-y-0"></div>
 
               {/* Designer credit */}
-              <div className="text-sm text-gray-400 uppercase">
-                ©2025 GoMotors. Todos los derechos reservados.
+              <div className="flex items-center space-x-4">
+                <div className="text-sm text-gray-400 uppercase">
+                  ©2025 GoMotors. Todos los derechos reservados.
+                </div>
+                <Link href="/admin/solicitudes">
+                  <button className="text-xs text-gray-600 hover:text-gray-400 transition-colors opacity-50 hover:opacity-100">
+                    Admin
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

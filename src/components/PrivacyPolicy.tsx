@@ -261,12 +261,19 @@ const PrivacyPolicy = () => {
               </p>
             </section>
 
-            <div className="mt-12 flex justify-center">
+            <div className="mt-12 flex justify-center space-x-4">
               <Link href="/recoleccion-datos">
                 <button
                   className="bg-black text-white px-6 py-3 rounded-full hover:bg-neutral-800 transition-colors font-medium text-sm md:text-base"
                 >
                   Protección de datos
+                </button>
+              </Link>
+              <Link href="/formulario-solicitud">
+                <button
+                  className="bg-black text-white px-6 py-3 rounded-full hover:bg-neutral-800 transition-colors font-medium text-sm md:text-base"
+                >
+                  Solicitar Información
                 </button>
               </Link>
             </div>
