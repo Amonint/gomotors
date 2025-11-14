@@ -1,26 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
+import SignatureCanvas from "react-signature-canvas";
 
 const DataCollectionForm = () => {
   const [formData, setFormData] = useState({
     nombres: "",
     email: "",
-    cedulaPasaporte: "",
+    cedula: "",
     telefono: "",
     ciudad: "",
     asesor: "",
     razon: "",
     comentario: "",
-    aceptaPoliticas: false,
+    acepta_politicas: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [hasSigned, setHasSigned] = useState(false);
+  const [showSignatureError, setShowSignatureError] = useState(false);
+  const [signaturePreview, setSignaturePreview] = useState<string>("");
+
+  const signatureRef = useRef<SignatureCanvas>(null);
 
   const asesores = [
     "Diego Paucar",
@@ -62,43 +68,89 @@ const DataCollectionForm = () => {
     }));
   };
 
+  const handleSignatureBegin = () => {
+    setHasSigned(true);
+    setShowSignatureError(false);
+  };
+
+  const handleSignatureEnd = () => {
+    if (signatureRef.current) {
+      const dataUrl = signatureRef.current.toDataURL("image/png", 0.8);
+      setSignaturePreview(dataUrl);
+    }
+  };
+
+  const clearSignature = () => {
+    if (signatureRef.current) {
+      signatureRef.current.clear();
+      setHasSigned(false);
+      setSignaturePreview("");
+      setShowSignatureError(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
     setSuccess(false);
 
-    if (!formData.aceptaPoliticas) {
+    if (!formData.acepta_politicas) {
       setError("Debe aceptar las políticas de uso de datos para continuar.");
       setIsSubmitting(false);
       return;
     }
 
+    // Validar firma
+    if (!hasSigned || !signatureRef.current || signatureRef.current.isEmpty()) {
+      setShowSignatureError(true);
+      setError("Debe firmar el documento para continuar.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Obtener firma en Base64
+    const firmaBase64 = signatureRef.current.toDataURL("image/png", 0.8);
+
+    // Validar tamaño de firma (máx 500KB)
+    const firmaSize = (firmaBase64.length * 3) / 4 / 1024; // Tamaño en KB
+    if (firmaSize > 500) {
+      setError("La firma es muy grande. Por favor, simplifique su firma.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      // Enviar a Firebase Function
-      const response = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendDataCollectionEmail", {
+      // Enviar a API local con firma
+      const response = await fetch("/api/recoleccion-datos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          firma_base64: firmaBase64,
+        }),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         setSuccess(true);
         setFormData({
           nombres: "",
           email: "",
-          cedulaPasaporte: "",
+          cedula: "",
           telefono: "",
           ciudad: "",
           asesor: "",
           razon: "",
           comentario: "",
-          aceptaPoliticas: false,
+          acepta_politicas: false,
         });
+        clearSignature();
       } else {
-        setError("Error al enviar la solicitud. Por favor, inténtalo de nuevo.");
+        setError(result.error || "Error al enviar la solicitud. Por favor, inténtalo de nuevo.");
       }
     } catch (err) {
       console.error("Error enviando solicitud:", err);
@@ -179,8 +231,8 @@ const DataCollectionForm = () => {
                   </label>
                   <input
                     type="text"
-                    name="cedulaPasaporte"
-                    value={formData.cedulaPasaporte}
+                    name="cedula"
+                    value={formData.cedula}
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent text-black bg-white"
@@ -296,16 +348,74 @@ const DataCollectionForm = () => {
                 <div className="flex items-center">
                   <input
                     type="checkbox"
-                    id="aceptaPoliticas"
-                    name="aceptaPoliticas"
-                    checked={formData.aceptaPoliticas}
+                    id="acepta_politicas"
+                    name="acepta_politicas"
+                    checked={formData.acepta_politicas}
                     onChange={handleCheckboxChange}
                     required
                     className="h-4 w-4 text-neutral-600 focus:ring-neutral-500 border-neutral-300 rounded"
                   />
-                  <label htmlFor="aceptaPoliticas" className="ml-3 block text-sm text-neutral-700">
+                  <label htmlFor="acepta_politicas" className="ml-3 block text-sm text-neutral-700">
                     Acepto las políticas de uso de datos *
                   </label>
+                </div>
+              </div>
+
+              {/* Firma Digital */}
+              <div className="mt-8 p-6 bg-neutral-50 border border-neutral-200 rounded-lg">
+                <h3 className="text-lg font-medium text-neutral-800 mb-2">
+                  Firma Digital
+                </h3>
+                <p className="text-sm text-neutral-600 mb-4">
+                  Por favor firme digitalmente para confirmar la aceptación de términos
+                </p>
+                <p className="text-xs text-neutral-500 mb-4">
+                  Use su dedo/mouse/stylus para firmar
+                </p>
+
+                <div className="relative">
+                  <div className={`border-2 rounded-lg overflow-hidden bg-white shadow-sm ${showSignatureError ? 'border-red-500' : 'border-black'}`}>
+                    <SignatureCanvas
+                      ref={signatureRef}
+                      canvasProps={{
+                        className: 'w-full h-[150px] md:h-[200px] cursor-crosshair',
+                      }}
+                      onBegin={handleSignatureBegin}
+                      onEnd={handleSignatureEnd}
+                    />
+                    {!hasSigned && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <span className="text-neutral-300 text-sm md:text-base">Firme aquí</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {showSignatureError && (
+                    <p className="text-red-600 text-sm mt-2">Debe firmar para continuar</p>
+                  )}
+
+                  <div className="flex flex-col md:flex-row gap-4 mt-4">
+                    <button
+                      type="button"
+                      onClick={clearSignature}
+                      className="flex-1 px-4 py-2 border-2 border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-100 transition-colors"
+                    >
+                      Limpiar Firma
+                    </button>
+
+                    {signaturePreview && (
+                      <div className="flex-1">
+                        <p className="text-xs text-neutral-600 mb-2">Vista previa:</p>
+                        <div className="border border-neutral-300 rounded-lg p-2 bg-white">
+                          <img
+                            src={signaturePreview}
+                            alt="Preview de firma"
+                            className="w-full h-16 object-contain"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -313,10 +423,10 @@ const DataCollectionForm = () => {
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !hasSigned}
                   className="bg-black text-white px-8 py-3 rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Enviando..." : "Enviar solicitud"}
+                  {isSubmitting ? "Guardando firma..." : "Enviar solicitud"}
                 </button>
               </div>
 
@@ -324,7 +434,7 @@ const DataCollectionForm = () => {
               {success && (
                 <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                   <p className="text-green-700 text-center">
-                    ¡Tu solicitud ha sido enviada correctamente! Te contactaremos pronto.
+                    ¡Formulario enviado correctamente con firma digital! Te contactaremos pronto.
                   </p>
                 </div>
               )}

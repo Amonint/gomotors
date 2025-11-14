@@ -60,6 +60,11 @@ export function ContratacionForm() {
     setError("");
     setSuccess(false);
 
+    let dbSuccess = false;
+    let emailSuccess = false;
+    let dbError = "";
+    let emailError = "";
+
     try {
       // Convertir CV a base64 si existe
       let cvBase64 = "";
@@ -85,21 +90,53 @@ export function ContratacionForm() {
         position: formData.position,
         message: formData.message,
         cv: cvBase64,
+        acceptTerms: formData.acceptTerms,
       };
 
-      // Enviar a Firebase Function
-      const response = await fetch(
-        "https://us-central1-gomotors-web.cloudfunctions.net/sendContratacionEmail",
-        {
+      // Enviar a SQLite primero
+      try {
+        const dbResponse = await fetch("/api/postulaciones", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(dataToSend),
-        }
-      );
+        });
 
-      if (response.ok) {
+        if (dbResponse.ok) {
+          dbSuccess = true;
+        } else {
+          const errorData = await dbResponse.json().catch(() => null);
+          dbError = errorData?.error || 'Error al guardar en base de datos';
+        }
+      } catch (error) {
+        dbError = 'Error de conexión con la base de datos';
+      }
+
+      // Enviar email (original)
+      try {
+        const emailResponse = await fetch(
+          "https://us-central1-gomotors-web.cloudfunctions.net/sendContratacionEmail",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataToSend),
+          }
+        );
+
+        if (emailResponse.ok) {
+          emailSuccess = true;
+        } else {
+          emailError = 'Error al enviar el email de postulación';
+        }
+      } catch (error) {
+        emailError = 'Error de conexión con el servicio de email';
+      }
+
+      // Determinar el estado final
+      if (dbSuccess || emailSuccess) {
         setSuccess(true);
         setFormData({
           name: "",
@@ -117,10 +154,10 @@ export function ContratacionForm() {
         ) as HTMLInputElement;
         if (fileInput) fileInput.value = "";
       } else {
-        setError(
-          "Error al enviar el formulario. Por favor, inténtalo de nuevo."
-        );
+        const errors = [dbError, emailError].filter(Boolean);
+        setError(`No se pudo procesar tu postulación: ${errors.join(' y ')}`);
       }
+
     } catch (err) {
       console.error("Error enviando formulario:", err);
       setError("Error al enviar el formulario. Por favor, inténtalo de nuevo.");

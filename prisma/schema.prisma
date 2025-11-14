@@ -3,11 +3,12 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
 }
 
 model Solicitud {
@@ -19,7 +20,7 @@ model Solicitud {
   ciudad               String
   asesor               String
   razon                String
-  comentario           String?
+  comentario           String?  @db.Text
   cedula_frontal_path  String?
   cedula_trasera_path  String?
   acepta_politicas     Boolean  @default(true)
@@ -27,4 +28,84 @@ model Solicitud {
   updatedAt            DateTime @updatedAt
 
   @@map("solicitudes")
+}
+
+model RecoleccionDatos {
+  id                String   @id @default(cuid())
+  nombres           String
+  email             String
+  cedula            String
+  telefono          String
+  ciudad            String
+  asesor            String
+  razon             String
+  comentario        String?  @db.Text
+  acepta_politicas  Boolean  @default(true)
+  ip_address        String?
+  user_agent        String?  @db.Text
+  firma_base64      String   @default("") @db.Text
+  firma_fecha       DateTime @default(now())
+  firma_ip          String?
+  firma_dispositivo String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("recoleccion_datos")
+}
+
+model Cotizacion {
+  id               String   @id @default(cuid())
+  nombre_completo  String
+  telefono         String
+  ciudad           String
+  marca_interes    String
+  segmento         String
+  forma_pago       String?
+  comentario       String?  @db.Text
+  acepta_terminos  Boolean  @default(true)
+  ip_address       String?
+  user_agent       String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("cotizaciones")
+}
+
+model Postulacion {
+  id               String   @id @default(cuid())
+  nombre           String
+  apellidos        String
+  email            String
+  telefono         String
+  puesto           String
+  mensaje          String?  @db.Text
+  cv_filename      String?
+  cv_path          String?
+  acepta_terminos  Boolean  @default(true)
+  ip_address       String?
+  user_agent       String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("postulaciones")
+}
+
+model Referido {
+  id                       String   @id @default(cuid())
+  referente_nombre         String
+  referente_apellidos      String?
+  referente_cedula         String?
+  referente_telefono       String?
+  referente_email          String
+  referido_nombre          String
+  referido_apellidos       String?
+  referido_telefono        String?
+  referido_ocupacion       String?
+  acepta_terminos          Boolean  @default(true)
+  ip_address               String?
+  user_agent               String?  @db.Text
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@map("referidos")
 }

@@ -20,7 +20,32 @@ const Cotizacion = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | "partial" | null>(null);
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  // Validación de teléfono
+  const validatePhone = (telefono: string): { isValid: boolean; error?: string } => {
+    if (/[a-zA-Z]/.test(telefono)) {
+      return { isValid: false, error: 'El teléfono no puede contener letras' };
+    }
+
+    const allowedCharsRegex = /^[\d\s\-\(\)\+\.]+$/;
+    if (!allowedCharsRegex.test(telefono)) {
+      return { isValid: false, error: 'Solo se permiten números, espacios, guiones, paréntesis y +' };
+    }
+
+    const digitsOnly = telefono.replace(/\D/g, '');
+    if (digitsOnly.length > 0 && digitsOnly.length < 7) {
+      return { isValid: false, error: 'El teléfono debe tener al menos 7 dígitos' };
+    }
+
+    if (digitsOnly.length > 15) {
+      return { isValid: false, error: 'El teléfono no puede tener más de 15 dígitos' };
+    }
+
+    return { isValid: true };
+  };
 
   // Parallax scroll effect
   const { scrollYProgress } = useScroll({
@@ -81,6 +106,7 @@ const Cotizacion = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
+
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData(prev => ({
@@ -88,6 +114,12 @@ const Cotizacion = () => {
         [name]: checked
       }));
     } else {
+      // Validar teléfono en tiempo real
+      if (name === 'telefono') {
+        const validation = validatePhone(value);
+        setPhoneError(validation.isValid ? "" : validation.error || "");
+      }
+
       setFormData(prev => ({
         ...prev,
         [name]: value
@@ -97,25 +129,73 @@ const Cotizacion = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validar términos
     if (!formData.aceptaTerminos) {
       alert('Debes aceptar los términos y condiciones para continuar');
       return;
     }
 
+    // Validar teléfono antes de enviar
+    const phoneValidation = validatePhone(formData.telefono);
+    if (!phoneValidation.isValid) {
+      alert(phoneValidation.error);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setSubmitMessage("");
+
+    let dbSuccess = false;
+    let emailSuccess = false;
+    let dbError = "";
+    let emailError = "";
 
     try {
-      const response = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendCotizacionEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // Enviar a SQLite primero
+      try {
+        const dbResponse = await fetch("/api/cotizaciones", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-      if (response.ok) {
+        if (dbResponse.ok) {
+          dbSuccess = true;
+        } else {
+          const errorData = await dbResponse.json().catch(() => null);
+          dbError = errorData?.error || 'Error al guardar en base de datos';
+        }
+      } catch (error) {
+        dbError = 'Error de conexión con la base de datos';
+      }
+
+      // Enviar email (original)
+      try {
+        const emailResponse = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendCotizacionEmail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (emailResponse.ok) {
+          emailSuccess = true;
+        } else {
+          emailError = 'Error al enviar el email de cotización';
+        }
+      } catch (error) {
+        emailError = 'Error de conexión con el servicio de email';
+      }
+
+      // Determinar el estado final y mensaje
+      if (dbSuccess && emailSuccess) {
         setSubmitStatus("success");
+        setSubmitMessage("¡Tu cotización ha sido enviada correctamente! Se ha guardado en nuestro sistema y enviado por email.");
         setFormData({
           nombreCompleto: '',
           telefono: '',
@@ -126,11 +206,34 @@ const Cotizacion = () => {
           comentario: '',
           aceptaTerminos: false
         });
+        setPhoneError("");
+      } else if (dbSuccess || emailSuccess) {
+        setSubmitStatus("partial");
+        if (dbSuccess) {
+          setSubmitMessage("Tu cotización se ha guardado en nuestro sistema correctamente, pero hubo un problema al enviar el email. Nos contactaremos contigo pronto.");
+        } else {
+          setSubmitMessage("Tu cotización se ha enviado por email correctamente, pero hubo un problema al guardarla en nuestro sistema. Aún así, la hemos recibido.");
+        }
+        setFormData({
+          nombreCompleto: '',
+          telefono: '',
+          ciudad: '',
+          marcaInteres: '',
+          segmento: '',
+          formaPago: '',
+          comentario: '',
+          aceptaTerminos: false
+        });
+        setPhoneError("");
       } else {
         setSubmitStatus("error");
+        const errors = [dbError, emailError].filter(Boolean);
+        setSubmitMessage(`No se pudo procesar tu cotización: ${errors.join(' y ')}`);
       }
-    } catch {
+
+    } catch (error) {
       setSubmitStatus("error");
+      setSubmitMessage("Ocurrió un error inesperado. Por favor, verifica tu conexión a internet e intenta nuevamente.");
     } finally {
       setIsSubmitting(false);
     }
@@ -156,7 +259,7 @@ const Cotizacion = () => {
           >
             <div className="relative h-32 w-72 mb-8 md:mb-0">
               <Image
-                src="/images/logo-gomotors.png"
+                src="/images/logogomo.png"
                 alt="GOmotors Logo"
                 fill
                 style={{ objectFit: "contain" }}
@@ -288,9 +391,18 @@ const Cotizacion = () => {
               required
               value={formData.telefono}
               onChange={handleInputChange}
-              className="w-full px-6 py-4 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors text-black bg-white text-base"
+              className={`w-full px-6 py-4 border rounded-lg focus:ring-2 focus:border-neutral-500 transition-colors text-black bg-white text-base ${
+                phoneError
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-neutral-300 focus:ring-neutral-500'
+              }`}
               placeholder="Ingresa tu teléfono"
             />
+            {phoneError && (
+              <p className="mt-2 text-sm text-red-600">
+                {phoneError}
+              </p>
+            )}
           </motion.div>
 
           {/* Ciudad */}
@@ -425,29 +537,70 @@ const Cotizacion = () => {
 
           {/* Mensajes de estado */}
           {submitStatus === "success" && (
-            <motion.div 
+            <motion.div
               variants={formItem}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               className="mt-6 p-6 bg-green-50 border border-green-200 rounded-lg text-center"
             >
-              <p className="text-green-700 font-medium">
-                ¡Tu cotización ha sido enviada correctamente! 
+              <div className="flex items-center justify-center mb-3">
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-green-700 font-medium mb-2">
+                {submitMessage}
               </p>
-              <p className="text-green-600 text-sm mt-2">
+              <p className="text-green-600 text-sm">
                 Uno de nuestros asesores te contactará pronto con una oferta personalizada.
               </p>
             </motion.div>
           )}
 
-          {submitStatus === "error" && (
-            <motion.div 
+          {submitStatus === "partial" && (
+            <motion.div
               variants={formItem}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mt-6 p-6 bg-yellow-50 border border-yellow-200 rounded-lg text-center"
+            >
+              <div className="flex items-center justify-center mb-3">
+                <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-yellow-700 font-medium mb-2">
+                {submitMessage}
+              </p>
+              <p className="text-yellow-600 text-sm">
+                Nos contactaremos contigo pronto.
+              </p>
+            </motion.div>
+          )}
+
+          {submitStatus === "error" && (
+            <motion.div
+              variants={formItem}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               className="mt-6 p-6 bg-red-50 border border-red-200 rounded-lg text-center"
             >
-              <p className="text-red-700 font-medium">
-                Hubo un error al enviar la cotización. Por favor, intenta nuevamente.
+              <div className="flex items-center justify-center mb-3">
+                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-red-700 font-medium mb-2">
+                {submitMessage}
               </p>
-              <p className="text-red-600 text-sm mt-2">
-                Verifica tu conexión a internet y vuelve a intentarlo.
+              <p className="text-red-600 text-sm">
+                Si el problema persiste, puedes contactarnos directamente al 072731143.
               </p>
             </motion.div>
           )}

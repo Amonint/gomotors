@@ -67,7 +67,28 @@ export default function ReferenteGoPage() {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendReferralEmail", {
+      // Guardar en base de datos SQLite
+      const dbResponse = await fetch("/api/referidos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          referrerName: formData.referrerName,
+          referrerLastName: formData.referrerLastName || undefined,
+          referrerCedula: formData.referrerId || undefined,
+          referrerPhone: formData.referrerPhone || undefined,
+          referrerEmail: formData.referrerEmail,
+          referredName: formData.referredName,
+          referredLastName: formData.referredLastName || undefined,
+          referredPhone: formData.referredPhone || undefined,
+          referredOccupation: formData.referredOccupation || undefined,
+          acceptTerms: formData.acceptTerms,
+        }),
+      });
+
+      // Enviar email
+      const emailResponse = await fetch("https://us-central1-gomotors-web.cloudfunctions.net/sendReferralEmail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +96,9 @@ export default function ReferenteGoPage() {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
+      const dbResult = await dbResponse.json();
+
+      if (dbResponse.ok && emailResponse.ok) {
         setSubmitStatus("success");
         setFormData({
           referrerName: "",
@@ -89,10 +112,15 @@ export default function ReferenteGoPage() {
           referredOccupation: "",
           acceptTerms: false,
         });
+      } else if (!dbResponse.ok) {
+        console.error("Error en base de datos:", dbResult.error);
+        setSubmitStatus("error");
       } else {
+        console.error("Error al enviar email");
         setSubmitStatus("error");
       }
-    } catch {
+    } catch (error) {
+      console.error("Error general:", error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

@@ -36,7 +36,12 @@ const ShowroomPage = () => {
       if (vehicle) {
         setSelectedVehicle(vehicle);
         setViewMode('detail');
-        
+
+        // Hacer scroll al principio de la página
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         // Cargar vehículos relacionados
         const related = vehicles
           .filter((v) => v.tipoVehiculo === vehicle.tipoVehiculo && v.id !== vehicle.id)
@@ -123,13 +128,16 @@ const ShowroomPage = () => {
   const handleVehicleSelect = (vehicle: Vehicle) => {
     setSelectedVehicle(vehicle);
     setViewMode('detail');
-    
-    // Actualizar URL sin recargar la página
+
+    // Hacer scroll al principio de la página
     if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Actualizar URL sin recargar la página
       const newUrl = `/showroom?vehicle=${vehicle.id}`;
       window.history.pushState({}, '', newUrl);
     }
-    
+
     // Cargar vehículos relacionados
     const related = vehicles
       .filter((v) => v.tipoVehiculo === vehicle.tipoVehiculo && v.id !== vehicle.id)
@@ -140,9 +148,12 @@ const ShowroomPage = () => {
   const handleBackToList = () => {
     setViewMode('list');
     setSelectedVehicle(null);
-    
-    // Actualizar URL sin recargar la página
+
+    // Hacer scroll al principio de la página
     if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Actualizar URL sin recargar la página
       window.history.pushState({}, '', '/showroom');
     }
   };
